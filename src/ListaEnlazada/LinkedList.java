@@ -37,13 +37,28 @@ public class LinkedList {
         }
     }
 
+
+
+    public void add(Object object){
+        if(head==null){
+            head = new Nodo(object,null);
+        }
+        else{
+            Nodo temp = head;
+            head.setNext(new Nodo(object,null));
+            Nodo newNodo = new Nodo(object,head);
+            head = newNodo;
+
+        }
+    }
+
     /**
-     * This method add a new object to last position
+     * This method add a new object to the first position
      *
      * @param object Object added
      */
 
-    public void addLast(Object object) {
+    public void addFirst(Object object) {
 
         if (head == null) {
             head = new Nodo(object,null);
@@ -59,11 +74,11 @@ public class LinkedList {
 
 
     /**
-     * This method inserts the nodes to first position
+     * This method inserts the nodes to the last position
      * @param object
      */
 
-    public void addFirst(Object object){
+    public void addLast(Object object){
         if(head==null){
             head = new Nodo(object,null);
         }else{
@@ -77,7 +92,7 @@ public class LinkedList {
     }
 
     /**
-     * This method return the length's list
+     * This method returns the length's list
      *
      * @return length
      */
