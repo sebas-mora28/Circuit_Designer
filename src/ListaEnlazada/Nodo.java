@@ -8,15 +8,19 @@ package ListaEnlazada;
 public class Nodo {
 
     private Nodo next;
+    private Nodo prev;
     private Object object;
 
+
     /**
-     * Constructor
-     * @param object
+     * This method creates a new Node
+     * @param obj
+     * @param nodo
      */
 
-    public Nodo(Object object) {
-        this.object= object;
+    public Nodo(Object obj,Nodo nodo){
+        this.object = obj;
+        this.next = nodo;
     }
 
 
@@ -24,8 +28,10 @@ public class Nodo {
      * This method sets the next node
      * @param nodo
      */
+
     public void setNext(Nodo nodo){
-        next = nodo;
+        this.prev = next;
+        this.next = nodo;
     }
 
 
@@ -37,6 +43,7 @@ public class Nodo {
     public Nodo getNext(){
         return next;
     }
+
 
     /**
      * This method returns the objects contained in the node
