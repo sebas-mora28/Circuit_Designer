@@ -44,7 +44,6 @@ public class LinkedList {
             head = new Nodo(object,null);
         }
         else{
-            Nodo temp = head;
             head.setNext(new Nodo(object,null));
             Nodo newNodo = new Nodo(object,head);
             head = newNodo;
@@ -64,7 +63,6 @@ public class LinkedList {
             head = new Nodo(object,null);
             end = head;
         } else {
-            Nodo temp = head;
             Nodo newNodo = new Nodo(object,head);
             end = head;
             head = newNodo;
