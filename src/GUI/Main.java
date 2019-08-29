@@ -1,17 +1,16 @@
 package GUI;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.TransferMode;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+
+import javax.swing.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -20,7 +19,7 @@ import java.util.List;
 
 
 public class Main extends Application {
-    Pane pane;
+    GridPane gridPane;
 
     public static void main(String[] args) {
         launch(args);
@@ -31,16 +30,19 @@ public class Main extends Application {
 
 
         // Cuadricula
-        pane = new Pane();
-        TableView tabla = new TableView();
-        pane.setPrefSize(1200,900);
-        ScrollPane scrollPane = new ScrollPane(pane);
+        gridPane = new GridPane();
+        gridPane.setPrefSize(1200,900);
+        ScrollPane scrollPane = new ScrollPane(gridPane);
 
         scrollPane.setLayoutX(0);
         scrollPane.setLayoutY(0);
         scrollPane.setPrefSize(1200, 900);
         scrollPane.setStyle(String.format("-fx-background: rgb(%d, %d, %d);" +
                 "-fx-background-color: -fx-background;", 200, 200, 200));
+
+
+        Label label = new Label("Sebastian");
+        gridPane.add(label,1,1);
 
 
 
@@ -58,6 +60,20 @@ public class Main extends Application {
                 "-fx-background-color: -fx-background;", 245, 245, 245));
 
 
+        anchorPane.setOnDragOver(new EventHandler<DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                event.acceptTransferModes(TransferMode.ANY);
+            }
+        });
+
+        anchorPane.setOnDragDropped(new EventHandler<DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                Dragboard db = event.getDragboard();
+                label.setText(db.getString());
+            }
+        });
 
 
 
@@ -69,6 +85,7 @@ public class Main extends Application {
         Scene scene = new Scene(root, 1500, 900);
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
+        primaryStage.setOnCloseRequest(windowEvent -> System.exit(0));
         primaryStage.show();
 
     }
