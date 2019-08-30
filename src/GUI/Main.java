@@ -1,25 +1,25 @@
 package GUI;
 
+import com.sun.prism.shader.Solid_TextureYV12_AlphaTest_Loader;
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
-
-import javax.swing.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.util.List;
 
 
 
 public class Main extends Application {
     GridPane gridPane;
+    Circle circle;
+    double posX, posY, newPosX, newPosY;
 
     public static void main(String[] args) {
         launch(args);
@@ -31,7 +31,7 @@ public class Main extends Application {
 
         // Cuadricula
         gridPane = new GridPane();
-        gridPane.setPrefSize(1200,900);
+        gridPane.setPrefSize(1200, 900);
         ScrollPane scrollPane = new ScrollPane(gridPane);
 
         scrollPane.setLayoutX(0);
@@ -41,44 +41,36 @@ public class Main extends Application {
                 "-fx-background-color: -fx-background;", 200, 200, 200));
 
 
-        Label label = new Label("Sebastian");
-        gridPane.add(label,1,1);
-
-
-
         // Paleta de compuertas logicas
 
-        AnchorPane anchorPane = new AnchorPane();
-        anchorPane.setPrefSize(300,900);
+        HBox paleta = new HBox();
+        paleta.setPrefSize(280, 900);
+        paleta.setMaxWidth(280);
+        paleta.setBackground(new Background(new BackgroundFill(Color.GREEN, CornerRadii.EMPTY, Insets.EMPTY)));
+
+        Circle circle = new Circle(50, Color.RED);
+        circle.setLayoutX(150);
+        circle.setLayoutY(200);
+        circle.setCursor(Cursor.MOVE);
+        circle.setOnMousePressed(circleMousePressedEventHandler);
+        circle.setOnMouseDragged(circleMouseDraggedEventHandler);
+        paleta.getChildren().add(circle);
 
 
-        ScrollPane logicGatesScroller = new ScrollPane(anchorPane);
+        ScrollPane logicGatesScroller = new ScrollPane(paleta);
         logicGatesScroller.setLayoutX(1200);
         logicGatesScroller.setLayoutY(0);
-        logicGatesScroller.setPrefSize(300,900);
+        logicGatesScroller.setPrefSize(300,830);
+
         logicGatesScroller.setStyle(String.format("-fx-background: rgb(%d, %d, %d);" +
                 "-fx-background-color: -fx-background;", 245, 245, 245));
 
 
-        anchorPane.setOnDragOver(new EventHandler<DragEvent>() {
-            @Override
-            public void handle(DragEvent event) {
-                event.acceptTransferModes(TransferMode.ANY);
-            }
-        });
-
-        anchorPane.setOnDragDropped(new EventHandler<DragEvent>() {
-            @Override
-            public void handle(DragEvent event) {
-                Dragboard db = event.getDragboard();
-                label.setText(db.getString());
-            }
-        });
 
 
 
-
-        AnchorPane root = new AnchorPane(scrollPane,logicGatesScroller);
+        //
+        AnchorPane root = new AnchorPane(scrollPane, logicGatesScroller);
 
 
 
@@ -91,22 +83,32 @@ public class Main extends Application {
     }
 
 
-    private void handleDragOver(DragEvent event) {
-        if (event.getDragboard().hasFiles()) {
-            event.acceptTransferModes(TransferMode.ANY);
+
+    EventHandler<MouseEvent> circleMousePressedEventHandler = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+            posX = mouseEvent.getSceneX();
+            posY = mouseEvent.getSceneY();
+            newPosX = ((Circle)(mouseEvent.getSource())).getTranslateX();
+            newPosY =  ((Circle)(mouseEvent.getSource())).getTranslateY();
         }
-    }
-
-    private void handleDrop(DragEvent event){
-        try{
-            List<File> files = event.getDragboard().getFiles();
-            Image image = new Image(new FileInputStream(files.get(0)));
+    };
 
 
+    EventHandler<MouseEvent> circleMouseDraggedEventHandler = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+            double SposX = mouseEvent.getSceneX() - posX;
+            double SPosY = mouseEvent.getSceneY() - posY;
+            double newposx = newPosX + SposX;
+            double newposy = newPosY + SPosY;
+            if (newposx<200){
+                ((Circle)(mouseEvent.getSource())).setTranslateX(newposx);
+                ((Circle)(mouseEvent.getSource())).setTranslateY(newposy);
 
+            }
+            System.out.print("Eje x: " + newposx + " " + "Eje y: "+ newposx);
 
-        }catch (FileNotFoundException e){
-            e.printStackTrace();
         }
-    }
+    };
 }
