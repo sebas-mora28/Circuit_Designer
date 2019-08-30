@@ -18,6 +18,8 @@ import javafx.scene.shape.Circle;
 
 import javafx.stage.Stage;
 
+import javax.swing.*;
+
 /**
  * @see Main Se encarga de inicializar la interfaz gráfica de la aplicación, se utiliza la biblioteca JavaFx para la creación de los componentes básicos
  */
@@ -25,9 +27,9 @@ public class Main extends Application {
     GridPane gridPane;
     Pane pane;
     AnchorPane root;
-    Circle circle;
-    double posX, posY, newPosX, newPosY;
-    private ImageView compuertaAND;
+    ScrollPane scrollPane;
+    double posX, posY, newPosX, newPosY, translationX, translationY;
+    private int index_image;
 
     private EventHandler dragOverRoot = null, dragDropped = null, dragOverPanel;
 
@@ -42,13 +44,11 @@ public class Main extends Application {
         //-------------------------------------------------------------------------------------------------
         gridPane = new GridPane();
         gridPane.setPrefSize(950, 900);
+        gridPane.setBackground(new Background(new BackgroundFill(Color.rgb(200, 200, 200), CornerRadii.EMPTY, Insets.EMPTY)));
         ScrollPane scrollPane = new ScrollPane(gridPane);
         scrollPane.setLayoutX(0);
         scrollPane.setLayoutY(0);
         scrollPane.setPrefSize(950, 900);
-        scrollPane.setBackground(new Background(new BackgroundFill(Color.rgb(200, 200, 200), CornerRadii.EMPTY, Insets.EMPTY)));
-
-
 
 
         // Paleta de compuertas
@@ -57,7 +57,6 @@ public class Main extends Application {
         Pane pane = new Pane();
         pane.setPrefSize(250, 900);
         pane.setMaxWidth(280);
-        pane.setBackground(new Background(new BackgroundFill(Color.rgb(150, 150, 150), CornerRadii.EMPTY, Insets.EMPTY)));
 
 
         Label label = new Label("Compuertas");
@@ -70,23 +69,17 @@ public class Main extends Application {
         //--------------------------------------------------------------------------------------------------
 
 
-        // Compuerta AND
-        ImageView imageViewAND = new ImageView(new Image("CompuertaAnd.png"));
-        imageViewAND.setFitHeight(140);
-        imageViewAND.setFitWidth(130);
-        imageViewAND.setX(60);
-        imageViewAND.setY(50);
-        imageViewAND.setCursor(Cursor.CLOSED_HAND);
-        pane.getChildren().add(imageViewAND);
+        Button button = new Button();
+        ImageView imagen = new ImageView("Compuerta1.png");
+        imagen.setFitHeight(90);
+        imagen.setFitWidth(90);
+        button.setGraphic(imagen);
 
-        //Compuerta OR
-        Image compuertaOR = new Image("CompuertaOR.png");
-        ImageView imageViewOR = new ImageView(compuertaOR);
-        imageViewOR.setFitHeight(160);
-        imageViewOR.setFitWidth(130);
-        imageViewOR.setX(55);
-        imageViewOR.setY(180);
-        pane.getChildren().add(imageViewOR);
+        button.setLayoutX(70);
+        button.setLayoutY(90);
+        button.setOnMouseClicked(createLogicGateAND);
+        pane.getChildren().add(button);
+
 
 
         ScrollPane logicGatesScroller = new ScrollPane(pane);
@@ -108,50 +101,82 @@ public class Main extends Application {
     }
 
 
+    //------------------------------------------------------------------------------------------
 
-    private void DragAndDrop(ImageView imageLogicGate){
+    private void createButtons() {
+        int posy = 100;
+        for (int i = 0; i < 1; i++) {
+            System.out.print(i);
+            setIndex_image(i);
+            Button button = new Button();
 
-        imageLogicGate.setOnDragDetected(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                root.setOnDragOver(dragOverRoot);
-                pane.setOnDragOver(dragOverPanel);
-                pane.setOnDragDropped(dragDropped);
+            ImageView imagen = new ImageView("Compuerta1.png");
+            imagen.setFitHeight(90);
+            imagen.setFitWidth(90);
+            button.setGraphic(imagen);
 
-                ImageView imageLogicGate_ = (ImageView) mouseEvent.getSource();
-            }
-        });
+            button.setLayoutX(50);
+            button.setLayoutY(posy);
+            button.setOnMouseClicked(createLogicGateAND);
 
 
+            pane.getChildren().add(button);
+            posy += 100;
 
-
-
-
+        }
     }
 
-
-
-
-    EventHandler<MouseEvent> MousePressedEventHandler = new EventHandler<MouseEvent>() {
+    EventHandler<MouseEvent> createLogicGateAND = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
+            ImageView imageViewAND = new ImageView(new Image("Compuerta1.png"));
+            imageViewAND.setFitWidth(80);
+            imageViewAND.setFitHeight(60);
+            imageViewAND.setCursor(Cursor.HAND);
+            imageViewAND.setOnMousePressed(MousePressed);
+            imageViewAND.setOnMouseDragged(MousedDragged);
+            gridPane.getChildren().add(imageViewAND);
         }
     };
 
 
-    EventHandler<MouseEvent> circleMouseDraggedEventHandler = new EventHandler<MouseEvent>() {
+    EventHandler<MouseEvent> MousePressed = new EventHandler<>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
-            double SposX = mouseEvent.getSceneX() - posX;
-            double SPosY = mouseEvent.getSceneY() - posY;
-            double newposx = newPosX + SposX;
-            double newposy = newPosY + SPosY;
-            if (newposx<200){
-                ((ImageView)(mouseEvent.getSource())).setTranslateX(newposx);
-                ((ImageView)(mouseEvent.getSource())).setTranslateY(newposy);
-
-            }
-
+            posX = mouseEvent.getSceneX();
+            posY = mouseEvent.getSceneY();
+            translationX = ((ImageView)(mouseEvent.getSource())).getTranslateX();
+            translationY = ((ImageView)(mouseEvent.getSource())).getTranslateY();
         }
     };
+
+    EventHandler<MouseEvent> MousedDragged = new EventHandler<>() {
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+            newPosX = mouseEvent.getSceneX() - posX;
+            newPosY = mouseEvent.getSceneY() - posY;
+
+            double newTranslationX = translationX + newPosX;
+            double newTranslationY = translationY + newPosY;
+            ((ImageView)(mouseEvent.getSource())).setTranslateX(newTranslationX);
+            ((ImageView)(mouseEvent.getSource())).setTranslateY(newTranslationY);
+        }
+    };
+
+
+
+
+
+
+    public int getIndex_image() {
+        return index_image;
+    }
+
+    public void setIndex_image(int index_image) {
+        this.index_image = index_image;
+    }
 }
+
+
+
+
