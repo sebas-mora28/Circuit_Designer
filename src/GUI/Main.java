@@ -1,25 +1,35 @@
 package GUI;
 
-import com.sun.prism.shader.Solid_TextureYV12_AlphaTest_Loader;
+
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+
 import javafx.stage.Stage;
 
-
-
+/**
+ * @see Main Se encarga de inicializar la interfaz gráfica de la aplicación, se utiliza la biblioteca JavaFx para la creación de los componentes básicos
+ */
 public class Main extends Application {
     GridPane gridPane;
+    Pane pane;
+    AnchorPane root;
     Circle circle;
     double posX, posY, newPosX, newPosY;
+    private ImageView compuertaAND;
+
+    private EventHandler dragOverRoot = null, dragDropped = null, dragOverPanel;
 
     public static void main(String[] args) {
         launch(args);
@@ -28,54 +38,69 @@ public class Main extends Application {
 
     public void start(Stage primaryStage) {
 
-
-        // Cuadricula
+        //Cuadrícula
+        //-------------------------------------------------------------------------------------------------
         gridPane = new GridPane();
-        gridPane.setPrefSize(1200, 900);
+        gridPane.setPrefSize(950, 900);
         ScrollPane scrollPane = new ScrollPane(gridPane);
-
         scrollPane.setLayoutX(0);
         scrollPane.setLayoutY(0);
-        scrollPane.setPrefSize(1200, 900);
-        scrollPane.setStyle(String.format("-fx-background: rgb(%d, %d, %d);" +
-                "-fx-background-color: -fx-background;", 200, 200, 200));
+        scrollPane.setPrefSize(950, 900);
+        scrollPane.setBackground(new Background(new BackgroundFill(Color.rgb(200, 200, 200), CornerRadii.EMPTY, Insets.EMPTY)));
 
 
-        // Paleta de compuertas logicas
-
-        HBox paleta = new HBox();
-        paleta.setPrefSize(280, 900);
-        paleta.setMaxWidth(280);
-        paleta.setBackground(new Background(new BackgroundFill(Color.GREEN, CornerRadii.EMPTY, Insets.EMPTY)));
-
-        Circle circle = new Circle(50, Color.RED);
-        circle.setLayoutX(150);
-        circle.setLayoutY(200);
-        circle.setCursor(Cursor.MOVE);
-        circle.setOnMousePressed(circleMousePressedEventHandler);
-        circle.setOnMouseDragged(circleMouseDraggedEventHandler);
-        paleta.getChildren().add(circle);
 
 
-        ScrollPane logicGatesScroller = new ScrollPane(paleta);
-        logicGatesScroller.setLayoutX(1200);
+        // Paleta de compuertas
+        //---------------------------------------------------------------------------------------------------
+
+        Pane pane = new Pane();
+        pane.setPrefSize(250, 900);
+        pane.setMaxWidth(280);
+        pane.setBackground(new Background(new BackgroundFill(Color.rgb(150, 150, 150), CornerRadii.EMPTY, Insets.EMPTY)));
+
+
+        Label label = new Label("Compuertas");
+        label.setLayoutX(90);
+        label.setLayoutY(10);
+        pane.getChildren().add(label);
+
+
+        //Compuertas
+        //--------------------------------------------------------------------------------------------------
+
+
+        // Compuerta AND
+        ImageView imageViewAND = new ImageView(new Image("CompuertaAnd.png"));
+        imageViewAND.setFitHeight(140);
+        imageViewAND.setFitWidth(130);
+        imageViewAND.setX(60);
+        imageViewAND.setY(50);
+        imageViewAND.setCursor(Cursor.CLOSED_HAND);
+        pane.getChildren().add(imageViewAND);
+
+        //Compuerta OR
+        Image compuertaOR = new Image("CompuertaOR.png");
+        ImageView imageViewOR = new ImageView(compuertaOR);
+        imageViewOR.setFitHeight(160);
+        imageViewOR.setFitWidth(130);
+        imageViewOR.setX(55);
+        imageViewOR.setY(180);
+        pane.getChildren().add(imageViewOR);
+
+
+        ScrollPane logicGatesScroller = new ScrollPane(pane);
+        logicGatesScroller.setLayoutX(950);
         logicGatesScroller.setLayoutY(0);
-        logicGatesScroller.setPrefSize(300,830);
-
-        logicGatesScroller.setStyle(String.format("-fx-background: rgb(%d, %d, %d);" +
-                "-fx-background-color: -fx-background;", 245, 245, 245));
+        logicGatesScroller.setPrefSize(250, 830);
 
 
-
-
-
-        //
+        //Pantalla principal
+        //-------------------------------------------------------------------------------------------------
         AnchorPane root = new AnchorPane(scrollPane, logicGatesScroller);
 
 
-
-        Scene scene = new Scene(root, 1500, 900);
-        primaryStage.setScene(scene);
+        primaryStage.setScene(new Scene(root, 1200, 900));
         primaryStage.setResizable(false);
         primaryStage.setOnCloseRequest(windowEvent -> System.exit(0));
         primaryStage.show();
@@ -84,13 +109,32 @@ public class Main extends Application {
 
 
 
-    EventHandler<MouseEvent> circleMousePressedEventHandler = new EventHandler<MouseEvent>() {
+    private void DragAndDrop(ImageView imageLogicGate){
+
+        imageLogicGate.setOnDragDetected(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                root.setOnDragOver(dragOverRoot);
+                pane.setOnDragOver(dragOverPanel);
+                pane.setOnDragDropped(dragDropped);
+
+                ImageView imageLogicGate_ = (ImageView) mouseEvent.getSource();
+            }
+        });
+
+
+
+
+
+
+    }
+
+
+
+
+    EventHandler<MouseEvent> MousePressedEventHandler = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
-            posX = mouseEvent.getSceneX();
-            posY = mouseEvent.getSceneY();
-            newPosX = ((Circle)(mouseEvent.getSource())).getTranslateX();
-            newPosY =  ((Circle)(mouseEvent.getSource())).getTranslateY();
         }
     };
 
@@ -103,11 +147,10 @@ public class Main extends Application {
             double newposx = newPosX + SposX;
             double newposy = newPosY + SPosY;
             if (newposx<200){
-                ((Circle)(mouseEvent.getSource())).setTranslateX(newposx);
-                ((Circle)(mouseEvent.getSource())).setTranslateY(newposy);
+                ((ImageView)(mouseEvent.getSource())).setTranslateX(newposx);
+                ((ImageView)(mouseEvent.getSource())).setTranslateY(newposy);
 
             }
-            System.out.print("Eje x: " + newposx + " " + "Eje y: "+ newposx);
 
         }
     };
