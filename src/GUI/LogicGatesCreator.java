@@ -9,6 +9,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 
+import java.awt.*;
 
 public class LogicGatesCreator {
     private double posX, posY, newPosX, newPosY, translationX, translationY;
@@ -25,7 +26,7 @@ public class LogicGatesCreator {
     public void createLogicGates(GridPane gridPane, String name) {
         Image image = new Image(name);
         Rectangle logicGate = Painter.insertImage(image);
-        Painter.paintRec(50, 50, gridPane);
+        Painter.paintRec(20, 20, gridPane);
         logicGate.setOnMousePressed(MousePressed);
         logicGate.setOnMouseDragged(MousedDragged);
         gridPane.getChildren().add(logicGate);

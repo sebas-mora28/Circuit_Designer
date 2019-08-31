@@ -1,5 +1,6 @@
 package GUI;
 
+import javafx.geometry.Bounds;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
@@ -7,7 +8,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+
+import java.awt.*;
 
 
 /**
@@ -16,9 +20,9 @@ import javafx.scene.shape.Rectangle;
 
 public class Painter {
     private ImageView image;
-    public static GridPane gridPane;
     public static Rectangle rectangle;
     public static Rectangle rectangleImage;
+    public static Line lines;
 
 
     public static Group logicGateGroup;
@@ -53,8 +57,6 @@ public class Painter {
         rectangle = new Rectangle(10,10);
         rectangle.setStroke(Color.rgb(0,0,0));
         rectangle.setCursor(Cursor.CROSSHAIR);
-        rectangle.setX(x);
-        rectangle.setY(y);
         gridPane.getChildren().add(rectangle);
     }
 
@@ -70,5 +72,6 @@ public class Painter {
         rectangle.setTranslateX(x);
         rectangle.setTranslateY(y);
     }
+
 
 }

@@ -9,6 +9,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 
+import javafx.scene.effect.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
@@ -16,8 +17,11 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
 
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import javax.print.DocFlavor;
 
 
 /**
@@ -39,7 +43,6 @@ public class Main extends Application {
         //-------------------------------------------------------------------------------------------------
         gridPane = new GridPane();
         gridPane.setPrefSize(978, 900);
-        gridPane.setBackground(new Background(new BackgroundFill(Color.rgb(200, 200, 200), CornerRadii.EMPTY, Insets.EMPTY)));
         ScrollPane scrollPane = new ScrollPane(gridPane);
         scrollPane.setLayoutX(0);
         scrollPane.setLayoutY(0);
@@ -51,12 +54,15 @@ public class Main extends Application {
 
         pane = new Pane();
         pane.setPrefSize(200, 900);
+        pane.setBackground(new Background(new BackgroundFill(Color.web("7EABA8"),CornerRadii.EMPTY, Insets.EMPTY)));
+
         pane.setMaxWidth(280);
 
 
         Label label = new Label("Compuertas");
-        label.setLayoutX(90);
-        label.setLayoutY(10);
+        label.setFont(new Font("Arial", 14));
+        label.setLayoutX(50);
+        label.setLayoutY(20);
         pane.getChildren().add(label);
 
         createButtons();
@@ -86,8 +92,8 @@ public class Main extends Application {
     LogicGatesCreator logicGatesCreator = new LogicGatesCreator();
 
     private void createButtons() {
-        int posy = 100;
-        for (int i = 1; i <= 4; i++) {
+        int posy = 90;
+        for (int i = 1; i <=6; i++) {
             Button button = new Button();
             String name = new String("Compuerta" + i + ".png");
             ImageView imagen = new ImageView(new Image(name));
@@ -96,6 +102,9 @@ public class Main extends Application {
             button.setGraphic(imagen);
             button.setLayoutX(50);
             button.setLayoutY(posy);
+            button.setEffect(new InnerShadow());
+            button.setBackground(new Background(new BackgroundFill(Color.web("ACC8C6"), CornerRadii.EMPTY, Insets.EMPTY)));
+            button.setCursor(Cursor.OPEN_HAND);
             button.setOnAction(MouseEvent -> logicGatesCreator.createLogicGates(gridPane, name));
 
 
