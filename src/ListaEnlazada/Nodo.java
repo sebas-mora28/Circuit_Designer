@@ -5,10 +5,10 @@ package ListaEnlazada;
  * @author Sebastian
  */
 
-public class Nodo {
+public class Nodo<T> {
 
     private Nodo next;
-    private Object object;
+    private T object;
 
 
     /**
@@ -17,7 +17,7 @@ public class Nodo {
      * @param nodo
      */
 
-    public Nodo(Object obj,Nodo nodo){
+    public Nodo(T obj, Nodo nodo){
         this.object = obj;
         this.next = nodo;
     }
@@ -47,7 +47,7 @@ public class Nodo {
      * Este método devuelve el objeto encontrado en el nodo
      * @return Object
      */
-    public Object get(){
+    public T get(){
         return object;
     }
 }

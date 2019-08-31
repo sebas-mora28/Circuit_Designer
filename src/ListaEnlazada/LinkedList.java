@@ -1,13 +1,16 @@
 package ListaEnlazada;
 
 
+
+
+
+
 /**
  * Se crea la lista enlazada
  * @author Sebastian
  */
 
-public class LinkedList {
-
+public class LinkedList<T>{
     private Nodo head;
     private Nodo end;
     private int length;
@@ -116,18 +119,17 @@ public class LinkedList {
      * Este método remueve el nodo de la posición especificada
      */
     public void remove(int index){
-        int con = 0;
-
-        while(con < length-1) {
-            if (con == index) {
-            } else{
+        int i=0;
+        Nodo current = head;
+        while(current.getNext() != null && i<index){
+            if (i==index){
+                break;
             }
-            con++;
+            current = current.getNext();
+            i++;
         }
-
-
+        current = current.getNext().getNext();
     }
-
     /**
      * Este método muestra toda los elementos de la lista
      */

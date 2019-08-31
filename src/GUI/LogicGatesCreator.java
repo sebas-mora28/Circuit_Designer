@@ -6,27 +6,32 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
+
 
 public class LogicGatesCreator {
     private double posX, posY, newPosX, newPosY, translationX, translationY;
 
 
-    public LogicGatesCreator(){
+    public LogicGatesCreator(){}
 
-    }
 
+    /**
+     * Método que crea la compuerta lógica cada vez que se presiona el botón
+     * @param gridPane
+     * @param name
+     */
     public void createLogicGates(GridPane gridPane, String name) {
         Image image = new Image(name);
-        ImageView imageViewAND = new ImageView(image);
-        imageViewAND.setFitWidth(90);
-        imageViewAND.setFitHeight(85);
-        imageViewAND.setCursor(Cursor.HAND);
-        Painter.paintRec(posX, posY, gridPane);
-        imageViewAND.setOnMousePressed(MousePressed);
-        imageViewAND.setOnMouseDragged(MousedDragged);
-        gridPane.getChildren().add(imageViewAND);
-
+        Rectangle logicGate = Painter.insertImage(image);
+        Painter.paintRec(50, 50, gridPane);
+        logicGate.setOnMousePressed(MousePressed);
+        logicGate.setOnMouseDragged(MousedDragged);
+        gridPane.getChildren().add(logicGate);
     }
+
+
 
 
     EventHandler<MouseEvent> MousePressed = new EventHandler<>() {
@@ -34,8 +39,8 @@ public class LogicGatesCreator {
         public void handle(MouseEvent mouseEvent) {
             posX = mouseEvent.getSceneX();
             posY = mouseEvent.getSceneY();
-            translationX = ((ImageView) (mouseEvent.getSource())).getTranslateX();
-            translationY = ((ImageView) (mouseEvent.getSource())).getTranslateY();
+            translationX = ((Rectangle) (mouseEvent.getSource())).getTranslateX();
+            translationY = ((Rectangle) (mouseEvent.getSource())).getTranslateY();
         }
     };
 
@@ -46,8 +51,8 @@ public class LogicGatesCreator {
             newPosY = mouseEvent.getSceneY() - posY;
             double newTranslationX = translationX + newPosX;
             double newTranslationY = translationY + newPosY;
-            ((ImageView) (mouseEvent.getSource())).setTranslateX(newTranslationX);
-            ((ImageView) (mouseEvent.getSource())).setTranslateY(newTranslationY);
+            ((Rectangle) (mouseEvent.getSource())).setTranslateX(newTranslationX);
+            ((Rectangle) (mouseEvent.getSource())).setTranslateY(newTranslationY);
             Painter.translateRec(newTranslationX, newTranslationY);
         }
     };

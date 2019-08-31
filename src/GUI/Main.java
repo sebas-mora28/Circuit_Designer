@@ -21,7 +21,7 @@ import javafx.stage.Stage;
 
 
 /**
- * @see Main Se encarga de inicializar la interfaz gráfica de la aplicación, se utiliza la biblioteca JavaFx para la creación de los componentes básicos
+ * Main Se encarga de inicializar la interfaz gráfica de la aplicación, se utiliza la biblioteca JavaFx para la creación de los componentes básicos
  */
 public class Main extends Application {
     private GridPane gridPane;
@@ -38,19 +38,19 @@ public class Main extends Application {
         //Cuadrícula
         //-------------------------------------------------------------------------------------------------
         gridPane = new GridPane();
-        gridPane.setPrefSize(950, 900);
+        gridPane.setPrefSize(978, 900);
         gridPane.setBackground(new Background(new BackgroundFill(Color.rgb(200, 200, 200), CornerRadii.EMPTY, Insets.EMPTY)));
         ScrollPane scrollPane = new ScrollPane(gridPane);
         scrollPane.setLayoutX(0);
         scrollPane.setLayoutY(0);
-        scrollPane.setPrefSize(950, 900);
+        scrollPane.setPrefSize(978, 900);
 
 
         // Paleta de compuertas
         //---------------------------------------------------------------------------------------------------
 
         pane = new Pane();
-        pane.setPrefSize(250, 900);
+        pane.setPrefSize(200, 900);
         pane.setMaxWidth(280);
 
 
@@ -59,18 +59,12 @@ public class Main extends Application {
         label.setLayoutY(10);
         pane.getChildren().add(label);
 
-
-        //Compuertas
-        //--------------------------------------------------------------------------------------------------
-
-
         createButtons();
 
-
         ScrollPane logicGatesScroller = new ScrollPane(pane);
-        logicGatesScroller.setLayoutX(950);
+        logicGatesScroller.setLayoutX(978);
         logicGatesScroller.setLayoutY(0);
-        logicGatesScroller.setPrefSize(250, 830);
+        logicGatesScroller.setPrefSize(220, 830);
 
 
         //Pantalla principal
