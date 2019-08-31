@@ -1,19 +1,18 @@
 package ListaEnlazada;
 
 /**
- * This class create the Nodes
+ * Esta clase crea los Nodo para la lista enlazada
  * @author Sebastian
  */
 
 public class Nodo {
 
     private Nodo next;
-    private Nodo prev;
     private Object object;
 
 
     /**
-     * This method creates a new Node
+     * Constructor
      * @param obj
      * @param nodo
      */
@@ -25,18 +24,17 @@ public class Nodo {
 
 
     /**
-     * This method sets the next node
+     * Este método establece el siguiente nodo de la lista
      * @param nodo
      */
 
     public void setNext(Nodo nodo){
-        this.prev = next;
         this.next = nodo;
     }
 
 
     /**
-     * This method gets the next node
+     * Este método obtiene el siguiente nodo de la lista
      *
      */
 
@@ -46,8 +44,8 @@ public class Nodo {
 
 
     /**
-     * This method returns the objects contained in the node
-     * @return Node the next node
+     * Este método devuelve el objeto encontrado en el nodo
+     * @return Object
      */
     public Object get(){
         return object;

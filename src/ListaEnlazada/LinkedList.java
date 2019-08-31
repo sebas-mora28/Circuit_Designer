@@ -2,7 +2,7 @@ package ListaEnlazada;
 
 
 /**
- * This class creates a LinkedList
+ * Se crea la lista enlazada
  * @author Sebastian
  */
 
@@ -23,9 +23,9 @@ public class LinkedList {
     }
 
     /**
-     * Verify whether the list is empty or not
+     * Este método verifica si la lista se encuentra vacía
      *
-     * @return True in case the list is empty, False in a opposite case
+     * @return True en caso de que se encuentre vacía, false en caso contrario
      */
 
     public boolean isEmpty() {
@@ -38,21 +38,17 @@ public class LinkedList {
     }
 
 
+    /**
+     * Método que agrega un nodo a la lista, se comporta igual que addLast
+     * @param object
+     */
 
     public void add(Object object){
-        if(head==null){
-            head = new Nodo(object,null);
-        }
-        else{
-            head.setNext(new Nodo(object,null));
-            Nodo newNodo = new Nodo(object,head);
-            head = newNodo;
-
-        }
+        addLast(object);
     }
 
     /**
-     * This method add a new object to the first position
+     * Método que agrega un nodo a la primera posición de la lista
      *
      * @param object Object added
      */
@@ -72,7 +68,7 @@ public class LinkedList {
 
 
     /**
-     * This method inserts the nodes to the last position
+     * Este método agega un nodo a la última posición de la lista
      * @param object
      */
 
@@ -90,9 +86,9 @@ public class LinkedList {
     }
 
     /**
-     * This method returns the length's list
+     * Este método retorna el tamaño de la lista
      *
-     * @return length
+     * @return lenth
      */
     public int size() {
         return length;
@@ -100,10 +96,10 @@ public class LinkedList {
 
 
     /**
-     * This method gets the object that is found in a especific position
+     * Este método obtiene el objeto que se encuentra en la posición especificada
      *
-     * @param index
-     * @return Object The object that is found in the index position
+     * @param index índice
+     * @return El objeto de la posición
      */
     public Object getElement(int index) {
         int cont = 0;
@@ -117,7 +113,7 @@ public class LinkedList {
 
 
     /**
-     * This method removes a element from a especific position
+     * Este método remueve el nodo de la posición especificada
      */
     public void remove(int index){
         int con = 0;
@@ -133,7 +129,7 @@ public class LinkedList {
     }
 
     /**
-     * This method shows the data that is contained in the list
+     * Este método muestra toda los elementos de la lista
      */
     public void showData(){
         Nodo nodo = head;
