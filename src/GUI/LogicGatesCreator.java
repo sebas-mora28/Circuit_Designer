@@ -33,6 +33,7 @@ public class LogicGatesCreator {
         Image image = new Image(name);
         Rectangle logicGate = Painter.insertImage(image);
         Painter.paintRec(20, 20, gridPane);
+        logicGate.setOnMouseClicked(PaintLine);
         logicGate.setOnMousePressed(MousePressed);
         logicGate.setOnMouseDragged(MousedDragged);
         logicGate.setOnMouseReleased(MousedRelease);
@@ -78,6 +79,7 @@ public class LogicGatesCreator {
     EventHandler<MouseEvent> PaintLine = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
+            System.out.println("Entra");
             LinkingNodes line = new LinkingNodes();
             line.PrintLine(gridPane, ((Rectangle)(mouseEvent.getSource())).getX(),((Rectangle)(mouseEvent.getSource())).getX(), mouseEvent.getSceneX(), mouseEvent.getSceneY());
 
