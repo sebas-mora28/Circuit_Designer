@@ -18,7 +18,7 @@ public class Main {
         lista.addLast("Este es el ultimo elemento");
 
 
-        System.out.println(lista.getElement(0));
+        System.out.println(lista.FindObject("se"));
         System.out.println(lista.getElement(1));
         System.out.println(lista.getElement(4));
 

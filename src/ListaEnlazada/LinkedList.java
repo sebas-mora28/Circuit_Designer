@@ -136,8 +136,19 @@ public class LinkedList<T>{
     public void showData(){
         Nodo nodo = head;
         while (nodo != null){
-            System.out.println(nodo.get());
             nodo = nodo.getNext();
         }
+    }
+
+
+    public boolean FindObject(Object object){
+        Nodo nodo = head;
+        while(nodo.getNext() != null){
+            if(object==nodo.get()){
+                return true;
+            }
+            nodo = nodo.getNext();
+        }
+        return false;
     }
 }

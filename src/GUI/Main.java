@@ -7,8 +7,12 @@ import javafx.geometry.Insets;
 
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -19,9 +23,11 @@ import javafx.scene.paint.Color;
 
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 import javax.print.DocFlavor;
+import java.awt.*;
 
 
 /**
@@ -43,6 +49,10 @@ public class Main extends Application {
         //-------------------------------------------------------------------------------------------------
         gridPane = new GridPane();
         gridPane.setPrefSize(978, 900);
+        gridPane.setBackground(new Background(new BackgroundFill(Color.web("#e7ebda"), CornerRadii.EMPTY, Insets.EMPTY)));
+        Canvas canvas = new Canvas();
+        canvas.setLayoutX(0);
+        canvas.setLayoutY(0);
         ScrollPane scrollPane = new ScrollPane(gridPane);
         scrollPane.setLayoutX(0);
         scrollPane.setLayoutY(0);
@@ -54,15 +64,15 @@ public class Main extends Application {
 
         pane = new Pane();
         pane.setPrefSize(200, 900);
-        pane.setBackground(new Background(new BackgroundFill(Color.web("7EABA8"),CornerRadii.EMPTY, Insets.EMPTY)));
+        pane.setBackground(new Background(new BackgroundFill(Color.web("#91a3b0"),CornerRadii.EMPTY, Insets.EMPTY)));//"7EABA8"
 
         pane.setMaxWidth(280);
 
 
-        Label label = new Label("Compuertas");
-        label.setFont(new Font("Arial", 14));
-        label.setLayoutX(50);
-        label.setLayoutY(20);
+        Label label = new Label("Compuertas ");
+        label.setFont(Font.font("Berlin Sans FB", FontWeight.BOLD, 24));
+        label.setLayoutX(20);
+        label.setLayoutY(25);
         pane.getChildren().add(label);
 
         createButtons();
@@ -76,8 +86,6 @@ public class Main extends Application {
         //Pantalla principal
         //-------------------------------------------------------------------------------------------------
         AnchorPane root = new AnchorPane(scrollPane, logicGatesScroller);
-
-
         primaryStage.setScene(new Scene(root, 1200, 900));
         primaryStage.setTitle("Circuit Designer");
         primaryStage.setResizable(false);
@@ -103,11 +111,9 @@ public class Main extends Application {
             button.setLayoutX(50);
             button.setLayoutY(posy);
             button.setEffect(new InnerShadow());
-            button.setBackground(new Background(new BackgroundFill(Color.web("ACC8C6"), CornerRadii.EMPTY, Insets.EMPTY)));
+            button.setBackground(new Background(new BackgroundFill(Color.web("#d7d7d7"), CornerRadii.EMPTY, Insets.EMPTY)));//"ACC8C6"
             button.setCursor(Cursor.OPEN_HAND);
             button.setOnAction(MouseEvent -> logicGatesCreator.createLogicGates(gridPane, name));
-
-
             pane.getChildren().add(button);
             posy += 130;
 
