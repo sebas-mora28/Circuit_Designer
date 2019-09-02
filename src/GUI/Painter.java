@@ -3,15 +3,20 @@ package GUI;
 import javafx.geometry.Bounds;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
+import javafx.scene.effect.Blend;
+import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 
 import java.awt.*;
+import java.awt.image.WritableRaster;
+import java.time.temporal.ChronoUnit;
 
 
 /**
@@ -20,12 +25,9 @@ import java.awt.*;
 
 public class Painter {
     private ImageView image;
-    public static Rectangle rectangle;
-    public static Rectangle rectangleImage;
+    private static  Circle salida, entrada1, entrada2;
+    private static  Rectangle rectangleImage;
     public static Line lines;
-
-
-    public static Group logicGateGroup;
 
     public Painter(){ }
 
@@ -35,42 +37,53 @@ public class Painter {
      * @return rectangleImage El rectángulo con la imágen
      */
 
-    public static Rectangle insertImage(Image image){
-        rectangleImage = new Rectangle(0,0,100,100);
-        rectangleImage.setStroke(Color.rgb(1,1,1,0.0));
+    public static Rectangle insertImage(Image image) {
+        rectangleImage = new Rectangle(0, 0, 100, 100);
+        rectangleImage.setStroke(Color.rgb(1, 1, 1, 0.0));
         rectangleImage.setFill(new ImagePattern(image));
         rectangleImage.setCursor(Cursor.OPEN_HAND);
         rectangleImage.setX(10);
         rectangleImage.setY(50);
         return rectangleImage;
-    }
 
-    /**
-     * Se encarga de insertar un punto en la compuerta para que funcione como salida o entrada de la misma
-     * @param x Posición en x
-     * @param y Posición en y
-     * @param gridPane Gridpane donde se coloca el rectángulo
-     */
-
-
-    public static void paintRec(double x, double y, GridPane gridPane){
-        rectangle = new Rectangle(10,10);
-        rectangle.setStroke(Color.rgb(0,0,0));
-        rectangle.setCursor(Cursor.CROSSHAIR);
-        gridPane.getChildren().add(rectangle);
     }
 
 
+    public static void crearEntradasSalidas(Group logicGateGroup){
+        salida(logicGateGroup);
+        entradas(logicGateGroup);
 
-    /**
-     * Método que actualiza la posición del rectangulo de entrada o salida en patalla
-     * @param x Posición en x
-     * @param y Posición en y
-     * */
+    }
 
-    public static void translateRec(double x, double y){
-        rectangle.setTranslateX(x);
-        rectangle.setTranslateY(y);
+
+    private static void salida(Group logicGateGroup){
+        salida = new Circle(10);
+        salida.setOnMouseEntered(mouseEvent -> salida.setCursor(Cursor.CROSSHAIR));
+        salida.setLayoutX(105);
+        salida.setLayoutY(92);
+        salida.setId("Salida");
+        //circle.setOpacity(0.0);
+
+        logicGateGroup.getChildren().add(salida);
+    }
+
+    private static void entradas(Group logicGateGroup){
+        entrada1 = new Circle(10);
+        entrada1.setOnMouseClicked(mouseEvent -> entrada1.setCursor(Cursor.CROSSHAIR));
+        entrada1.setLayoutX(25);
+        entrada1.setLayoutY(110);
+        entrada1.setId("Entrada1");
+        //entrada1.setOpacity(0.0);
+
+
+        entrada2 = new Circle(10);
+        entrada2.setOnMouseClicked(mouseEvent -> entrada2.setCursor(Cursor.CROSSHAIR));
+        entrada2.setLayoutX(25);
+        entrada2.setLayoutY(80);
+        entrada2.setId("Entrada2");
+        //entrada2.setOpacity(0.0);
+
+        logicGateGroup.getChildren().addAll(entrada1, entrada2);
     }
 
 

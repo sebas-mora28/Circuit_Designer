@@ -2,6 +2,7 @@ package GUI;
 
 
 import javafx.application.Application;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 
@@ -36,6 +37,7 @@ import java.awt.*;
 public class Main extends Application {
     private GridPane gridPane;
     private Pane pane;
+    private LogicGatesCreator logicGatesCreator = new LogicGatesCreator();
 
 
     public static void main(String[] args) {
@@ -96,9 +98,6 @@ public class Main extends Application {
 
     //------------------------------------------------------------------------------------------
 
-
-    LogicGatesCreator logicGatesCreator = new LogicGatesCreator();
-
     private void createButtons() {
         int posy = 90;
         for (int i = 1; i <=6; i++) {
@@ -114,8 +113,12 @@ public class Main extends Application {
             button.setBackground(new Background(new BackgroundFill(Color.web("#d7d7d7"), CornerRadii.EMPTY, Insets.EMPTY)));//"ACC8C6"
             button.setCursor(Cursor.OPEN_HAND);
             button.setOnAction(MouseEvent -> logicGatesCreator.createLogicGates(gridPane, name));
-            pane.getChildren().add(button);
+            button.setOnMouseEntered(mouseEvent -> button.setBackground(new Background(new BackgroundFill(Color.web("B9E0EB"), CornerRadii.EMPTY, Insets.EMPTY))));
+            button.setOnMouseExited(mouseEvent ->  button.setBackground(new Background(new BackgroundFill(Color.web("#d7d7d7"), CornerRadii.EMPTY, Insets.EMPTY))));
+
             posy += 130;
+            pane.getChildren().add(button);
+
 
         }
 
