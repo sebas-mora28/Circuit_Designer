@@ -1,6 +1,5 @@
 package GUI;
 
-import ListaEnlazada.Nodo;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.EventHandler;
@@ -11,82 +10,84 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
-
-
 
 
 public class LinkingNodes extends Line {
     private boolean alreadyCreated = true;
     private Circle circle;
     private Group logicGateGroup;
-    private GridPane gridPane;
     private Line line = new Line();
     private DoubleProperty mouseX = new SimpleDoubleProperty();
     private DoubleProperty mouseY = new SimpleDoubleProperty();
 
-    public void PaintLine(GridPane gridPane, Group group) {
-        if (alreadyCreated) {
-            alreadyCreated = true;
 
-            //Setter del gridpane y del rectagulo para seguir usando a lo largo de toda la clase
-            setCircle(circle);
-            setGridPane(gridPane);
-            setLogicGateGroup(group);
+    public LinkingNodes() { }
 
-            //Asignación de las funciones del mouse
 
-            //Coordenadas de la linea
-            line.setStartX(circle.getCenterX());
-            line.setStartY(circle.getCenterY());
-            line.endXProperty().bind(mouseX);
-            line.endXProperty().bind(mouseY);
-            line.setStroke(Color.rgb(25, 25, 25));
-            line.setStrokeWidth(2);
+    public void PaintLine(Group group, GridPane gridPane) {
+            //Coordenadas de la linea;
+        setLogicGateGroup(group);
+        line.setStartX(getOutput(group).getLayoutX());
+        line.setStartY(getOutput(group).getLayoutY());
+        line.endXProperty().bind(mouseX);
+        line.endXProperty().bind(mouseY);
+        line.setStroke(Color.rgb(25, 25, 25));
+        line.setStrokeWidth(10);
+        line.setOnMouseClicked(MouseMoved);
+        line.setOnMouseMoved(MouseDragged);
 
             // Se agrega al gridpane
-            gridPane.getChildren().add(line);
-        } else {
-            return;
-        }
+        gridPane.getChildren().add(line);
     }
+
+    EventHandler<MouseEvent> MouseMoved = mouseEvent -> {
+        mouseX.set(mouseEvent.getScreenX());
+        mouseY.set(mouseEvent.getScreenY());
+    };
+
+    EventHandler<MouseEvent> MouseDragged = mouseEvent -> {
+        mouseX.set(mouseEvent.getScreenX());
+        mouseY.set(mouseEvent.getSceneY());
+
+    };
+
+    EventHandler<MouseEvent> MouseReleased = mouseEvent -> {
+        BackToOriginNode();
+    };
+
+
 
 
     /**
      * Método que regresa a la posición original la compuerta en caso de que la nueva posición esté ocupada
      */
-
     private void BackToOriginNode() {
         line.endXProperty().unbind();
         System.out.println("Pasa");
         line.endYProperty().unbind();
-        gridPane.getChildren().addAll(line);
+        logicGateGroup.getChildren().addAll(line);
         line = null;
     }
 
 
-    public Circle getCircle() {
-        return circle;
-    }
+    /**
+     * Método que obtiene el círculo de salida de la compuerta lógica
+     * @param group Grupo de donde se desea obtener la salida
+     * @return salida Se retorna la salida de la compuerta lógica
+     */
 
-    public void setCircle(Circle circle) {
-        this.circle = circle;
-    }
-
-    public Group getLogicGateGroup() {
-        return logicGateGroup;
-    }
-
-    public GridPane getGridPane() {
-        return gridPane;
-    }
-
-    public void setGridPane(GridPane gridPane) {
-        this.gridPane = gridPane;
+    private Circle getOutput(Group group) {
+        Circle temp = null;
+        for (Node nodes : group.getChildren()) {
+            if(nodes.getId().equals("Salida")){
+                System.out.println(nodes.getId());
+                temp = (Circle)(nodes);
+            }
+        }
+        return temp;
     }
 
     public void setLogicGateGroup(Group logicGateGroup) {
         this.logicGateGroup = logicGateGroup;
     }
 }
-

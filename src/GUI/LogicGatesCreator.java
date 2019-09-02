@@ -23,12 +23,15 @@ public class LogicGatesCreator {
     private LinkingNodes linkingNodes = new LinkingNodes();
 
 
-
+    /**
+     * Constructor
+     */
     public LogicGatesCreator() {}
+
+
 
     /**
      * Método que crea la compuerta lógica cada vez que se presiona el botón
-     *
      * @param gridPane
      * @param name
      */
@@ -39,18 +42,13 @@ public class LogicGatesCreator {
         Image image = new Image(name);
         Rectangle logicGate = Painter.insertImage(image);
         logicGateGroup.getChildren().add(logicGate);
-        logicGateGroup.setOnMouseClicked(PaintLine);
         logicGateGroup.setOnMousePressed(MousePressed);
         logicGateGroup.setOnMouseDragged(MousedDragged);
         logicGateGroup.setOnMouseReleased(MousedRelease);
         gridPane.getChildren().add(logicGateGroup);
-        Painter.crearEntradasSalidas(logicGateGroup);
 
 
-        for(Node node: getLogicGateGroup().getChildren()){
-            System.out.println(node.getId());
-        }
-
+        Painter.crearEntradasSalidas(logicGateGroup, gridPane);
 
     }
 
@@ -79,7 +77,6 @@ public class LogicGatesCreator {
 
 
 
-
     EventHandler<MouseEvent> MousedRelease = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
@@ -87,17 +84,6 @@ public class LogicGatesCreator {
                 ((Group)(mouseEvent.getSource())).setTranslateX(posX);
                 ((Group)(mouseEvent.getSource())).setTranslateY(posY);
             }
-        }
-    };
-
-    EventHandler<MouseEvent> PaintLine = new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent mouseEvent) {
-            if(mouseEvent.getClickCount() >= 2){
-                System.out.println(mouseEvent.getSource());
-                linkingNodes.PaintLine(gridPane, logicGateGroup);
-            }
-
         }
     };
 
