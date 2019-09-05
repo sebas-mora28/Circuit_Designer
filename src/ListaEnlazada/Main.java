@@ -18,10 +18,8 @@ public class Main {
         lista.addLast("Este es el ultimo elemento");
 
 
-        System.out.println(lista.FindObject("se"));
-        System.out.println(lista.getElement(1));
-        System.out.println(lista.getElement(4));
-
+        lista.remove(2);
+        lista.showData();
 
     }
 }

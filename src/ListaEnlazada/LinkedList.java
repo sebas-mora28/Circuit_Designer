@@ -11,8 +11,7 @@ package ListaEnlazada;
  */
 
 public class LinkedList<T>{
-    private Nodo head;
-    private Nodo end;
+    private Nodo<T> head;
     private int length;
 
     /**
@@ -21,7 +20,6 @@ public class LinkedList<T>{
 
     public LinkedList() {
         this.head = null;
-        this.end = null;
         this.length = 0;
     }
 
@@ -50,6 +48,7 @@ public class LinkedList<T>{
         addLast(object);
     }
 
+
     /**
      * Método que agrega un nodo a la primera posición de la lista
      *
@@ -60,10 +59,8 @@ public class LinkedList<T>{
 
         if (head == null) {
             head = new Nodo(object,null);
-            end = head;
         } else {
             Nodo newNodo = new Nodo(object,head);
-            end = head;
             head = newNodo;
         }
         length++;
@@ -104,14 +101,14 @@ public class LinkedList<T>{
      * @param index índice
      * @return El objeto de la posición
      */
-    public Object getElement(int index) {
+    public T getElement(int index) {
         int cont = 0;
         Nodo nodo = head;
         while (cont < index) {
             nodo = nodo.getNext();
             cont++;
         }
-        return nodo.get();
+        return (T) nodo.get();
     }
 
 
@@ -121,8 +118,8 @@ public class LinkedList<T>{
     public void remove(int index){
         int i=0;
         Nodo current = head;
-        while(current.getNext() != null && i<index){
-            if (i==index){
+        while(current != null){
+            if(i==index){
                 break;
             }
             current = current.getNext();
@@ -136,6 +133,7 @@ public class LinkedList<T>{
     public void showData(){
         Nodo nodo = head;
         while (nodo != null){
+            System.out.println(nodo.get());
             nodo = nodo.getNext();
         }
     }

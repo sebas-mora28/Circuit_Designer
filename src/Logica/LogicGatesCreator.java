@@ -1,10 +1,13 @@
-package GUI;
+package Logica;
 
 
+import Compuertas.*;
+import GUI.Painter;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.effect.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseDragEvent;
@@ -17,10 +20,8 @@ import javafx.scene.shape.Shape;
 
 public class LogicGatesCreator {
     private Group logicGateGroup;
-    private GridPane gridPane;
-    private Rectangle rectangle;
-    private double posX, posY, newPosX, newPosY, translationX, translationY, newTranslationX, newTranslationY;
-    private LinkingNodes linkingNodes = new LinkingNodes();
+    private static GridPane gridPane;
+    private static double posX, posY, newPosX, newPosY, translationX, translationY, newTranslationX, newTranslationY;
 
 
     /**
@@ -33,22 +34,41 @@ public class LogicGatesCreator {
     /**
      * Método que crea la compuerta lógica cada vez que se presiona el botón
      * @param gridPane
-     * @param name
+     * @param logicGateType
      */
-    public void createLogicGates(GridPane gridPane, String name) {
+    public Compuerta createLogicGates(GridPane gridPane, LogicGateType logicGateType){
+        if(logicGateType == LogicGateType.AND){
+            return new CompuertaAND(gridPane);
+        }else if(logicGateType == LogicGateType.NAND){
+            return new CompuertaNAND(gridPane);
+        }else if(logicGateType == logicGateType.OR){
+            return new CompuertaOR(gridPane);
+        }else if(logicGateType == LogicGateType.NORD){
+            return new CompuertaNORD(gridPane);
+        }else if(logicGateType == LogicGateType.NOT){
+            return new CompuertaNOT(gridPane);
+        }else if(logicGateType == LogicGateType.XOR){
+            return new CompuertaXOR(gridPane);
+        }else{
+            return new CompuertaXNOR(gridPane);
+        }
+
+
+        /*
         setGridPane(gridPane);
         Group logicGateGroup = new Group();
         setLogicGateGroup(logicGateGroup);
         Image image = new Image(name);
         Rectangle logicGate = Painter.insertImage(image);
-        logicGateGroup.getChildren().add(logicGate);
         logicGateGroup.setOnMousePressed(MousePressed);
         logicGateGroup.setOnMouseDragged(MousedDragged);
         logicGateGroup.setOnMouseReleased(MousedRelease);
+        logicGateGroup.getChildren().add(logicGate);
         gridPane.getChildren().add(logicGateGroup);
+        Painter.crearEntradasSalidas(logicGateGroup);
+         */
 
 
-        Painter.crearEntradasSalidas(logicGateGroup, gridPane);
 
     }
 
@@ -77,7 +97,7 @@ public class LogicGatesCreator {
 
 
 
-    EventHandler<MouseEvent> MousedRelease = new EventHandler<MouseEvent>() {
+     EventHandler<MouseEvent> MousedRelease = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
             if(VerifyCoordsInUse(gridPane, (Group)(mouseEvent.getSource()))){
@@ -103,6 +123,11 @@ public class LogicGatesCreator {
         return false;
     }
 
+    /**
+     * Crea los labels correspondientes a las salidas de las compuertas
+     * @param gridPane
+     */
+
 
     public void setGridPane(GridPane gridPane) {
         this.gridPane = gridPane;
@@ -115,5 +140,17 @@ public class LogicGatesCreator {
     public void setLogicGateGroup(Group logicGateGroup) {
         this.logicGateGroup = logicGateGroup;
     }
-}
 
+
+    public enum LogicGateType{
+        AND,
+        NAND,
+        NORD,
+        NOT,
+        OR,
+        XOR,
+        XNOR;
+
+    }
+
+}
