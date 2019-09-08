@@ -1,16 +1,14 @@
 package ListaEnlazada;
 
 
-
-
-
+import java.util.Iterator;
 
 /**
  * Se crea la lista enlazada
  * @author Sebastian
  */
 
-public class LinkedList<T>{
+public class LinkedList<T> implements Iterator<T> {
     private Nodo<T> head;
     private int length;
 
@@ -58,9 +56,11 @@ public class LinkedList<T>{
     public void addFirst(Object object) {
 
         if (head == null) {
-            head = new Nodo(object,null);
+            head = new Nodo(object);
         } else {
-            Nodo newNodo = new Nodo(object,head);
+            Nodo temp = head;
+            Nodo newNodo = new Nodo(object);
+            newNodo.next = temp;
             head = newNodo;
         }
         length++;
@@ -74,13 +74,13 @@ public class LinkedList<T>{
 
     public void addLast(Object object){
         if(head==null){
-            head = new Nodo(object,null);
+            head = new Nodo(object);
         }else{
             Nodo nodo = head;
-            while(nodo.getNext() != null){
-                nodo = nodo.getNext();
+            while(nodo.next != null){
+                nodo = nodo.next;
             }
-            nodo.setNext(new Nodo(object,null));
+            nodo.next  = new Nodo(object);
         }
         length++;
     }
@@ -105,10 +105,10 @@ public class LinkedList<T>{
         int cont = 0;
         Nodo nodo = head;
         while (cont < index) {
-            nodo = nodo.getNext();
+            nodo = nodo.next;
             cont++;
         }
-        return (T) nodo.get();
+        return (T) nodo.value;
     }
 
 
@@ -118,35 +118,38 @@ public class LinkedList<T>{
     public void remove(int index){
         int i=0;
         Nodo current = head;
-        while(current != null){
-            if(i==index){
-                break;
-            }
-            current = current.getNext();
+        while(i < index-1) {
+            current = current.next;
             i++;
         }
-        current = current.getNext().getNext();
-    }
+        current.next = current.next.next;
+     }
     /**
      * Este método muestra toda los elementos de la lista
      */
     public void showData(){
         Nodo nodo = head;
         while (nodo != null){
-            System.out.println(nodo.get());
-            nodo = nodo.getNext();
+            System.out.println(nodo.value);
+            nodo = nodo.next;
         }
     }
 
-
-    public boolean FindObject(Object object){
+    public T getLast(){
         Nodo nodo = head;
-        while(nodo.getNext() != null){
-            if(object==nodo.get()){
-                return true;
-            }
-            nodo = nodo.getNext();
+        while(nodo.next != null){
+            nodo = nodo.next;
         }
+        return (T) nodo.value;
+    }
+
+    @Override
+    public boolean hasNext() {
         return false;
+    }
+
+    @Override
+    public T next() {
+        return null;
     }
 }

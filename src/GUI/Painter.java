@@ -1,9 +1,12 @@
 package GUI;
 
+import Compuertas.CompuertaAND;
+import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
@@ -20,11 +23,14 @@ public class Painter {
     private ImageView image;
     private static Circle salida, entrada1, entrada2;
     private static Rectangle rectangleImage;
+    private static boolean conectando;
 
-    public Painter(){ }
+    public Painter() {
+    }
 
     /**
      * Este método se encarga de insertar la imagen en un rectángulo
+     *
      * @param image La imágen que se inserta en el rectángulo
      * @return rectangleImage El rectángulo con la imágen
      */
@@ -44,11 +50,12 @@ public class Painter {
 
     /**
      * Facade para llamar a los métodos salida y entrada
+     *
      * @param logicGateGroup grupo que corresponde a la compuerta lógica
      */
 
 
-    public static void crearEntradasSalidas(Group logicGateGroup){
+    public static void crearEntradasSalidas(Group logicGateGroup) {
         salida(logicGateGroup);
         entradas(logicGateGroup);
 
@@ -57,13 +64,15 @@ public class Painter {
 
     /**
      * Método que crea los círculos que se incluiran en el grupo de la compuerta que corresponderan a las salida de la compuerta
+     *
      * @param logicGateGroup grupo que corresponde a la compuerta lógica
      */
 
-    private static void salida(Group logicGateGroup){
+    private static void salida(Group logicGateGroup) {
         salida = new Circle(10);
         salida.setOnMouseEntered(mouseEvent -> salida.setCursor(Cursor.CROSSHAIR));
-        salida.setLayoutX(105);
+        salida.setOnMouseClicked(MouseClick);
+        salida.setLayoutX(100);
         salida.setLayoutY(92);
         salida.setId("Salida");
         salida.setOpacity(0.0);
@@ -72,12 +81,14 @@ public class Painter {
 
     /**
      * Método que crea los círculos que se incluiran en el grupo de la compuerta que corresponderan a las salida de la compuerta
+     *
      * @param logicGateGroup grupo que corresponde a la compuerta lógica
      */
 
-    private static void entradas(Group logicGateGroup){
+    private static void entradas(Group logicGateGroup) {
         entrada1 = new Circle(10);
         entrada1.setOnMouseEntered(mouseEvent -> entrada1.setCursor(Cursor.CROSSHAIR));
+        entrada1.setOnMouseClicked(MouseClick);
         entrada1.setLayoutX(25);
         entrada1.setLayoutY(110);
         entrada1.setId("Entrada1");
@@ -86,6 +97,7 @@ public class Painter {
 
         entrada2 = new Circle(10);
         entrada2.setOnMouseEntered(mouseEvent -> entrada2.setCursor(Cursor.CROSSHAIR));
+        entrada2.setOnMouseClicked(MouseClick);
         entrada2.setLayoutX(25);
         entrada2.setLayoutY(80);
         entrada2.setId("Entrada2");
@@ -95,12 +107,30 @@ public class Painter {
     }
 
 
-    public void PaintLines(GridPane gridPane){
+    public void PaintLines(GridPane gridPane) {
         int i = 0;
-        while( i < gridPane.getWidth()){
+        while (i < gridPane.getWidth()) {
             Line line = new Line();
 
             line.setStartX(gridPane.getWidth());
         }
     }
+
+    static EventHandler<MouseEvent> MouseClick = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+            Circle circle = (Circle) mouseEvent.getSource();
+            if (circle.getId().equals("Salida")){
+                conectando = true;
+                conectar();
+            }
+        }
+
+        private void conectar() {
+            if(conectando==true){
+
+
+            }
+        }
+    };
 }

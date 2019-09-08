@@ -7,47 +7,17 @@ package ListaEnlazada;
 
 public class Nodo<T> {
 
-    private Nodo next;
-    private T object;
+    public Nodo next;
+    public T value;
 
 
     /**
      * Constructor
-     * @param obj
-     * @param nodo
      */
 
-    public Nodo(T obj, Nodo nodo){
-        this.object = obj;
-        this.next = nodo;
+    public Nodo(T object) {
+        this.value = object;
+        this.next = null;
     }
 
-
-    /**
-     * Este método establece el siguiente nodo de la lista
-     * @param nodo
-     */
-
-    public void setNext(Nodo nodo){
-        this.next = nodo;
-    }
-
-
-    /**
-     * Este método obtiene el siguiente nodo de la lista
-     *
-     */
-
-    public Nodo getNext(){
-        return next;
-    }
-
-
-    /**
-     * Este método devuelve el objeto encontrado en el nodo
-     * @return Object
-     */
-    public T get(){
-        return object;
-    }
 }

@@ -3,22 +3,18 @@ package Logica;
 
 import Compuertas.*;
 import GUI.Painter;
+import ListaEnlazada.LinkedList;
+import ListaEnlazada.Nodo;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.effect.*;
-import javafx.scene.image.Image;
-import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 
 
 public class LogicGatesCreator {
+    public static LinkedList<Compuerta> LogicGatesList = new LinkedList<>();
     private Group logicGateGroup;
     private static GridPane gridPane;
     private static double posX, posY, newPosX, newPosY, translationX, translationY, newTranslationX, newTranslationY;
@@ -36,22 +32,38 @@ public class LogicGatesCreator {
      * @param gridPane
      * @param logicGateType
      */
-    public Compuerta createLogicGates(GridPane gridPane, LogicGateType logicGateType){
-        if(logicGateType == LogicGateType.AND){
-            return new CompuertaAND(gridPane);
-        }else if(logicGateType == LogicGateType.NAND){
-            return new CompuertaNAND(gridPane);
-        }else if(logicGateType == logicGateType.OR){
-            return new CompuertaOR(gridPane);
-        }else if(logicGateType == LogicGateType.NORD){
-            return new CompuertaNORD(gridPane);
-        }else if(logicGateType == LogicGateType.NOT){
-            return new CompuertaNOT(gridPane);
-        }else if(logicGateType == LogicGateType.XOR){
-            return new CompuertaXOR(gridPane);
-        }else{
-            return new CompuertaXNOR(gridPane);
+    public void createLogicGates(GridPane gridPane, LogicGateType logicGateType) {
+        if (logicGateType == LogicGateType.AND) {
+            Compuerta logicGateAND = new CompuertaAND(gridPane);
+            LogicGatesList.add(logicGateAND);
+            logicGateAND.logicGateGroup.setUserData(LogicGatesList.getLast());
+        } else if (logicGateType == LogicGateType.NAND) {
+            Compuerta logicGateNAND = new CompuertaAND(gridPane);
+            LogicGatesList.add(logicGateNAND);
+            logicGateNAND.logicGateGroup.setUserData(LogicGatesList.getLast());
+        } else if (logicGateType == logicGateType.OR) {
+            Compuerta logicGateOR = new CompuertaOR(gridPane);
+            LogicGatesList.add(logicGateOR);
+            logicGateOR.logicGateGroup.setUserData(LogicGatesList.getLast());
+        } else if (logicGateType == LogicGateType.NORD) {
+            Compuerta logicGateNORD = new CompuertaNORD(gridPane);
+            LogicGatesList.add(logicGateNORD);
+            logicGateNORD.logicGateGroup.setUserData(LogicGatesList.getLast());
+        } else if (logicGateType == LogicGateType.NOT) {
+            Compuerta logicGateNOT = new CompuertaNOT(gridPane);
+            LogicGatesList.add(logicGateNOT);
+            logicGateNOT.logicGateGroup.setUserData(LogicGatesList.getLast());
+        } else if (logicGateType == LogicGateType.XOR) {
+            Compuerta logicGateXOR = new CompuertaXOR(gridPane);
+            LogicGatesList.add(new CompuertaXOR(gridPane));
+            logicGateXOR.logicGateGroup.setUserData(LogicGatesList.getLast());
+        } else {
+            Compuerta logicGateXNOR = new CompuertaXNOR(gridPane);
+            LogicGatesList.add(new CompuertaXNOR(gridPane));
+            logicGateXNOR.logicGateGroup.setUserData(LogicGatesList.getLast());
+
         }
+
 
 
         /*
@@ -122,11 +134,6 @@ public class LogicGatesCreator {
         }
         return false;
     }
-
-    /**
-     * Crea los labels correspondientes a las salidas de las compuertas
-     * @param gridPane
-     */
 
 
     public void setGridPane(GridPane gridPane) {

@@ -9,17 +9,13 @@ public class Main {
 
     public static void main(String[] args){
 
-        LinkedList<Integer> lista = new LinkedList<Integer>();
+        LinkedList<String> lista = new LinkedList<>();
 
         lista.add("se");
-        lista.add("bas");
-        lista.add("tian");
-        lista.addFirst("Este es el primer elemento");
-        lista.addLast("Este es el ultimo elemento");
 
 
-        lista.remove(2);
-        lista.showData();
+        System.out.println(lista.getLast());
+
 
     }
 }
