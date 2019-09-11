@@ -16,6 +16,15 @@ public class Main {
 
         System.out.println(lista.getLast());
 
+        Boolean res = null;
+        Boolean prueba = null;
+
+        res = prueba;
+        prueba = true;
+        System.out.println(res);
+
+
+
 
     }
 }

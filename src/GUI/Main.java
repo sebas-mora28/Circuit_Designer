@@ -2,20 +2,13 @@ package GUI;
 
 
 import Compuertas.Compuerta;
-import ListaEnlazada.Nodo;
-import Logica.LogicGatesConection;
 import Logica.LogicGatesCreator;
 import javafx.application.Application;
-import javafx.collections.ObservableList;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 
 import javafx.scene.Cursor;
-import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
 import javafx.scene.control.Button;
@@ -29,14 +22,11 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
 
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-import java.lang.management.MonitorInfo;
-import java.nio.file.LinkOption;
-import java.util.LinkedList;
+import java.rmi.MarshalledObject;
 import java.util.Scanner;
 
 
@@ -48,7 +38,20 @@ public class Main extends Application {
     private Pane pane;
     private GraphicsContext context;
     private LogicGatesCreator logicGatesCreator = new LogicGatesCreator();
-    public static boolean Conecting;
+    public static boolean StartConecting = false;
+
+
+    public static boolean conectingOutput = false;
+    public static boolean selectingOutput = true;
+    public static boolean selectingInput = false;
+    public static boolean input1;
+    public static boolean input2;
+
+
+    public static boolean ConectingInput1 = false;
+    public static boolean ConectingInput2 = false;
+    public static Compuerta currentLogicGate;
+    public static Compuerta logicGateTo;
 
 
     public static void main(String[] args) {
@@ -63,7 +66,7 @@ public class Main extends Application {
         gridPane = new GridPane();
         gridPane.setPrefSize(978, 900);
         gridPane.setBackground(new Background(new BackgroundFill(Color.web("#e7ebda"), CornerRadii.EMPTY, Insets.EMPTY)));
-        gridPane.setOnMouseClicked(MouseClick);
+        gridPane.setOnMouseClicked(Connecting);
         ScrollPane scrollPane = new ScrollPane(gridPane);
         scrollPane.setLayoutX(0);
         scrollPane.setLayoutY(0);
@@ -84,7 +87,6 @@ public class Main extends Application {
         label.setLayoutY(35);
         pane.getChildren().add(label);
 
-        //createButtons();
 
         ScrollPane logicGatesScroller = new ScrollPane();
         logicGatesScroller.setLayoutX(978);
@@ -94,7 +96,11 @@ public class Main extends Application {
 
 
         //Conectar
-        LogicGatesConection logicGatesConection = new LogicGatesConection(pane);
+        Button button = new Button();
+        button.setText("Conectar");
+        button.setLayoutX(70);
+        button.setLayoutY(10);
+        pane.getChildren().add(button);
 
 
         //Botónes
@@ -102,7 +108,7 @@ public class Main extends Application {
         Button run = new Button("Run");
         run.setLayoutX(1025);
         run.setLayoutY(850);
-        run.setOnMouseClicked(prueba);
+        run.setOnMouseClicked(mostrar);
         run.setPrefSize(50, 25);
 
 
@@ -114,7 +120,6 @@ public class Main extends Application {
         primaryStage.setResizable(false);
         primaryStage.setOnCloseRequest(windowEvent -> System.exit(0));
         primaryStage.show();
-
 
 
         // Botones
@@ -149,7 +154,6 @@ public class Main extends Application {
         NAND.setOnMouseExited(mouseEvent -> NAND.setBackground(new Background(new BackgroundFill(Color.web("#d7d7d7"), CornerRadii.EMPTY, Insets.EMPTY))));
 
 
-
         Button OR = new Button();
         ImageView imagenOR = new ImageView(new Image("Compuerta3.png"));
         imagenOR.setFitHeight(90);
@@ -163,7 +167,6 @@ public class Main extends Application {
         OR.setOnAction(MouseEvent -> logicGatesCreator.createLogicGates(gridPane, LogicGatesCreator.LogicGateType.OR));
         OR.setOnMouseEntered(mouseEvent -> OR.setBackground(new Background(new BackgroundFill(Color.web("B9E0EB"), CornerRadii.EMPTY, Insets.EMPTY))));
         OR.setOnMouseExited(mouseEvent -> OR.setBackground(new Background(new BackgroundFill(Color.web("#d7d7d7"), CornerRadii.EMPTY, Insets.EMPTY))));
-
 
 
         Button NORD = new Button();
@@ -232,23 +235,88 @@ public class Main extends Application {
 
     //-----------------------------------------------------------------------------------------
 
-    EventHandler<MouseEvent> MouseClick = new EventHandler<MouseEvent>() {
+
+    EventHandler<MouseEvent> Connecting = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
-            for(int i=0; i<=LogicGatesCreator.LogicGatesList.size()-1; i++){
+            if (conectingOutput) {
+                if (selectingOutput) {
+                    setSelectingOutput(mouseEvent);
+                }
+                if (selectingInput) {
+                    setSelectingInput(mouseEvent);
+                }
             }
         }
     };
 
-    EventHandler<MouseEvent> prueba = mouseEvent -> {
-        System.out.println(LogicGatesCreator.LogicGatesList.size());
-        for(int i=0; i<=LogicGatesCreator.LogicGatesList.size()-1; i++){ ;
-            Compuerta compuerta = LogicGatesCreator.LogicGatesList.getElement(i);
-            System.out.println(compuerta.posX + "---" + compuerta.posY);
+    public void setSelectingOutput(MouseEvent mouseEvent) {
+        for (int i = 0; i <= LogicGatesCreator.LogicGatesList.size() - 1; i++) {
+            currentLogicGate = LogicGatesCreator.LogicGatesList.getElement(i);
+            if (mouseEvent.getX() + 1 == currentLogicGate.posX && mouseEvent.getY() + 1 == currentLogicGate.posY) {
+                System.out.println(currentLogicGate.output.value);
+                selectingOutput = false;
+                break;
+            }
+
+        }
+    }
+
+    public void setSelectingInput(MouseEvent mouseEvent) {
+        for (int i = 0; i <= LogicGatesCreator.LogicGatesList.size() - 1; i++) {
+            logicGateTo = LogicGatesCreator.LogicGatesList.getElement(i);
+            if (!(mouseEvent.getX() + 1 == currentLogicGate.posX && mouseEvent.getY() + 1 == currentLogicGate.posY)) {
+                if (mouseEvent.getX() + 1 == logicGateTo.posX && mouseEvent.getY() + 1 == logicGateTo.posY) {
+                    if (input1) {
+                        logicGateTo.input1.next = currentLogicGate.output;
+                        logicGateTo.input1.value = currentLogicGate.output.value;
+                        System.out.println("Entrada 1: " + logicGateTo.input1.value);
+                        break;
+                    }
+                    if (input2) {
+                        logicGateTo.input2.next = currentLogicGate.output;
+                        logicGateTo.input2.value = currentLogicGate.output.value;
+                        System.out.println("Entrada 2: " + logicGateTo.input2.value);
+                        break;
+                    }
+                }
+            } else {
+                System.out.println("La compuerta es la misma");
+                break;
+            }
+        }
+        System.out.println("Sale");
+        selectingInput = false;
+        selectingOutput = false;
+        conectingOutput = false;
+    }
+
+    EventHandler<MouseEvent> mostrar = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+            Scanner scanner = new Scanner(System.in);
+            for(int  i=0; i<= LogicGatesCreator.LogicGatesList.size()-1;i++){
+                Compuerta compuerta = LogicGatesCreator.LogicGatesList.getElement(i);
+                if(compuerta.input1.next == null){
+                    System.out.println("Ingrese un valor para la entrada uno");
+                    Boolean res = scanner.nextBoolean();
+                    compuerta.input1.value = res;
+                }
+                if(compuerta.input2.next == null){
+                    System.out.println("Ingrese un valor para la entrada dos");
+                    Boolean res = scanner.nextBoolean();
+                    compuerta.input2.value = res;
+                }
+                compuerta.operar();
+            }
+            for(int i=0; i<=LogicGatesCreator.LogicGatesList.size()-1; i++){
+                Compuerta compuerta = LogicGatesCreator.LogicGatesList.getElement(i);
+                System.out.println("Compuerta " + i + ": " + compuerta.output.value);
+
+            }
         }
 
-    };
-
+        };
 }
 
 

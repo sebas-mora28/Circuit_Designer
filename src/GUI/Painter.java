@@ -1,17 +1,14 @@
 package GUI;
 
-import Compuertas.CompuertaAND;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 
 
@@ -71,11 +68,11 @@ public class Painter {
     private static void salida(Group logicGateGroup) {
         salida = new Circle(10);
         salida.setOnMouseEntered(mouseEvent -> salida.setCursor(Cursor.CROSSHAIR));
-        salida.setOnMouseClicked(MouseClick);
+        salida.setOnMouseClicked(MouseClickOutput);
         salida.setLayoutX(100);
         salida.setLayoutY(92);
         salida.setId("Salida");
-        salida.setOpacity(0.0);
+        //salida.setOpacity(0.0);
         logicGateGroup.getChildren().add(salida);
     }
 
@@ -88,49 +85,54 @@ public class Painter {
     private static void entradas(Group logicGateGroup) {
         entrada1 = new Circle(10);
         entrada1.setOnMouseEntered(mouseEvent -> entrada1.setCursor(Cursor.CROSSHAIR));
-        entrada1.setOnMouseClicked(MouseClick);
+        entrada1.setOnMouseClicked(MouseClickInput);
         entrada1.setLayoutX(25);
         entrada1.setLayoutY(110);
         entrada1.setId("Entrada1");
-        entrada1.setOpacity(0.0);
+        //entrada1.setOpacity(0.0);
 
 
         entrada2 = new Circle(10);
         entrada2.setOnMouseEntered(mouseEvent -> entrada2.setCursor(Cursor.CROSSHAIR));
-        entrada2.setOnMouseClicked(MouseClick);
+        entrada2.setOnMouseClicked(MouseClickInput);
         entrada2.setLayoutX(25);
         entrada2.setLayoutY(80);
         entrada2.setId("Entrada2");
-        entrada2.setOpacity(0.0);
+        //entrada2.setOpacity(0.0);
 
         logicGateGroup.getChildren().addAll(entrada1, entrada2);
     }
 
 
-    public void PaintLines(GridPane gridPane) {
-        int i = 0;
-        while (i < gridPane.getWidth()) {
-            Line line = new Line();
-
-            line.setStartX(gridPane.getWidth());
-        }
-    }
-
-    static EventHandler<MouseEvent> MouseClick = new EventHandler<MouseEvent>() {
+    static EventHandler<MouseEvent> MouseClickOutput = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
             Circle circle = (Circle) mouseEvent.getSource();
             if (circle.getId().equals("Salida")){
-                conectando = true;
-                conectar();
+                //Main.StartConecting = true;
+                Main.conectingOutput = true;
+                Main.selectingOutput = true;
             }
+
         }
-
-        private void conectar() {
-            if(conectando==true){
-
-
+    };
+    static  EventHandler<MouseEvent> MouseClickInput = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+            Circle circle = (Circle) mouseEvent.getSource();
+            if(circle.getId().equals("Entrada1")){
+                if(!Main.selectingOutput){
+                    Main.selectingInput = true;
+                    Main.input1 = true;
+                }
             }
+            if(circle.getId().equals("Entrada2")){
+                if(!Main.selectingOutput){
+                    Main.selectingInput = true;
+                    Main.input2 = true;
+                }
+            }
+
         }
     };
 }

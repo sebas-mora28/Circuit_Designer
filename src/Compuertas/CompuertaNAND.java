@@ -30,8 +30,7 @@ public class CompuertaNAND extends Compuerta {
 
     @Override
     public void operar() {
-        Boolean res = !(input1.value && input2.value);
-        output.value = res;
+        output.value = !(input1.value && input2.value);
 
 
     }

@@ -38,7 +38,7 @@ public class LogicGatesCreator {
             LogicGatesList.add(logicGateAND);
             logicGateAND.logicGateGroup.setUserData(LogicGatesList.getLast());
         } else if (logicGateType == LogicGateType.NAND) {
-            Compuerta logicGateNAND = new CompuertaAND(gridPane);
+            Compuerta logicGateNAND = new CompuertaNAND(gridPane);
             LogicGatesList.add(logicGateNAND);
             logicGateNAND.logicGateGroup.setUserData(LogicGatesList.getLast());
         } else if (logicGateType == logicGateType.OR) {
