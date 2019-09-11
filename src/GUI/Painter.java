@@ -1,8 +1,11 @@
 package GUI;
 
+import Compuertas.Compuerta;
+import Logica.LogicGatesCreator;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -10,6 +13,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+
+import java.awt.*;
 
 
 /**
@@ -135,4 +140,13 @@ public class Painter {
 
         }
     };
+
+    public static void enumeration(Group group) {
+        Label label = new Label();
+        label.setLayoutX(100);
+        label.setLayoutY(80);
+        group.getChildren().add(label);
+
+
+    }
 }

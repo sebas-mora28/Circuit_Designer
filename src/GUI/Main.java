@@ -26,7 +26,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-import java.rmi.MarshalledObject;
 import java.util.Scanner;
 
 
@@ -96,11 +95,13 @@ public class Main extends Application {
 
 
         //Conectar
+        /*
         Button button = new Button();
         button.setText("Conectar");
         button.setLayoutX(70);
         button.setLayoutY(10);
         pane.getChildren().add(button);
+         */
 
 
         //Botónes
@@ -108,7 +109,7 @@ public class Main extends Application {
         Button run = new Button("Run");
         run.setLayoutX(1025);
         run.setLayoutY(850);
-        run.setOnMouseClicked(mostrar);
+        run.setOnMouseClicked(this.run);
         run.setPrefSize(50, 25);
 
 
@@ -268,14 +269,14 @@ public class Main extends Application {
             if (!(mouseEvent.getX() + 1 == currentLogicGate.posX && mouseEvent.getY() + 1 == currentLogicGate.posY)) {
                 if (mouseEvent.getX() + 1 == logicGateTo.posX && mouseEvent.getY() + 1 == logicGateTo.posY) {
                     if (input1) {
-                        logicGateTo.input1.next = currentLogicGate.output;
-                        logicGateTo.input1.value = currentLogicGate.output.value;
+                        logicGateTo.input1 = currentLogicGate.output;
+                        logicGateTo.input1 = currentLogicGate.output;
                         System.out.println("Entrada 1: " + logicGateTo.input1.value);
                         break;
                     }
                     if (input2) {
-                        logicGateTo.input2.next = currentLogicGate.output;
-                        logicGateTo.input2.value = currentLogicGate.output.value;
+                        logicGateTo.input2 = currentLogicGate.output;
+                        logicGateTo.input2 = currentLogicGate.output;
                         System.out.println("Entrada 2: " + logicGateTo.input2.value);
                         break;
                     }
@@ -291,23 +292,24 @@ public class Main extends Application {
         conectingOutput = false;
     }
 
-    EventHandler<MouseEvent> mostrar = new EventHandler<MouseEvent>() {
+    EventHandler<MouseEvent> run = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
             Scanner scanner = new Scanner(System.in);
             for(int  i=0; i<= LogicGatesCreator.LogicGatesList.size()-1;i++){
                 Compuerta compuerta = LogicGatesCreator.LogicGatesList.getElement(i);
-                if(compuerta.input1.next == null){
+                if(compuerta.input1.value == null){
                     System.out.println("Ingrese un valor para la entrada uno");
                     Boolean res = scanner.nextBoolean();
                     compuerta.input1.value = res;
                 }
-                if(compuerta.input2.next == null){
+                if(compuerta.input2.value == null){
                     System.out.println("Ingrese un valor para la entrada dos");
                     Boolean res = scanner.nextBoolean();
                     compuerta.input2.value = res;
                 }
                 compuerta.operar();
+
             }
             for(int i=0; i<=LogicGatesCreator.LogicGatesList.size()-1; i++){
                 Compuerta compuerta = LogicGatesCreator.LogicGatesList.getElement(i);

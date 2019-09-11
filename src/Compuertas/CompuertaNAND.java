@@ -29,9 +29,13 @@ public class CompuertaNAND extends Compuerta {
     }
 
     @Override
-    public void operar() {
-        output.value = !(input1.value && input2.value);
-
-
+    public void operar(){
+        if(input1.value !=null && input2.value!=null ) {
+            System.out.println(input1.value);
+            System.out.println(input2.value);
+            output.value = !(input1.value && input2.value);
+        }else{
+            System.out.println("Los datos no son validos");
+        }
     }
 }

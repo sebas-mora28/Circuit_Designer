@@ -9,11 +9,15 @@ import ListaEnlazada.LinkedList;
 import Logica.LogicGatesCreator;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
+
+import java.awt.*;
 
 
 public class CompuertaAND extends Compuerta{
@@ -34,7 +38,9 @@ public class CompuertaAND extends Compuerta{
         DragAndDrop.SetDragAndDrop(gridPane, logicGateGroup);
         gridPane.getChildren().add(logicGateGroup);
         Painter.crearEntradasSalidas(logicGateGroup);
+        //output.value = true;
     }
+
 
 
     @Override
@@ -43,11 +49,5 @@ public class CompuertaAND extends Compuerta{
             output.value = input1.value && input2.value;
         }
     }
-
-    EventHandler<MouseEvent> reconocer = new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent mouseEvent) {
-        }
-    };
 
 }
