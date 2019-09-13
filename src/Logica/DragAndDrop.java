@@ -2,6 +2,7 @@ package Logica;
 
 import Compuertas.Compuerta;
 import Compuertas.CompuertaAND;
+import GUI.Painter;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.canvas.GraphicsContext;
@@ -21,7 +22,6 @@ public class DragAndDrop {
         setGridPane(gridPane);
 
         group.setOnMousePressed(mouseEvent -> {
-            System.out.println(mouseEvent.getX() + "  " + mouseEvent.getY());
             Group logicGateGroup = (Group)(mouseEvent.getSource());
             Compuerta logicGate = (Compuerta)(logicGateGroup.getUserData());
             posX = mouseEvent.getSceneX();
@@ -45,12 +45,10 @@ public class DragAndDrop {
             logicGate.posX = newTranslationX;
             logicGate.posY = newTranslationY;
 
-
         });
 
 
         group.setOnMouseReleased(mouseEvent -> {
-            System.out.println(VerifyCoordsInUse(gridPane, (Group) (mouseEvent.getSource())));
             if (VerifyCoordsInUse(gridPane, (Group) (mouseEvent.getSource()))) {
                 Group logicGateGroup = (Group) (mouseEvent.getSource());
                 Compuerta logicGate = (Compuerta)logicGateGroup.getUserData();
@@ -72,7 +70,7 @@ public class DragAndDrop {
          */
         private static boolean VerifyCoordsInUse(Pane gridPane, Group newlogicGateGroup){
             for (Node nodo : gridPane.getChildren()) {
-                if (!newlogicGateGroup.equals(nodo) && newlogicGateGroup.getBoundsInParent().intersects(nodo.getBoundsInParent()) && !nodo.getId().equals("Canvas")) {
+                if (!newlogicGateGroup.equals(nodo) && newlogicGateGroup.getBoundsInParent().intersects(nodo.getBoundsInParent()) && !nodo.getId().equals("Canvas") && !nodo.getId().equals("linea")) {
                     return true;
                 }
             }

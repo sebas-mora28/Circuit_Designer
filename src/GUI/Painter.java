@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
@@ -23,13 +24,16 @@ import javafx.scene.shape.Rectangle;
  */
 
 public class Painter {
-    private ImageView image;
+    private static Pane pane;
     private static Circle salida, entrada1, entrada2;
     private static Rectangle rectangleImage;
     private static boolean conectando;
-    private static Line line;
+    public static Line line = new Line();
+    private static double posx, posy;
 
-    public Painter() {
+
+    public Painter(Pane pane) {
+        Painter.pane = pane;
     }
 
     /**
@@ -78,7 +82,7 @@ public class Painter {
         salida.setLayoutX(100);
         salida.setLayoutY(92);
         salida.setId("Salida");
-        //salida.setOpacity(0.0);
+        salida.setOpacity(0.0);
         logicGateGroup.getChildren().add(salida);
 
     }
@@ -96,7 +100,7 @@ public class Painter {
         entrada1.setLayoutX(25);
         entrada1.setLayoutY(110);
         entrada1.setId("Entrada1");
-        //entrada1.setOpacity(0.0);
+        entrada1.setOpacity(0.0);
 
 
         entrada2 = new Circle(10);
@@ -105,9 +109,32 @@ public class Painter {
         entrada2.setLayoutX(25);
         entrada2.setLayoutY(80);
         entrada2.setId("Entrada2");
-        //entrada2.setOpacity(0.0);
+        entrada2.setOpacity(0.0);
 
         logicGateGroup.getChildren().addAll(entrada1, entrada2);
+    }
+
+
+    private static void paintLine(double x, double y){
+        if(Main.conectingOutput && (!Main.input1 &!Main.input2)){
+            System.out.println("Empieza a crear la linea");
+            posx = x;
+            posy = y;
+            System.out.println(posx + " " + posy);
+        }
+        if(Main.input1 || Main.input2){
+            System.out.println("Termina- la linea");
+            Line line = new Line();
+            line.setId("linea");
+            line.setStrokeWidth(5);
+            line.setStartX(posx);
+            line.setStartY(posy);
+            line.setEndX(x);
+            line.setEndY(y);
+            System.out.println(x + " " + y);
+            pane.getChildren().addAll(line);
+
+        }
     }
 
 
@@ -116,10 +143,10 @@ public class Painter {
         public void handle(MouseEvent mouseEvent) {
             Circle circle = (Circle) mouseEvent.getSource();
             if (circle.getId().equals("Salida")){
-                System.out.println("Circulo" + circle.getLayoutX() + " " + circle.getLayoutY());
                 if(!Main.conectingInput) {
                     Main.conectingOutput = true;
                     Main.selectingOutput = true;
+                    paintLine(mouseEvent.getSceneX(), mouseEvent.getSceneY());
                 }
             }
 
@@ -133,12 +160,14 @@ public class Painter {
                 if(!Main.selectingOutput) {
                     Main.selectingNewGate = true;
                     Main.input1 = true;
+                    paintLine(mouseEvent.getSceneX(), mouseEvent.getSceneY());
                 }
             }
             if(circle.getId().equals("Entrada2")){
                 if(!Main.selectingOutput){
                     Main.selectingNewGate = true;
                     Main.input2 = true;
+                    paintLine(mouseEvent.getSceneX(), mouseEvent.getSceneY());
                 }
             }
 

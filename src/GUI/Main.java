@@ -23,6 +23,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
 
+import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
@@ -69,10 +70,12 @@ public class Main extends Application {
         gridPane.setPrefSize(980, 900);
         gridPane.setBackground(new Background(new BackgroundFill(Color.web("#e7ebda"), CornerRadii.EMPTY, Insets.EMPTY)));
         gridPane.setOnMouseClicked(Connecting);
-        Canvas canvas = new Canvas(980, 900);
-        canvas.setId("Canvas");
-        context = canvas.getGraphicsContext2D();
-        gridPane.getChildren().addAll(canvas);
+        //Canvas canvas = new Canvas(980, 900);
+        //canvas.setId("Canvas");
+        //context = canvas.getGraphicsContext2D();
+        //gridPane.getChildren().addAll(canvas);
+
+        Painter painter = new Painter(gridPane);
 
 
         ScrollPane scrollPane = new ScrollPane(gridPane);
@@ -101,16 +104,6 @@ public class Main extends Application {
         logicGatesScroller.setLayoutY(0);
         logicGatesScroller.setContent(pane);
         logicGatesScroller.setPrefSize(220, 830);
-
-
-        //Conectar
-        /*
-        Button button = new Button();
-        button.setText("Conectar");
-        button.setLayoutX(70);
-        button.setLayoutY(10);
-        pane.getChildren().add(button);
-         */
 
 
         //Botónes
