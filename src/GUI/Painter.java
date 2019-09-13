@@ -2,9 +2,11 @@ package GUI;
 
 import Compuertas.Compuerta;
 import Logica.LogicGatesCreator;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -12,9 +14,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
-
-import java.awt.*;
 
 
 /**
@@ -26,6 +27,7 @@ public class Painter {
     private static Circle salida, entrada1, entrada2;
     private static Rectangle rectangleImage;
     private static boolean conectando;
+    private static Line line;
 
     public Painter() {
     }
@@ -48,7 +50,6 @@ public class Painter {
         return rectangleImage;
 
     }
-
 
     /**
      * Facade para llamar a los métodos salida y entrada
@@ -79,6 +80,7 @@ public class Painter {
         salida.setId("Salida");
         //salida.setOpacity(0.0);
         logicGateGroup.getChildren().add(salida);
+
     }
 
     /**
@@ -114,9 +116,11 @@ public class Painter {
         public void handle(MouseEvent mouseEvent) {
             Circle circle = (Circle) mouseEvent.getSource();
             if (circle.getId().equals("Salida")){
-                //Main.StartConecting = true;
-                Main.conectingOutput = true;
-                Main.selectingOutput = true;
+                System.out.println("Circulo" + circle.getLayoutX() + " " + circle.getLayoutY());
+                if(!Main.conectingInput) {
+                    Main.conectingOutput = true;
+                    Main.selectingOutput = true;
+                }
             }
 
         }
@@ -126,27 +130,51 @@ public class Painter {
         public void handle(MouseEvent mouseEvent) {
             Circle circle = (Circle) mouseEvent.getSource();
             if(circle.getId().equals("Entrada1")){
-                if(!Main.selectingOutput){
-                    Main.selectingInput = true;
+                if(!Main.selectingOutput) {
+                    Main.selectingNewGate = true;
                     Main.input1 = true;
                 }
             }
             if(circle.getId().equals("Entrada2")){
                 if(!Main.selectingOutput){
-                    Main.selectingInput = true;
+                    Main.selectingNewGate = true;
                     Main.input2 = true;
                 }
             }
 
         }
     };
-
     public static void enumeration(Group group) {
         Label label = new Label();
-        label.setLayoutX(100);
-        label.setLayoutY(80);
-        group.getChildren().add(label);
+        label.setLayoutX(80);
+        label.setLayoutY(50);
+        label.setId("label");
+
+        Label labelOutput = new Label();
+        labelOutput.setLayoutX(120);
+        labelOutput.setLayoutY(80);
+        labelOutput.setId("Output");
+
+        group.getChildren().addAll(label,labelOutput);
+
+    }
+
+    public static void updateEnumeration(){
+        for(int i=0; i<= LogicGatesCreator.LogicGatesList.size()-1;i++){
+            Compuerta compuerta = LogicGatesCreator.LogicGatesList.getElement(i);
+            ObservableList<Node> nodos =compuerta.logicGateGroup.getChildren();
+            for(Node node : nodos){
+                if(node.getId().equals("label")){
+                    Label label = (Label)node;
+                    label.setText("<"+ i + ">");
+                }
+                if(node.getId().equals("Output") && Main.simulatingCircuit){
+                    Label labelOutput = (Label)node;
+                    labelOutput.setText(compuerta.output.value.toString());
+                }
 
 
+            }
+        }
     }
 }

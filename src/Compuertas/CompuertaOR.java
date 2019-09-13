@@ -3,21 +3,20 @@ package Compuertas;
 import GUI.Painter;
 import ListaEnlazada.LinkedList;
 import Logica.DragAndDrop;
-import Logica.Grid;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
 public class CompuertaOR extends Compuerta {
     LinkedList<Boolean> inputs = new LinkedList<>();
 
 
-    public CompuertaOR(GridPane gridPane) {
+    public CompuertaOR(Pane gridPane) {
         createOR(gridPane);
 
     }
-    private void  createOR(GridPane gridPane){
+    private void  createOR(Pane gridPane){
         logicGateGroup = new Group();
         Image image = new Image("Compuerta3.png");
         Rectangle logicGate = Painter.insertImage(image);
@@ -25,6 +24,7 @@ public class CompuertaOR extends Compuerta {
         DragAndDrop.SetDragAndDrop(gridPane, logicGateGroup);
         gridPane.getChildren().add(logicGateGroup);
         Painter.crearEntradasSalidas(logicGateGroup);
+        Painter.enumeration(logicGateGroup);
 
     }
 

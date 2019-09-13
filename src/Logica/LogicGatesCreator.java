@@ -11,6 +11,8 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 
 
 public class LogicGatesCreator {
@@ -32,7 +34,7 @@ public class LogicGatesCreator {
      * @param gridPane
      * @param logicGateType
      */
-    public void createLogicGates(GridPane gridPane, LogicGateType logicGateType) {
+    public void createLogicGates(Pane gridPane, LogicGateType logicGateType) {
         if (logicGateType == LogicGateType.AND) {
             Compuerta logicGateAND = new CompuertaAND(gridPane);
             LogicGatesList.add(logicGateAND);
@@ -55,14 +57,15 @@ public class LogicGatesCreator {
             logicGateNOT.logicGateGroup.setUserData(LogicGatesList.getLast());
         } else if (logicGateType == LogicGateType.XOR) {
             Compuerta logicGateXOR = new CompuertaXOR(gridPane);
-            LogicGatesList.add(new CompuertaXOR(gridPane));
+            LogicGatesList.add(logicGateXOR);
             logicGateXOR.logicGateGroup.setUserData(LogicGatesList.getLast());
         } else {
             Compuerta logicGateXNOR = new CompuertaXNOR(gridPane);
-            LogicGatesList.add(new CompuertaXNOR(gridPane));
+            LogicGatesList.add(logicGateXNOR);
             logicGateXNOR.logicGateGroup.setUserData(LogicGatesList.getLast());
 
         }
+        Painter.updateEnumeration();
 
 
 

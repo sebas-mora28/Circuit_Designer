@@ -9,6 +9,7 @@ import javafx.geometry.Insets;
 
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
 import javafx.scene.control.Button;
@@ -33,22 +34,24 @@ import java.util.Scanner;
  * Main Se encarga de inicializar la interfaz gráfica de la aplicación, se utiliza la biblioteca JavaFx para la creación de los componentes básicos
  */
 public class Main extends Application {
-    private GridPane gridPane;
+    private Pane gridPane;
     private Pane pane;
     private GraphicsContext context;
     private LogicGatesCreator logicGatesCreator = new LogicGatesCreator();
-    public static boolean StartConecting = false;
-
-
     public static boolean conectingOutput = false;
-    public static boolean selectingOutput = true;
+    public static boolean selectingOutput = false;
+
+
+
+    public static boolean selectingNewGate = false;
+
+    public static boolean conectingInput = false;
     public static boolean selectingInput = false;
+
     public static boolean input1;
     public static boolean input2;
-
-
-    public static boolean ConectingInput1 = false;
-    public static boolean ConectingInput2 = false;
+    public static boolean output;
+    public static boolean simulatingCircuit = false;
     public static Compuerta currentLogicGate;
     public static Compuerta logicGateTo;
 
@@ -62,10 +65,16 @@ public class Main extends Application {
 
         //Cuadrícula
         //-------------------------------------------------------------------------------------------------
-        gridPane = new GridPane();
-        gridPane.setPrefSize(978, 900);
+        gridPane = new Pane();
+        gridPane.setPrefSize(980, 900);
         gridPane.setBackground(new Background(new BackgroundFill(Color.web("#e7ebda"), CornerRadii.EMPTY, Insets.EMPTY)));
         gridPane.setOnMouseClicked(Connecting);
+        Canvas canvas = new Canvas(980, 900);
+        canvas.setId("Canvas");
+        context = canvas.getGraphicsContext2D();
+        gridPane.getChildren().addAll(canvas);
+
+
         ScrollPane scrollPane = new ScrollPane(gridPane);
         scrollPane.setLayoutX(0);
         scrollPane.setLayoutY(0);
@@ -111,6 +120,7 @@ public class Main extends Application {
         run.setLayoutY(850);
         run.setOnMouseClicked(this.run);
         run.setPrefSize(50, 25);
+
 
 
         //Pantalla principal
@@ -242,24 +252,24 @@ public class Main extends Application {
         public void handle(MouseEvent mouseEvent) {
             if (conectingOutput) {
                 if (selectingOutput) {
-                    setSelectingOutput(mouseEvent);
+                    setSelectingGate(mouseEvent);
                 }
-                if (selectingInput) {
+                if (selectingNewGate) {
                     setSelectingInput(mouseEvent);
                 }
             }
         }
     };
 
-    public void setSelectingOutput(MouseEvent mouseEvent) {
+    public void setSelectingGate(MouseEvent mouseEvent) {
         for (int i = 0; i <= LogicGatesCreator.LogicGatesList.size() - 1; i++) {
             currentLogicGate = LogicGatesCreator.LogicGatesList.getElement(i);
             if (mouseEvent.getX() + 1 == currentLogicGate.posX && mouseEvent.getY() + 1 == currentLogicGate.posY) {
-                System.out.println(currentLogicGate.output.value);
                 selectingOutput = false;
+                System.out.println(currentLogicGate.output.value);
+
                 break;
             }
-
         }
     }
 
@@ -269,7 +279,6 @@ public class Main extends Application {
             if (!(mouseEvent.getX() + 1 == currentLogicGate.posX && mouseEvent.getY() + 1 == currentLogicGate.posY)) {
                 if (mouseEvent.getX() + 1 == logicGateTo.posX && mouseEvent.getY() + 1 == logicGateTo.posY) {
                     if (input1) {
-                        logicGateTo.input1 = currentLogicGate.output;
                         logicGateTo.input1 = currentLogicGate.output;
                         System.out.println("Entrada 1: " + logicGateTo.input1.value);
                         break;
@@ -287,17 +296,37 @@ public class Main extends Application {
             }
         }
         System.out.println("Sale");
-        selectingInput = false;
+        selectingNewGate = false;
         selectingOutput = false;
         conectingOutput = false;
+    }
+
+
+    public void ConnectingInput(MouseEvent mouseEvent){
+        for(int i=0; i<=LogicGatesCreator.LogicGatesList.size()-1; i++){
+            logicGateTo = LogicGatesCreator.LogicGatesList.getElement(i);
+            if(!(mouseEvent.getX()+1 < currentLogicGate.posX && mouseEvent.getY()+1 < currentLogicGate.posY)){
+                if(mouseEvent.getX() +1 == currentLogicGate.posX && mouseEvent.getY()+1 == currentLogicGate.posY){
+                    if(input1){
+                        System.out.println("Se conecta a la entra 1 de la compuerta");
+
+                    }
+                }
+
+            }
+
+
+        }
     }
 
     EventHandler<MouseEvent> run = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
+            simulatingCircuit = true;
             Scanner scanner = new Scanner(System.in);
             for(int  i=0; i<= LogicGatesCreator.LogicGatesList.size()-1;i++){
                 Compuerta compuerta = LogicGatesCreator.LogicGatesList.getElement(i);
+                System.out.println("Compuerta " + i);
                 if(compuerta.input1.value == null){
                     System.out.println("Ingrese un valor para la entrada uno");
                     Boolean res = scanner.nextBoolean();
@@ -309,6 +338,7 @@ public class Main extends Application {
                     compuerta.input2.value = res;
                 }
                 compuerta.operar();
+                System.out.println("-------------------------------");
 
             }
             for(int i=0; i<=LogicGatesCreator.LogicGatesList.size()-1; i++){
@@ -316,6 +346,8 @@ public class Main extends Application {
                 System.out.println("Compuerta " + i + ": " + compuerta.output.value);
 
             }
+            Painter.updateEnumeration();
+            simulatingCircuit = false;
         }
 
         };
