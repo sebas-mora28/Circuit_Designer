@@ -144,11 +144,13 @@ public class Painter {
                 if (Main.conectingOutput) {
                     Main.selectingNewGate = true;
                     Main.input1 = true;
+                    return;
                     //paintLine(pane, startposx, startposy, mouseEvent.getSceneX(), mouseEvent.getSceneY(),  current, circle)
                 }
                 if (!Main.conectingOutput) {
                     Main.conectingInput = true;
                     Main.selectingInput = true;
+                    Main.input1Selected = true;
 
                     if (Main.selected) {
                         Main.selectingInput = false;
@@ -159,8 +161,10 @@ public class Painter {
             }
             if (circle.getId().equals("Entrada2")) {
                 if (Main.conectingOutput) {
+                    Main.input2Selected = true;
                     Main.selectingNewGate = true;
                     Main.input2 = true;
+                    return;
                     //paintLine(pane, startposx, startposy, mouseEvent.getSceneX(), mouseEvent.getSceneY(), current, circle);
                 }
                 if (!Main.conectingOutput) {

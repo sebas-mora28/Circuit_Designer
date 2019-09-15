@@ -58,7 +58,7 @@ public class CompuertaAND extends Compuerta{
             }
             if(inputs2.size() !=0){
                 for(int i=0; i<=inputs2.size()-1; i++){
-                    Compuerta compuerta = inputs2.getElement(i);
+                    Compuerta compuerta = (Compuerta)inputs2.getElement(i);
                     compuerta.input2.value = output.value;
                 }
             }
