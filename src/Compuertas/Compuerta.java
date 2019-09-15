@@ -3,6 +3,7 @@ package Compuertas;
 import ListaEnlazada.LinkedList;
 import ListaEnlazada.Nodo;
 import javafx.scene.Group;
+import javafx.scene.control.Label;
 import javafx.scene.shape.Line;
 
 public abstract class Compuerta {
@@ -18,6 +19,10 @@ public abstract class Compuerta {
     public Nodo<Boolean> input2 = new Nodo<>(null);
     public double posX, posY;
     public boolean outputConnected = true, input1Connected = true, input2Connected = true;
+
+    public Label labelOutput= new Label();
+    public Label labelInput1 = new Label();
+    public Label labelInput2 = new Label();
 
     public abstract void operar();
 

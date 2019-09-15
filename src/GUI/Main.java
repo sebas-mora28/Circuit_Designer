@@ -105,7 +105,7 @@ public class Main extends Application {
         logicGatesScroller.setPrefSize(220, 830);
 
 
-        //Botónes
+        //Botones
         //-------------------------------------------------------------------------------------------------
         Button run = new Button("Run");
         run.setLayoutX(1025);
@@ -113,11 +113,17 @@ public class Main extends Application {
         run.setOnMouseClicked(this.run);
         run.setPrefSize(50, 25);
 
+        Button clean = new Button("Clean");
+        clean.setLayoutX(1100);
+        clean.setLayoutY(850);
+        clean.setOnMouseClicked(this.clean);
+        clean.setPrefSize(50, 25);
+
 
 
         //Pantalla principal
         //-------------------------------------------------------------------------------------------------
-        Pane root = new Pane(scrollPane, logicGatesScroller, run);
+        Pane root = new Pane(scrollPane, logicGatesScroller, run, clean);
         primaryStage.setScene(new Scene(root, 1200, 900));
         primaryStage.setTitle("Circuit Designer");
         primaryStage.setResizable(false);
@@ -239,6 +245,9 @@ public class Main extends Application {
     //-----------------------------------------------------------------------------------------
 
 
+    /**
+     * Este método controla los métodos que se deben de llamar para realizar las conexiones de las compuertas
+     */
     EventHandler<MouseEvent> Connecting = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
@@ -263,7 +272,12 @@ public class Main extends Application {
         }
     };
 
-    public void SelectGate(MouseEvent mouseEvent) {
+    /**
+     * Este método busca la compuerta del origen de la conexión
+     * @param mouseEvent
+     */
+
+    private void SelectGate(MouseEvent mouseEvent) {
         for (int i = 0; i <= LogicGatesCreator.LogicGatesList.size() - 1; i++) {
             currentLogicGate = LogicGatesCreator.LogicGatesList.getElement(i);
             System.out.println("Selecciona salida");
@@ -282,7 +296,11 @@ public class Main extends Application {
         }
     }
 
-    public void SelectInputToConnect(MouseEvent mouseEvent) {
+    /**
+     * Este método busca la entrada que se quiere conectar en caso de que el origen sea una salida
+     * @param mouseEvent
+     */
+    private void SelectInputToConnect(MouseEvent mouseEvent) {
         for (int i = 0; i <= LogicGatesCreator.LogicGatesList.size() - 1; i++) {
             logicGateTo = LogicGatesCreator.LogicGatesList.getElement(i);
             if (!(mouseEvent.getX() + 1 == currentLogicGate.posX && mouseEvent.getY() + 1 == currentLogicGate.posY)) {
@@ -314,8 +332,12 @@ public class Main extends Application {
         conectingOutput = false;
     }
 
+    /**
+     * Este método busca la entrada que se quiere conectar en caso de que el origen sea otra salida
+     * @param mouseEvent
+     */
 
-    public void ConnectingInput(MouseEvent mouseEvent){
+    private void ConnectingInput(MouseEvent mouseEvent){
         System.out.println("Entra");
         for(int i=0; i<=LogicGatesCreator.LogicGatesList.size()-1; i++){
             logicGateTo = LogicGatesCreator.LogicGatesList.getElement(i);
@@ -338,7 +360,6 @@ public class Main extends Application {
                         if(input1Selected){
                             System.out.println("Input 2: Se conecta desde la entrada1 del currentGate");
                             currentLogicGate.inputs1.add(logicGateTo);
-
                         }
                         if(input2Selected){
                             System.out.println("Input 2: Se conecta desde la entrada2 del currentGate");
@@ -396,6 +417,10 @@ public class Main extends Application {
         }
 
         };
+
+    EventHandler<MouseEvent> clean = mouseEvent -> {
+        gridPane.getChildren().clear();
+    };
 }
 
 

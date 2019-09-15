@@ -9,9 +9,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
 public class CompuertaNORD extends Compuerta {
-    LinkedList<Boolean> inputs = new LinkedList<>();
-    boolean output;
-
 
     public CompuertaNORD(Pane gridPane) {
         createNORD(gridPane);
@@ -32,7 +29,22 @@ public class CompuertaNORD extends Compuerta {
 
     @Override
     public void operar() {
-        Boolean res = !(input1.value && input2.value);
+        if(input1.value != null && input2.value != null){
+            output.value = !(input1.value && input2.value);
+        }
+        if(inputs1.size() != 0){
+            for(int i=0; i <= inputs1.size()-1; i++){
+                Compuerta compuerta = inputs1.getElement(i);
+                compuerta.input1.value = output.value;
+            }
+        }
+        if(inputs2.size() !=0){
+            for(int i=0; i <= inputs2.size()-1; i++){
+                Compuerta compuerta = inputs2.getElement(i);
+                compuerta.input2.value = output.value;
+
+            }
+        }
 
     }
 }

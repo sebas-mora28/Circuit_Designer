@@ -93,7 +93,7 @@ public class Painter {
     }
 
     /**
-     * Método que crea los círculos que se incluiran en el grupo de la compuerta que corresponderan a las salida de la compuerta
+     * Método que crea los círculos que se incluirán en el grupo de la compuerta que corresponderan a las salida de la compuerta
      *
      * @param logicGateGroup grupo que corresponde a la compuerta lógica
      */

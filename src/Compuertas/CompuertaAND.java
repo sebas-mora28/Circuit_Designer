@@ -23,7 +23,6 @@ import java.awt.*;
 
 
 public class CompuertaAND extends Compuerta{
-    public static LinkedList<Boolean> inputs = new LinkedList<>();
 
 
     public CompuertaAND(Pane gridPane){
