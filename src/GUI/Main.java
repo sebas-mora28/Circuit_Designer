@@ -2,6 +2,7 @@ package GUI;
 
 
 import Compuertas.Compuerta;
+import ListaEnlazada.Nodo;
 import Logica.LogicGatesCreator;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -39,10 +40,13 @@ public class Main extends Application {
     private Pane pane;
     private GraphicsContext context;
     private LogicGatesCreator logicGatesCreator = new LogicGatesCreator();
+
+
     public static boolean conectingOutput = false;
     public static boolean selectingOutput = false;
 
 
+    public static boolean selected = false;
 
     public static boolean selectingNewGate = false;
 
@@ -243,12 +247,22 @@ public class Main extends Application {
     EventHandler<MouseEvent> Connecting = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
-            if (conectingOutput) {
-                if (selectingOutput) {
+            if(conectingOutput) {
+                    if (selectingOutput) {
+                        setSelectingGate(mouseEvent);
+                    }
+                    if (selectingNewGate) {
+                        setSelectingInput(mouseEvent);
+                }
+            }
+            if(!conectingOutput){
+                if(selectingInput){
+                    System.out.println("Pasa la primera compuerta");
                     setSelectingGate(mouseEvent);
                 }
-                if (selectingNewGate) {
-                    setSelectingInput(mouseEvent);
+                if(selectingNewGate){
+                    System.out.println("Pasa la segunda compuerta");
+                    ConnectingInput(mouseEvent);
                 }
             }
         }
@@ -257,11 +271,18 @@ public class Main extends Application {
     public void setSelectingGate(MouseEvent mouseEvent) {
         for (int i = 0; i <= LogicGatesCreator.LogicGatesList.size() - 1; i++) {
             currentLogicGate = LogicGatesCreator.LogicGatesList.getElement(i);
+            System.out.println("Selecciona salida");
             if (mouseEvent.getX() + 1 == currentLogicGate.posX && mouseEvent.getY() + 1 == currentLogicGate.posY) {
-                selectingOutput = false;
-                System.out.println(currentLogicGate.output.value);
-
-                break;
+                currentLogicGate.outputConnected = true;
+                if(conectingOutput) {
+                    selectingOutput = false;
+                    break;
+                }
+                if(!conectingOutput) {
+                    selectingInput = false;
+                    selected = true;
+                    break;
+                }
             }
         }
     }
@@ -272,14 +293,18 @@ public class Main extends Application {
             if (!(mouseEvent.getX() + 1 == currentLogicGate.posX && mouseEvent.getY() + 1 == currentLogicGate.posY)) {
                 if (mouseEvent.getX() + 1 == logicGateTo.posX && mouseEvent.getY() + 1 == logicGateTo.posY) {
                     if (input1) {
+                        //logicGateTo.inputs1.add(currentLogicGate);
                         logicGateTo.input1 = currentLogicGate.output;
                         System.out.println("Entrada 1: " + logicGateTo.input1.value);
+                        input1 =false;
+                        logicGateTo.input1Connected = false;
                         break;
                     }
                     if (input2) {
                         logicGateTo.input2 = currentLogicGate.output;
-                        logicGateTo.input2 = currentLogicGate.output;
                         System.out.println("Entrada 2: " + logicGateTo.input2.value);
+                        logicGateTo.input2Connected = false;
+                        input2 = false;
                         break;
                     }
                 }
@@ -296,20 +321,35 @@ public class Main extends Application {
 
 
     public void ConnectingInput(MouseEvent mouseEvent){
+        System.out.println("Entra");
         for(int i=0; i<=LogicGatesCreator.LogicGatesList.size()-1; i++){
             logicGateTo = LogicGatesCreator.LogicGatesList.getElement(i);
-            if(!(mouseEvent.getX()+1 < currentLogicGate.posX && mouseEvent.getY()+1 < currentLogicGate.posY)){
-                if(mouseEvent.getX() +1 == currentLogicGate.posX && mouseEvent.getY()+1 == currentLogicGate.posY){
+            if(!(mouseEvent.getX()+1 == currentLogicGate.posX && mouseEvent.getY()+1 == currentLogicGate.posY)){
+                if(mouseEvent.getX() +1 == logicGateTo.posX && mouseEvent.getY()+1 == logicGateTo.posY){
+                    System.out.println("Input1: "  + input1 + " " + "Input: " + input2 );
                     if(input1){
-                        System.out.println("Se conecta a la entra 1 de la compuerta");
-
+                        System.out.println("Se conecta a la entrada 1 de la compuerta");
+                        currentLogicGate.inputs1.add(logicGateTo.input1);
+                        logicGateTo.input1Connected = false;
+                        input1 = false;
+                    }
+                    if(input2){
+                        System.out.println("Se conecta la entrada 2 de la compuerta");
+                        currentLogicGate.inputs2.add(logicGateTo.input2);
+                        logicGateTo.input2Connected = false;
+                        input2 = false;
                     }
                 }
-
+            }else{
+                System.out.println("Es la misma compuerta");
             }
-
-
         }
+        input1 = false;
+        input2 = false;
+        conectingInput = false;
+        selectingInput = false;
+        selectingNewGate = false;
+        selected = false;
     }
 
     EventHandler<MouseEvent> run = new EventHandler<MouseEvent>() {
@@ -319,13 +359,15 @@ public class Main extends Application {
             Scanner scanner = new Scanner(System.in);
             for(int  i=0; i<= LogicGatesCreator.LogicGatesList.size()-1;i++){
                 Compuerta compuerta = LogicGatesCreator.LogicGatesList.getElement(i);
-                System.out.println("Compuerta " + i);
-                if(compuerta.input1.value == null){
+                System.out.println("Compuerta" + i);
+                if(compuerta.input1Connected){
+                    System.out.println(compuerta.input1Connected);
                     System.out.println("Ingrese un valor para la entrada uno");
                     Boolean res = scanner.nextBoolean();
                     compuerta.input1.value = res;
                 }
-                if(compuerta.input2.value == null){
+                if(compuerta.input2Connected){
+                    System.out.println(compuerta.input2Connected);
                     System.out.println("Ingrese un valor para la entrada dos");
                     Boolean res = scanner.nextBoolean();
                     compuerta.input2.value = res;

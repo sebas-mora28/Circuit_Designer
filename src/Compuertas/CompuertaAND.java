@@ -33,6 +33,7 @@ public class CompuertaAND extends Compuerta{
 
     private void  createAND(Pane gridPane){
         logicGateGroup = new Group();
+        logicGateGroup.setId("CompuertaGrupo");
         LogicGatesCreator.LogicGatesList.showData();
         Image image = new Image("Compuerta1.png");
         Rectangle logicGate = Painter.insertImage(image);
@@ -41,22 +42,7 @@ public class CompuertaAND extends Compuerta{
         gridPane.getChildren().add(logicGateGroup);
         Painter.crearEntradasSalidas(logicGateGroup);
         Painter.enumeration(logicGateGroup);
-        //output.value = true;
     }
-
-    private void  createAND(Pane gridPane, GraphicsContext graphicsContext){
-        logicGateGroup = new Group();
-        LogicGatesCreator.LogicGatesList.showData();
-        Image image = new Image("Compuerta1.png");
-        Rectangle logicGate = Painter.insertImage(image);
-        logicGateGroup.getChildren().add(logicGate);
-        //DragAndDrop.SetDragAndDrop(gridPane, logicGateGroup, graphicsContext);
-        gridPane.getChildren().add(logicGateGroup);
-        Painter.crearEntradasSalidas(logicGateGroup);
-        Painter.enumeration(logicGateGroup);
-        //output.value = true;
-    }
-
 
 
 
@@ -64,6 +50,18 @@ public class CompuertaAND extends Compuerta{
     public void operar() {
         if(input1.value != null && input2.value != null){
             output.value = input1.value && input2.value;
+            if(inputs1.size() !=0){
+                for(int i=0; i<= inputs1.size()-1; i++){
+                    Compuerta compuerta = inputs1.getElement(i);
+                    compuerta.input1.value = output.value;
+                }
+            }
+            if(inputs2.size() !=0){
+                for(int i=0; i<=inputs2.size()-1; i++){
+                    Compuerta compuerta = inputs2.getElement(i);
+                    compuerta.input2.value = output.value;
+                }
+            }
         }
     }
 

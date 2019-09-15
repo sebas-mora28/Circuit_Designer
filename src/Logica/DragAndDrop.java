@@ -2,6 +2,8 @@ package Logica;
 
 import Compuertas.Compuerta;
 import Compuertas.CompuertaAND;
+import GUI.Main;
+import GUI.PaintLine;
 import GUI.Painter;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -45,6 +47,9 @@ public class DragAndDrop {
             logicGate.posX = newTranslationX;
             logicGate.posY = newTranslationY;
 
+            if(logicGate.outputConnected && (logicGate.input1Connected || logicGate.input2Connected)){
+                updatePosition(group, mouseEvent.getSceneX(), mouseEvent.getSceneY());
+            }
         });
 
 
@@ -70,7 +75,8 @@ public class DragAndDrop {
          */
         private static boolean VerifyCoordsInUse(Pane gridPane, Group newlogicGateGroup){
             for (Node nodo : gridPane.getChildren()) {
-                if (!newlogicGateGroup.equals(nodo) && newlogicGateGroup.getBoundsInParent().intersects(nodo.getBoundsInParent()) && !nodo.getId().equals("Canvas") && !nodo.getId().equals("linea")) {
+                if (!newlogicGateGroup.equals(nodo) && newlogicGateGroup.getBoundsInParent().intersects(nodo.getBoundsInParent()) && !nodo.getId().equals("Linea")) {
+                    System.out.println("Entra");
                     return true;
                 }
             }
@@ -79,5 +85,30 @@ public class DragAndDrop {
 
     private static void setGridPane(Pane gridPane) {
         DragAndDrop.gridPane = gridPane;
+    }
+
+    public static  void updatePosition(Group group, double posX, double posY){
+            Compuerta compuerta = (Compuerta)group.getUserData();
+            for(Node nodo : group.getChildren()){
+                if(nodo.getId().equals("Salida") || nodo.getId().equals("Entrada1") && nodo.getId().equals("Entrada2")){
+
+                    for(int i=0; i<= compuerta.lines.size()-1; i++){
+                        Line line = compuerta.lines.getElement(i);
+                        if(compuerta.outputConnected){
+                            line.setEndX(posX);
+                            line.setEndY(posY);
+                        }
+                        if(compuerta.input1Connected){
+                            line.setStartX(posX);
+                            line.setStartY(posY);
+                        }
+                        if(compuerta.input2Connected){
+                            line.setStartX(posX);
+                            line.setStartY(posY);
+                        }
+                    }
+                }
+
+            }
     }
 }

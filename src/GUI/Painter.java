@@ -1,6 +1,7 @@
 package GUI;
 
 import Compuertas.Compuerta;
+import ListaEnlazada.LinkedList;
 import Logica.LogicGatesCreator;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -18,6 +19,8 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 
+import java.awt.*;
+
 
 /**
  * Clase que crear inserta las imágenes y crea figuras
@@ -28,8 +31,8 @@ public class Painter {
     private static Circle salida, entrada1, entrada2;
     private static Rectangle rectangleImage;
     private static boolean conectando;
-    public static Line line = new Line();
-    private static double posx, posy;
+    private static Circle current;
+    private static double startposx, startposy, endPosX, endPosY;
 
 
     public Painter(Pane pane) {
@@ -66,6 +69,7 @@ public class Painter {
         salida(logicGateGroup);
         entradas(logicGateGroup);
 
+
     }
 
 
@@ -83,6 +87,7 @@ public class Painter {
         salida.setLayoutY(92);
         salida.setId("Salida");
         salida.setOpacity(0.0);
+        salida.setUserData(logicGateGroup.getUserData());
         logicGateGroup.getChildren().add(salida);
 
     }
@@ -100,6 +105,7 @@ public class Painter {
         entrada1.setLayoutX(25);
         entrada1.setLayoutY(110);
         entrada1.setId("Entrada1");
+        entrada1.setUserData(logicGateGroup);
         entrada1.setOpacity(0.0);
 
 
@@ -109,32 +115,10 @@ public class Painter {
         entrada2.setLayoutX(25);
         entrada2.setLayoutY(80);
         entrada2.setId("Entrada2");
+        entrada2.setUserData(logicGateGroup);
         entrada2.setOpacity(0.0);
 
         logicGateGroup.getChildren().addAll(entrada1, entrada2);
-    }
-
-
-    private static void paintLine(double x, double y){
-        if(Main.conectingOutput && (!Main.input1 &!Main.input2)){
-            System.out.println("Empieza a crear la linea");
-            posx = x;
-            posy = y;
-            System.out.println(posx + " " + posy);
-        }
-        if(Main.input1 || Main.input2){
-            System.out.println("Termina- la linea");
-            Line line = new Line();
-            line.setId("linea");
-            line.setStrokeWidth(5);
-            line.setStartX(posx);
-            line.setStartY(posy);
-            line.setEndX(x);
-            line.setEndY(y);
-            System.out.println(x + " " + y);
-            pane.getChildren().addAll(line);
-
-        }
     }
 
 
@@ -143,36 +127,58 @@ public class Painter {
         public void handle(MouseEvent mouseEvent) {
             Circle circle = (Circle) mouseEvent.getSource();
             if (circle.getId().equals("Salida")){
-                if(!Main.conectingInput) {
-                    Main.conectingOutput = true;
-                    Main.selectingOutput = true;
-                    paintLine(mouseEvent.getSceneX(), mouseEvent.getSceneY());
+                Main.conectingOutput = true;
+                Main.selectingOutput = true;
+                current = circle;
+                startposx = mouseEvent.getSceneX();
+                startposy = mouseEvent.getSceneY();
                 }
             }
 
-        }
     };
     static  EventHandler<MouseEvent> MouseClickInput = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
             Circle circle = (Circle) mouseEvent.getSource();
-            if(circle.getId().equals("Entrada1")){
-                if(!Main.selectingOutput) {
+            if (circle.getId().equals("Entrada1")) {
+                if (Main.conectingOutput) {
                     Main.selectingNewGate = true;
                     Main.input1 = true;
-                    paintLine(mouseEvent.getSceneX(), mouseEvent.getSceneY());
+                    //paintLine(pane, startposx, startposy, mouseEvent.getSceneX(), mouseEvent.getSceneY(),  current, circle)
+                }
+                if (!Main.conectingOutput) {
+                    Main.conectingInput = true;
+                    Main.selectingInput = true;
+
+                    if (Main.selected) {
+                        Main.selectingInput = false;
+                        Main.input1 = true;
+                        Main.selectingNewGate = true;
+                    }
                 }
             }
-            if(circle.getId().equals("Entrada2")){
-                if(!Main.selectingOutput){
+            if (circle.getId().equals("Entrada2")) {
+                if (Main.conectingOutput) {
                     Main.selectingNewGate = true;
                     Main.input2 = true;
-                    paintLine(mouseEvent.getSceneX(), mouseEvent.getSceneY());
+                    //paintLine(pane, startposx, startposy, mouseEvent.getSceneX(), mouseEvent.getSceneY(), current, circle);
+                }
+                if (!Main.conectingOutput) {
+                    Main.conectingInput = true;
+                    Main.selectingInput = true;
+                }
+                if (Main.selected) {
+                    System.out.println("Selected activado");
+                    Main.selectingInput = false;
+                    Main.input2 = true;
+                    Main.selectingNewGate = true;
                 }
             }
-
         }
     };
+
+
+
     public static void enumeration(Group group) {
         Label label = new Label();
         label.setLayoutX(80);
@@ -205,5 +211,22 @@ public class Painter {
 
             }
         }
+    }
+
+    public static Line paintLine(Pane pane, double startposx, double startposy, double endPosX, double endPosY, Circle compuerta1, Circle compuerta2){
+        Line line = new Line();
+        line.setStartX(startposx);
+        line.setStartY(startposy);
+        line.setEndX(endPosX);
+        line.setEndY(endPosY);
+        line.setId("Linea");
+        pane.getChildren().addAll(line);
+        Compuerta Newcompuerta = (Compuerta) ((Group)compuerta1.getUserData()).getUserData();
+        Compuerta Newcompuerta2 = (Compuerta) ((Group)compuerta2.getUserData()).getUserData();
+        Newcompuerta.lines.add(line);
+        Newcompuerta2.lines.add(line);
+        return line;
+
+
     }
 }
