@@ -34,10 +34,13 @@ public class CompuertaOR extends Compuerta {
             output.value = input1.value || input2.value;
         }
 
+        /*
         for(int i=0; i<= outputs.size(); i++){
             Compuerta compuerta = outputs.getElement(i);
             compuerta.output.value = output.value;
         }
+        
+         */
 
 
     }

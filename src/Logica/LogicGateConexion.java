@@ -93,7 +93,6 @@ public class LogicGateConexion {
                 if (mouseEvent.getX() + 1 == logicGateTo.posX && mouseEvent.getY() + 1 == logicGateTo.posY) {
                     if (input1) {
                         if(!logicGateTo.input1Connected) {
-                            //currentLogicGate.outputs.add(logicGateTo);
                             logicGateTo.input1 = currentLogicGate.output;
                             System.out.println("Entrada 1: " + logicGateTo.input1.value);
                             input1 = false;
@@ -106,7 +105,6 @@ public class LogicGateConexion {
                     }
                     if (input2) {
                         if(!logicGateTo.input2Connected) {
-                            //currentLogicGate.outputs.add(logicGateTo);
                             logicGateTo.input2 = currentLogicGate.output;
                             System.out.println("Entrada 2: " + logicGateTo.input2.value);
                             logicGateTo.input2Connected = true;

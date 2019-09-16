@@ -167,7 +167,6 @@ public class Painter {
                     if(flag) {
                         LogicGateConexion.conectingInput = true;
                         LogicGateConexion.selectingInput = true;
-                        LogicGateConexion.input1 = true;
                         Line line = new Line(startposx, startposy, mouseEvent.getSceneX(), mouseEvent.getSceneY());
                         line.setStroke(Color.rgb(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
                         line.setStrokeWidth(5);
@@ -180,6 +179,7 @@ public class Painter {
                     LogicGateConexion.selectingInput = false;
                     LogicGateConexion.selectingNewGate = true;
                     LogicGateConexion.input1Selected = true;
+                    LogicGateConexion.input1 = true;
                     flag = true;
                     }
             }
@@ -195,7 +195,6 @@ public class Painter {
                     if(flag) {
                         LogicGateConexion.conectingInput = true;
                         LogicGateConexion.selectingInput = true;
-                        LogicGateConexion.input2 = true;
                         flag = false;
                     }
                 }
@@ -203,6 +202,7 @@ public class Painter {
                     LogicGateConexion.selectingInput = false;
                     LogicGateConexion.selectingNewGate = true;
                     LogicGateConexion.input2Selected = true;
+                    LogicGateConexion.input2 = true;
                     flag = true;
                 }
             }
