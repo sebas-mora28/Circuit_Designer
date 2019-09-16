@@ -33,9 +33,9 @@ public class CompuertaXNOR extends Compuerta {
     public void operar() {
         if(input1.value != null && input2.value != null) {
             if ((input1.value == false && input2.value == true) || (input1.value == true && input2.value == false)) {
-                output.value = true;
-            } else {
                 output.value = false;
+            } else {
+                output.value = true;
             }
         }
         if(inputs1.size() != 0){

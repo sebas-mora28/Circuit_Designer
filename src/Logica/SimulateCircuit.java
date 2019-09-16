@@ -2,30 +2,27 @@ package Logica;
 
 
 import Compuertas.Compuerta;
+import GUI.Painter;
 import ListaEnlazada.LinkedList;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.Pane;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class SimulateCircuit extends Application {
     private Pane root = new Pane();
-    private TextField textField;
     private Label labelLogicGate, labelEntrada;
-    private LinkedList<Compuerta> entries = new LinkedList<>();
-    private LinkedList<TextField> textFieldList = new LinkedList<>();
+    private LinkedList<Compuerta> inputs = new LinkedList<>();
+    private LinkedList<ComboBox<Boolean>> comboBoxList = new LinkedList<>();
+    public static boolean simulatingCircuit = false;
 
 
     @Override
@@ -45,6 +42,7 @@ public class SimulateCircuit extends Application {
         buttonRun.setText("Run");
         buttonRun.setLayoutX(600);
         buttonRun.setLayoutY(650);
+        buttonRun.setOnMouseClicked(simulateCircuit);
         root.getChildren().addAll(buttonRun);
 
         labelLogicGate = new Label();
@@ -61,8 +59,8 @@ public class SimulateCircuit extends Application {
         labelTitle.setLayoutY(20);
         root.getChildren().addAll(labelEntrada);
 
-        run();
-        askEntries();
+        StartSimulating();
+        VerifyEmptyInputs();
 
 
         stage.setScene(new Scene(root, 700, 700));
@@ -73,63 +71,109 @@ public class SimulateCircuit extends Application {
 
     }
 
-    public void run(){
-            System.out.println(LogicGatesCreator.LogicGatesList.size());
+    public void StartSimulating(){
             if (LogicGatesCreator.LogicGatesList.size() == 0) {
                 throw new NullPointerException();
             }
             for (int i = 0; i <= LogicGatesCreator.LogicGatesList.size() - 1; i++) {
                 Compuerta compuerta = LogicGatesCreator.LogicGatesList.getElement(i);
-                if (compuerta.input1Connected) {
-                    entries.add(compuerta.input1);
-                    //TODO: Pedir la entrada1 de la compuerta
-                }
-
-                if (compuerta.input2Connected) {
-                    entries.add(compuerta.input2);
-                    //TODO: Pedir la entrada2 de la compuerta
+                if (!compuerta.input1Connected || !compuerta.input2Connected) {
+                    inputs.add(compuerta);
                 }
             }
     }
 
-    public void askEntries(){
+    public void VerifyEmptyInputs(){
         int posx = 50;
         int posy = 100;
-        for(int i=0; i<=entries.size()-1; i++){
-            System.out.println("Se crean los ");
-            TextField textField = new TextField();
-            textFieldList.add(textField);
-            textField.setLayoutX(posx);
-            textField.setLayoutY(posy);
-            root.getChildren().addAll(textField);
-            posy += 80;
+        for(int i = 0; i <= inputs.size()-1; i++){
+            Compuerta compuerta = inputs.getElement(i);
+            if(!compuerta.input1Connected){
+                createComboBox(posx, posy);
+                posy += 30;
+            }
+            if(!compuerta.input2Connected){
+                createComboBox(posx, posy);
+                posy += 20;
+            }
+
+            posy += 50;
         }
     }
 
-    public void asignInputs() {
-        for (int i = 0; i <= textFieldList.size() - 1; i++) {
-            TextField entry = textFieldList.getElement(i);
-            Compuerta compuerta = entries.getElement(i);
-            if (entry.getText().equals("true")) {
-                if (compuerta.input1Connected) {
-                    compuerta.input1.value = true;
+    public void createComboBox(int posx, int posy){
+        ComboBox<Boolean> comboBox = new ComboBox<>();
+        comboBox.setItems(FXCollections.observableArrayList(true, false));
+        comboBox.setPromptText("Seleccione un valor para la entrada");
+        comboBox.setLayoutX(posx);
+        comboBox.setLayoutY(posy);
+        root.getChildren().addAll(comboBox);
+        comboBoxList.add(comboBox);
+    }
+
+    public void setInputsValues() {
+        int index = 0;
+        try {
+            for (int i = 0; i <= inputs.size() - 1; i++) {
+                Compuerta compuerta = inputs.getElement(i);
+                if (!compuerta.input1Connected) {
+                    ComboBox entry = comboBoxList.getElement(index);
+                    System.out.println(entry.getValue());
+                    if ((Boolean) entry.getValue() == true) {
+                        compuerta.input1.value = true;
+                        index += 1;
+                    }
+                    if ((Boolean) entry.getValue() == false) {
+                        compuerta.input1.value = false;
+                        index += 1;
+                    }
+                    if (entry.getValue() == null) {
+                        throw new NullPointerException();
+                    }
                 }
-                if (compuerta.input2Connected) {
-                    compuerta.input2.value = true;
+                if (!compuerta.input2Connected) {
+                    ComboBox entry = comboBoxList.getElement(index);
+                    if ((Boolean) entry.getValue() == true) {
+                        compuerta.input2.value = true;
+                        index += 1;
+                    }
+                    if ((Boolean) entry.getValue() == false) {
+                        compuerta.input2.value = false;
+                        index += 1;
+                    }
+                    if (entry.getValue() == null) {
+                        throw new NullPointerException();
+                    }
                 }
             }
-            if (entry.getText().equals("false")) {
-                if (compuerta.input1Connected) {
-                    compuerta.input1.value = false;
-                }
-                if (compuerta.input2Connected) {
-                    compuerta.input2.value = false;
-                }
-            }
-            compuerta.operar();
-            System.out.println(compuerta.output.value);
+            operateLogicGates();
+        }catch (NullPointerException e){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "ENTRY NULL", ButtonType.OK);
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+            alert.setHeaderText("Entrada Inválida");
+            alert.setContentText("Una de las entradas tiene un valor nulo, por favor ingrese un valor válido");
+            alert.show();
+
         }
     }
+
+
+    private void operateLogicGates(){
+        simulatingCircuit = true;
+        for(int i=0; i<= LogicGatesCreator.LogicGatesList.size()-1; i++){
+            Compuerta compuerta = LogicGatesCreator.LogicGatesList.getElement(i);
+            compuerta.operar();
+        }
+        Painter.updateEnumeration();
+        simulatingCircuit = false;
+    }
+
+
+
+
+    EventHandler<MouseEvent> simulateCircuit = mouseEvent -> {
+        setInputsValues();
+    };
 }
 
 

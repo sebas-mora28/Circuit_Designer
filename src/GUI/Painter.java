@@ -2,7 +2,9 @@ package GUI;
 
 import Compuertas.Compuerta;
 import ListaEnlazada.LinkedList;
+import Logica.LogicGateConexion;
 import Logica.LogicGatesCreator;
+import Logica.SimulateCircuit;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
@@ -129,8 +131,8 @@ public class Painter {
         public void handle(MouseEvent mouseEvent) {
             Circle circle = (Circle) mouseEvent.getSource();
             if (circle.getId().equals("Salida")){
-                Main.conectingOutput = true;
-                Main.selectingOutput = true;
+                LogicGateConexion.conectingOutput = true;
+                LogicGateConexion.selectingOutput = true;
                 current = circle;
                 startposx = mouseEvent.getSceneX();
                 startposy = mouseEvent.getSceneY();
@@ -143,9 +145,9 @@ public class Painter {
         public void handle(MouseEvent mouseEvent) {
             Circle circle = (Circle) mouseEvent.getSource();
             if (circle.getId().equals("Entrada1")) {
-                if (Main.conectingOutput) {
-                    Main.selectingNewGate = true;
-                    Main.input1 = true;
+                if (LogicGateConexion.conectingOutput) {
+                    LogicGateConexion.selectingNewGate = true;
+                    LogicGateConexion.input1 = true;
                     Line line = new Line(startposx, startposy, mouseEvent.getSceneX(), mouseEvent.getSceneY());
                     line.setStroke(Color.rgb(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
                     line.setStrokeWidth(5);
@@ -153,40 +155,39 @@ public class Painter {
                     System.out.println("Se crea la linea");
                     pane.getChildren().addAll(line);
                     return;
-                    //paintLine(pane, startposx, startposy, mouseEvent.getSceneX(), mouseEvent.getSceneY(),  current, circle)
                 }
-                if (!Main.conectingOutput) {
-                    Main.conectingInput = true;
-                    Main.selectingInput = true;
-                    Main.input1Selected = true;
+                if (!LogicGateConexion.conectingOutput) {
+                    LogicGateConexion.conectingInput = true;
+                    LogicGateConexion.selectingInput = true;
+                    LogicGateConexion.input1Selected = true;
                     Line line = new Line(startposx, startposy, mouseEvent.getSceneX(), mouseEvent.getSceneY());
                     line.setStroke(Color.rgb(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
                     line.setStrokeWidth(5);
                     line.setId("Linea");
 
-                    if (Main.selected) {
-                        Main.selectingInput = false;
-                        Main.input1 = true;
-                        Main.selectingNewGate = true;
+                    if (LogicGateConexion.selected) {
+                        LogicGateConexion.selectingInput = false;
+                        LogicGateConexion.input1 = true;
+                        LogicGateConexion.selectingNewGate = true;
                     }
                 }
             }
             if (circle.getId().equals("Entrada2")) {
-                if (Main.conectingOutput) {
-                    Main.input2Selected = true;
-                    Main.selectingNewGate = true;
-                    Main.input2 = true;
+                if (LogicGateConexion.conectingOutput) {
+                    LogicGateConexion.input2Selected = true;
+                    LogicGateConexion.selectingNewGate = true;
+                    LogicGateConexion.input2 = true;
                     return;
                     //paintLine(pane, startposx, startposy, mouseEvent.getSceneX(), mouseEvent.getSceneY(), current, circle);
                 }
-                if (!Main.conectingOutput) {
-                    Main.conectingInput = true;
-                    Main.selectingInput = true;
+                if (!LogicGateConexion.conectingOutput) {
+                    LogicGateConexion.conectingInput = true;
+                    LogicGateConexion.selectingInput = true;
                 }
-                if (Main.selected) {
-                    Main.selectingInput = false;
-                    Main.input2 = true;
-                    Main.selectingNewGate = true;
+                if (LogicGateConexion.selected) {
+                    LogicGateConexion.selectingInput = false;
+                    LogicGateConexion.input2 = true;
+                    LogicGateConexion.selectingNewGate = true;
                 }
             }
         }
@@ -228,7 +229,7 @@ public class Painter {
                     Label label = (Label)node;
                     label.setText("i<"+ i + ">");
                 }
-                if(node.getId().equals("Output") && Main.simulatingCircuit){
+                if(node.getId().equals("Output") && SimulateCircuit.simulatingCircuit){
                     Label labelOutput = (Label)node;
                     labelOutput.setText(compuerta.output.value.toString());
                 }
