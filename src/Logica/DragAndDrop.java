@@ -1,27 +1,23 @@
 package Logica;
 
 import Compuertas.Compuerta;
-import Compuertas.CompuertaAND;
-import GUI.Main;
-import GUI.PaintLine;
-import GUI.Painter;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Line;
 
-import java.sql.SQLOutput;
 
 public class DragAndDrop {
-    private static Pane gridPane;
     public static double posX, posY, newTranslationX, newTranslationY;
     private static double newPosX, newPosY, translationX, translationY;
 
+    /**
+     * Este método controla los diferentes EventHandler para el funcionamoento del DragAndDrop
+     * @param gridPane
+     * @param group
+     */
+
     public static void SetDragAndDrop(Pane gridPane, Group group) {
-        setGridPane(gridPane);
 
         group.setOnMousePressed(mouseEvent -> {
             Group logicGateGroup = (Group)(mouseEvent.getSource());
@@ -83,9 +79,6 @@ public class DragAndDrop {
             return false;
     }
 
-    private static void setGridPane(Pane gridPane) {
-        DragAndDrop.gridPane = gridPane;
-    }
 
     public static  void updatePosition(Group group, double posX, double posY){
             Compuerta compuerta = (Compuerta)group.getUserData();

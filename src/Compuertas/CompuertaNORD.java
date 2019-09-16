@@ -31,20 +31,12 @@ public class CompuertaNORD extends Compuerta {
     public void operar() {
         if(input1.value != null && input2.value != null){
             output.value = !(input1.value && input2.value);
-        }
-        if(inputs1.size() != 0){
-            for(int i=0; i <= inputs1.size()-1; i++){
-                Compuerta compuerta = inputs1.getElement(i);
-                compuerta.input1.value = output.value;
-            }
-        }
-        if(inputs2.size() !=0){
-            for(int i=0; i <= inputs2.size()-1; i++){
-                Compuerta compuerta = inputs2.getElement(i);
-                compuerta.input2.value = output.value;
 
+            for(int i=0; i<= outputs.size(); i++){
+                Compuerta compuerta = outputs.getElement(i);
+                compuerta.output.value = output.value;
             }
-        }
 
+        }
     }
 }

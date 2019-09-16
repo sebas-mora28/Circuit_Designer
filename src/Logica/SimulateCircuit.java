@@ -23,6 +23,7 @@ public class SimulateCircuit extends Application {
     private LinkedList<Compuerta> inputs = new LinkedList<>();
     private LinkedList<ComboBox<Boolean>> comboBoxList = new LinkedList<>();
     public static boolean simulatingCircuit = false;
+    public int[] numerationLogicGate;
 
 
     @Override
@@ -86,18 +87,27 @@ public class SimulateCircuit extends Application {
     public void VerifyEmptyInputs(){
         int posx = 50;
         int posy = 100;
+        int index = 0;
         for(int i = 0; i <= inputs.size()-1; i++){
             Compuerta compuerta = inputs.getElement(i);
-            if(!compuerta.input1Connected){
-                createComboBox(posx, posy);
-                posy += 30;
-            }
-            if(!compuerta.input2Connected){
-                createComboBox(posx, posy);
-                posy += 20;
+            if(!compuerta.input1Connected || !compuerta.input2Connected){
+                createLabel(posx, posy-40, "Compuerta" + i);
             }
 
-            posy += 50;
+            if(!compuerta.input1Connected){
+                createComboBox(posx, posy);
+                createLabel(posx, posy-20, "Input" + index + ":");
+                posy += 60;
+                index +=1;
+            }
+            if(!compuerta.input2Connected){
+                createLabel(posx, posy-20, "Input" + index + ":");
+                createComboBox(posx, posy);
+                posy += 20;
+                index +=1;
+            }
+
+            posy += 70;
         }
     }
 
@@ -111,6 +121,16 @@ public class SimulateCircuit extends Application {
         comboBoxList.add(comboBox);
     }
 
+    public void createLabel(int posx, int posy, String name){
+        Label label = new Label();
+        label.setText(name);
+        label.setLayoutX(posx);
+        label.setLayoutY(posy);
+        root.getChildren().add(label);
+
+
+    }
+
     public void setInputsValues() {
         int index = 0;
         try {
@@ -118,13 +138,14 @@ public class SimulateCircuit extends Application {
                 Compuerta compuerta = inputs.getElement(i);
                 if (!compuerta.input1Connected) {
                     ComboBox entry = comboBoxList.getElement(index);
-                    System.out.println(entry.getValue());
-                    if ((Boolean) entry.getValue() == true) {
+                    if ((Boolean) entry.getValue()) {
                         compuerta.input1.value = true;
+                        setInputs(compuerta, 1);
                         index += 1;
                     }
-                    if ((Boolean) entry.getValue() == false) {
+                    if (!((Boolean) entry.getValue())) {
                         compuerta.input1.value = false;
+                        setInputs(compuerta, 1);
                         index += 1;
                     }
                     if (entry.getValue() == null) {
@@ -133,12 +154,14 @@ public class SimulateCircuit extends Application {
                 }
                 if (!compuerta.input2Connected) {
                     ComboBox entry = comboBoxList.getElement(index);
-                    if ((Boolean) entry.getValue() == true) {
+                    if ((Boolean) entry.getValue()) {
                         compuerta.input2.value = true;
+                        setInputs(compuerta, 2);
                         index += 1;
                     }
-                    if ((Boolean) entry.getValue() == false) {
+                    if (!((Boolean) entry.getValue())) {
                         compuerta.input2.value = false;
+                        setInputs(compuerta, 2);
                         index += 1;
                     }
                     if (entry.getValue() == null) {
@@ -148,6 +171,7 @@ public class SimulateCircuit extends Application {
             }
             operateLogicGates();
         }catch (NullPointerException e){
+            e.printStackTrace();
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "ENTRY NULL", ButtonType.OK);
             alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
             alert.setHeaderText("Entrada Inválida");
@@ -160,12 +184,28 @@ public class SimulateCircuit extends Application {
 
     private void operateLogicGates(){
         simulatingCircuit = true;
-        for(int i=0; i<= LogicGatesCreator.LogicGatesList.size()-1; i++){
+        for (int i = 0; i <= LogicGatesCreator.LogicGatesList.size() - 1; i++) {
             Compuerta compuerta = LogicGatesCreator.LogicGatesList.getElement(i);
             compuerta.operar();
         }
         Painter.updateEnumeration();
         simulatingCircuit = false;
+    }
+
+    public void setInputs(Compuerta compuerta, int input){
+        if(input==1){
+            for(int i=0; i<= compuerta.inputs1.size()-1; i++){
+                Compuerta newCompuerta = compuerta.inputs1.getElement(i);
+                newCompuerta.input1.value = compuerta.input1.value;
+            }
+        }
+        if(input==2){
+            for(int i=0; i<= compuerta.inputs2.size()-1; i++){
+                Compuerta newCompuerta = compuerta.inputs2.getElement(i);
+                newCompuerta.input2.value = compuerta.input2.value;
+            }
+
+        }
     }
 
 

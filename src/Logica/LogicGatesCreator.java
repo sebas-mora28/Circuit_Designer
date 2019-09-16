@@ -69,23 +69,6 @@ public class LogicGatesCreator {
         Painter.updateEnumeration();
 
 
-
-        /*
-        setGridPane(gridPane);
-        Group logicGateGroup = new Group();
-        setLogicGateGroup(logicGateGroup);
-        Image image = new Image(name);
-        Rectangle logicGate = Painter.insertImage(image);
-        logicGateGroup.setOnMousePressed(MousePressed);
-        logicGateGroup.setOnMouseDragged(MousedDragged);
-        logicGateGroup.setOnMouseReleased(MousedRelease);
-        logicGateGroup.getChildren().add(logicGate);
-        gridPane.getChildren().add(logicGateGroup);
-        Painter.crearEntradasSalidas(logicGateGroup);
-         */
-
-
-
     }
 
 

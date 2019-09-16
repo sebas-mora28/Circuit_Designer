@@ -7,6 +7,7 @@ import Logica.LogicGatesCreator;
 import Logica.SimulateCircuit;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -14,12 +15,17 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 import java.awt.*;
 import java.util.Random;
@@ -37,6 +43,7 @@ public class Painter {
     private static Circle current;
     private static double startposx, startposy, endPosX, endPosY;
     private static Random random = new Random();
+    private static boolean flag = true;
 
 
     public Painter(Pane pane) {
@@ -157,37 +164,46 @@ public class Painter {
                     return;
                 }
                 if (!LogicGateConexion.conectingOutput) {
-                    LogicGateConexion.conectingInput = true;
-                    LogicGateConexion.selectingInput = true;
-                    LogicGateConexion.input1Selected = true;
-                    Line line = new Line(startposx, startposy, mouseEvent.getSceneX(), mouseEvent.getSceneY());
-                    line.setStroke(Color.rgb(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
-                    line.setStrokeWidth(5);
-                    line.setId("Linea");
-
-                    if (LogicGateConexion.selected) {
-                        LogicGateConexion.selectingInput = false;
+                    if(flag) {
+                        LogicGateConexion.conectingInput = true;
+                        LogicGateConexion.selectingInput = true;
                         LogicGateConexion.input1 = true;
-                        LogicGateConexion.selectingNewGate = true;
+                        Line line = new Line(startposx, startposy, mouseEvent.getSceneX(), mouseEvent.getSceneY());
+                        line.setStroke(Color.rgb(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
+                        line.setStrokeWidth(5);
+                        line.setId("Linea");
+                        flag = false;
                     }
                 }
+
+                if (LogicGateConexion.selected) {
+                    LogicGateConexion.selectingInput = false;
+                    LogicGateConexion.selectingNewGate = true;
+                    LogicGateConexion.input1Selected = true;
+                    flag = true;
+                    }
             }
             if (circle.getId().equals("Entrada2")) {
                 if (LogicGateConexion.conectingOutput) {
-                    LogicGateConexion.input2Selected = true;
                     LogicGateConexion.selectingNewGate = true;
                     LogicGateConexion.input2 = true;
                     return;
                     //paintLine(pane, startposx, startposy, mouseEvent.getSceneX(), mouseEvent.getSceneY(), current, circle);
                 }
                 if (!LogicGateConexion.conectingOutput) {
-                    LogicGateConexion.conectingInput = true;
-                    LogicGateConexion.selectingInput = true;
+
+                    if(flag) {
+                        LogicGateConexion.conectingInput = true;
+                        LogicGateConexion.selectingInput = true;
+                        LogicGateConexion.input2 = true;
+                        flag = false;
+                    }
                 }
                 if (LogicGateConexion.selected) {
                     LogicGateConexion.selectingInput = false;
-                    LogicGateConexion.input2 = true;
                     LogicGateConexion.selectingNewGate = true;
+                    LogicGateConexion.input2Selected = true;
+                    flag = true;
                 }
             }
         }
@@ -200,8 +216,10 @@ public class Painter {
         label.setId("label");
 
         Label labelOutput = new Label();
-        labelOutput.setLayoutX(120);
-        labelOutput.setLayoutY(80);
+        labelOutput.setLayoutX(110);
+        labelOutput.setLayoutY(85);
+        labelOutput.setFont(Font.font("Arial", FontWeight.BOLD, 17));
+        labelOutput.setBackground(new Background(new BackgroundFill(Color.rgb(255,255,255), CornerRadii.EMPTY, Insets.EMPTY)));
         labelOutput.setId("Output");
 
         Label labeInput1 = new Label("<0>");
@@ -229,7 +247,7 @@ public class Painter {
                     Label label = (Label)node;
                     label.setText("i<"+ i + ">");
                 }
-                if(node.getId().equals("Output") && SimulateCircuit.simulatingCircuit){
+                if(node.getId().equals("Output") && SimulateCircuit.simulatingCircuit && !compuerta.outputConnected){
                     Label labelOutput = (Label)node;
                     labelOutput.setText(compuerta.output.value.toString());
                 }
@@ -238,6 +256,9 @@ public class Painter {
                     if(!compuerta.input1Connected){
                         labelInput1.setText("i<"  + index + ">");
                         index +=1;
+                        if(SimulateCircuit.simulatingCircuit){
+                            labelInput1.setText(compuerta.input1.value.toString());
+                        }
                     }else{
                         labelInput1.setText("");
 
@@ -248,6 +269,9 @@ public class Painter {
                     if(!compuerta.input2Connected){
                         labelInput2.setText("i<" + index +">");
                         index +=1;
+                        if(SimulateCircuit.simulatingCircuit){
+                            labelInput2.setText(compuerta.input2.value.toString());
+                        }
                     }else{
                         labelInput2.setText("");
 

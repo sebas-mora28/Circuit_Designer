@@ -10,6 +10,7 @@ public abstract class Compuerta {
     public Group logicGateGroup;
     public LinkedList<Line> lines = new LinkedList<>();
 
+    public LinkedList<Compuerta> outputs = new LinkedList<>();
     public LinkedList<Compuerta> inputs1 = new LinkedList<>();
     public LinkedList<Compuerta> inputs2 = new LinkedList<>();
 

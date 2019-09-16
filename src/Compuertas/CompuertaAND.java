@@ -48,20 +48,28 @@ public class CompuertaAND extends Compuerta{
     @Override
     public void operar() {
         if(input1.value != null && input2.value != null){
+            System.out.println("Valores AND" + input1.value + " "  + input2.value);
             output.value = input1.value && input2.value;
-            if(inputs1.size() !=0){
-                for(int i=0; i<= inputs1.size()-1; i++){
-                    Compuerta compuerta = inputs1.getElement(i);
+
+            /*
+            for(int i=0; i<= outputs.size()-1; i++){
+                Compuerta compuerta = outputs.getElement(i);
+                if(!compuerta.input1Connected){
+                    System.out.println("Entra");
                     compuerta.input1.value = output.value;
+
                 }
-            }
-            if(inputs2.size() !=0){
-                for(int i=0; i<=inputs2.size()-1; i++){
-                    Compuerta compuerta = (Compuerta)inputs2.getElement(i);
+                if(!compuerta.input2Connected){
+                    System.out.println("Entra2");
                     compuerta.input2.value = output.value;
                 }
             }
+
+             */
+
         }
+
+        System.out.println("-----------------------------------");
     }
 
 }

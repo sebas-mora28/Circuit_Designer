@@ -35,7 +35,6 @@ import java.util.Scanner;
 public class Main extends Application {
     private Pane gridPane;
     private Pane pane;
-    private GraphicsContext context;
     private LogicGatesCreator logicGatesCreator = new LogicGatesCreator();
     private SimulateCircuit simulateCircuit = new SimulateCircuit();
 
