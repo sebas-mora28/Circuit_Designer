@@ -20,6 +20,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 
 import java.awt.*;
+import java.util.Random;
 
 
 /**
@@ -33,6 +34,7 @@ public class Painter {
     private static boolean conectando;
     private static Circle current;
     private static double startposx, startposy, endPosX, endPosY;
+    private static Random random = new Random();
 
 
     public Painter(Pane pane) {
@@ -103,7 +105,7 @@ public class Painter {
         entrada1.setOnMouseEntered(mouseEvent -> entrada1.setCursor(Cursor.CROSSHAIR));
         entrada1.setOnMouseClicked(MouseClickInput);
         entrada1.setLayoutX(25);
-        entrada1.setLayoutY(110);
+        entrada1.setLayoutY(80);
         entrada1.setId("Entrada1");
         entrada1.setUserData(logicGateGroup);
         entrada1.setOpacity(0.0);
@@ -113,7 +115,7 @@ public class Painter {
         entrada2.setOnMouseEntered(mouseEvent -> entrada2.setCursor(Cursor.CROSSHAIR));
         entrada2.setOnMouseClicked(MouseClickInput);
         entrada2.setLayoutX(25);
-        entrada2.setLayoutY(80);
+        entrada2.setLayoutY(110);
         entrada2.setId("Entrada2");
         entrada2.setUserData(logicGateGroup);
         entrada2.setOpacity(0.0);
@@ -144,6 +146,12 @@ public class Painter {
                 if (Main.conectingOutput) {
                     Main.selectingNewGate = true;
                     Main.input1 = true;
+                    Line line = new Line(startposx, startposy, mouseEvent.getSceneX(), mouseEvent.getSceneY());
+                    line.setStroke(Color.rgb(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
+                    line.setStrokeWidth(5);
+                    line.setId("Linea");
+                    System.out.println("Se crea la linea");
+                    pane.getChildren().addAll(line);
                     return;
                     //paintLine(pane, startposx, startposy, mouseEvent.getSceneX(), mouseEvent.getSceneY(),  current, circle)
                 }
@@ -151,6 +159,10 @@ public class Painter {
                     Main.conectingInput = true;
                     Main.selectingInput = true;
                     Main.input1Selected = true;
+                    Line line = new Line(startposx, startposy, mouseEvent.getSceneX(), mouseEvent.getSceneY());
+                    line.setStroke(Color.rgb(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
+                    line.setStrokeWidth(5);
+                    line.setId("Linea");
 
                     if (Main.selected) {
                         Main.selectingInput = false;
@@ -172,7 +184,6 @@ public class Painter {
                     Main.selectingInput = true;
                 }
                 if (Main.selected) {
-                    System.out.println("Selected activado");
                     Main.selectingInput = false;
                     Main.input2 = true;
                     Main.selectingNewGate = true;
@@ -180,8 +191,6 @@ public class Painter {
             }
         }
     };
-
-
 
     public static void enumeration(Group group) {
         Label label = new Label();
@@ -194,25 +203,55 @@ public class Painter {
         labelOutput.setLayoutY(80);
         labelOutput.setId("Output");
 
-        group.getChildren().addAll(label,labelOutput);
+        Label labeInput1 = new Label("<0>");
+        labeInput1.setLayoutX(10);
+        labeInput1.setLayoutY(55);
+        labeInput1.setId("Input1");
+
+        Label labeInput2 = new Label("<0>");
+        labeInput2.setLayoutX(10);
+        labeInput2.setLayoutY(120);
+        labeInput2.setId("Input2");
+
+
+        group.getChildren().addAll(label,labelOutput, labeInput1, labeInput2);
 
     }
 
     public static void updateEnumeration(){
+        int index = 0;
         for(int i=0; i<= LogicGatesCreator.LogicGatesList.size()-1;i++){
             Compuerta compuerta = LogicGatesCreator.LogicGatesList.getElement(i);
             ObservableList<Node> nodos =compuerta.logicGateGroup.getChildren();
             for(Node node : nodos){
                 if(node.getId().equals("label")){
                     Label label = (Label)node;
-                    label.setText("<"+ i + ">");
+                    label.setText("i<"+ i + ">");
                 }
                 if(node.getId().equals("Output") && Main.simulatingCircuit){
                     Label labelOutput = (Label)node;
                     labelOutput.setText(compuerta.output.value.toString());
                 }
+                if(node.getId().equals("Input1")){
+                    Label labelInput1 = (Label)node;
+                    if(!compuerta.input1Connected){
+                        labelInput1.setText("i<"  + index + ">");
+                        index +=1;
+                    }else{
+                        labelInput1.setText("");
 
+                    }
+                }
+                if(node.getId().equals("Input2")){
+                    Label labelInput2 = (Label)node;
+                    if(!compuerta.input2Connected){
+                        labelInput2.setText("i<" + index +">");
+                        index +=1;
+                    }else{
+                        labelInput2.setText("");
 
+                    }
+                }
             }
         }
     }

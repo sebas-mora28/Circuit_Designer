@@ -3,6 +3,7 @@ package GUI;
 
 import Compuertas.Compuerta;
 import Logica.LogicGatesCreator;
+import Logica.SimulateCircuit;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -11,9 +12,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.effect.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -54,6 +53,8 @@ public class Main extends Application {
     public static boolean simulatingCircuit = false;
     public static Compuerta currentLogicGate;
     public static Compuerta logicGateTo;
+
+    private SimulateCircuit simulateCircuit = new SimulateCircuit();
 
 
     public static void main(String[] args) {
@@ -116,7 +117,7 @@ public class Main extends Application {
         Button clean = new Button("Clean");
         clean.setLayoutX(1100);
         clean.setLayoutY(850);
-        clean.setOnMouseClicked(this.clean);
+        clean.setOnMouseClicked(this.openWindow);
         clean.setPrefSize(50, 25);
 
 
@@ -280,8 +281,8 @@ public class Main extends Application {
     private void SelectGate(MouseEvent mouseEvent) {
         for (int i = 0; i <= LogicGatesCreator.LogicGatesList.size() - 1; i++) {
             currentLogicGate = LogicGatesCreator.LogicGatesList.getElement(i);
-            System.out.println("Selecciona salida");
             if (mouseEvent.getX() + 1 == currentLogicGate.posX && mouseEvent.getY() + 1 == currentLogicGate.posY) {
+                System.out.println("Se selecciona la compuerta");
                 currentLogicGate.outputConnected = true;
                 if(conectingOutput) {
                     selectingOutput = false;
@@ -306,19 +307,26 @@ public class Main extends Application {
             if (!(mouseEvent.getX() + 1 == currentLogicGate.posX && mouseEvent.getY() + 1 == currentLogicGate.posY)) {
                 if (mouseEvent.getX() + 1 == logicGateTo.posX && mouseEvent.getY() + 1 == logicGateTo.posY) {
                     if (input1) {
-                        //logicGateTo.inputs1.add(currentLogicGate);
-                        logicGateTo.input1 = currentLogicGate.output;
-                        System.out.println("Entrada 1: " + logicGateTo.input1.value);
-                        input1 =false;
-                        logicGateTo.input1Connected = false;
-                        break;
+                        if(!logicGateTo.input1Connected) {
+                            logicGateTo.input1 = currentLogicGate.output;
+                            System.out.println("Entrada 1: " + logicGateTo.input1.value);
+                            input1 = false;
+                            logicGateTo.input1Connected = true;
+                            break;
+                        }else{
+                            System.out.println("Esta entrada ya se encuentra seleccionada");
+                        }
                     }
                     if (input2) {
-                        logicGateTo.input2 = currentLogicGate.output;
-                        System.out.println("Entrada 2: " + logicGateTo.input2.value);
-                        logicGateTo.input2Connected = false;
-                        input2 = false;
-                        break;
+                        if(!logicGateTo.input2Connected) {
+                            logicGateTo.input2 = currentLogicGate.output;
+                            System.out.println("Entrada 2: " + logicGateTo.input2.value);
+                            logicGateTo.input2Connected = true;
+                            input2 = false;
+                            break;
+                        }else{
+                            System.out.println("Esta entrada ya se encuentra seleccionada");
+                        }
                     }
                 }
             } else {
@@ -330,6 +338,7 @@ public class Main extends Application {
         selectingNewGate = false;
         selectingOutput = false;
         conectingOutput = false;
+        Painter.updateEnumeration();
     }
 
     /**
@@ -338,37 +347,39 @@ public class Main extends Application {
      */
 
     private void ConnectingInput(MouseEvent mouseEvent){
-        System.out.println("Entra");
         for(int i=0; i<=LogicGatesCreator.LogicGatesList.size()-1; i++){
             logicGateTo = LogicGatesCreator.LogicGatesList.getElement(i);
             if(!(mouseEvent.getX()+1 == currentLogicGate.posX && mouseEvent.getY()+1 == currentLogicGate.posY)){
                 if(mouseEvent.getX() +1 == logicGateTo.posX && mouseEvent.getY()+1 == logicGateTo.posY){
-                    System.out.println("Input1: "  + input1 + " " + "Input: " + input2 );
+                    System.out.println("Input1 : "  + input1 + " " + "Input2 : " + input2 );
                     if(input1){
                         if(input1Selected){
                             System.out.println("Input 1: Se conecta desde la entrada1 del currentGate");
                             currentLogicGate.inputs1.add(logicGateTo);
+                            logicGateTo.input1Connected = true;
+                            input1 =false;
                         }
                         if(input2Selected){
                             System.out.println("Input 1: Se conecta desde la entrada2 del currentGate");
                             currentLogicGate.inputs2.add(logicGateTo);
+                            logicGateTo.input1Connected = true;
+                            input1 = false;
                         }
-                        logicGateTo.input1Connected = false;
-                        input1 = false;
                     }
                     if(input2){
                         if(input1Selected){
                             System.out.println("Input 2: Se conecta desde la entrada1 del currentGate");
                             currentLogicGate.inputs1.add(logicGateTo);
+                            logicGateTo.input2Connected = false;
+                             input2 = false;
                         }
                         if(input2Selected){
                             System.out.println("Input 2: Se conecta desde la entrada2 del currentGate");
                             currentLogicGate.inputs2.add(logicGateTo);
+                            logicGateTo.input2Connected = false;
+                            input2 = false;
                         }
                         System.out.println("Se conecta la entrada 2 de la compuerta");
-                        currentLogicGate.inputs2.add(logicGateTo);
-                        logicGateTo.input2Connected = false;
-                        input2 = false;
                     }
                 }
             }else{
@@ -381,6 +392,7 @@ public class Main extends Application {
         selectingInput = false;
         selectingNewGate = false;
         selected = false;
+        Painter.updateEnumeration();
     }
 
     EventHandler<MouseEvent> run = new EventHandler<MouseEvent>() {
@@ -418,8 +430,20 @@ public class Main extends Application {
 
         };
 
-    EventHandler<MouseEvent> clean = mouseEvent -> {
-        gridPane.getChildren().clear();
+    EventHandler<MouseEvent> openWindow = mouseEvent -> {
+        Stage stage = new Stage();
+        try{
+            simulateCircuit.start(stage);
+
+        }catch (NullPointerException e){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Content", ButtonType.OK);
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+            alert.setHeaderText("No existen compuertas lógicas");
+            alert.setContentText("Debe de crear al menos una compuerta lógica para simular el circuito");
+            alert.showAndWait();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     };
 }
 
