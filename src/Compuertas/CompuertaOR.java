@@ -9,7 +9,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
 public class CompuertaOR extends Compuerta {
-    LinkedList<Boolean> inputs = new LinkedList<>();
 
 
     public CompuertaOR(Pane gridPane) {
@@ -21,7 +20,7 @@ public class CompuertaOR extends Compuerta {
         Image image = new Image("Compuerta3.png");
         Rectangle logicGate = Painter.insertImage(image);
         logicGateGroup.getChildren().add(logicGate);
-        DragAndDrop.SetDragAndDrop(gridPane, logicGateGroup);
+        DragAndDrop.setStartDragAndDrop(gridPane, logicGateGroup);
         gridPane.getChildren().add(logicGateGroup);
         Painter.crearEntradasSalidas(logicGateGroup);
         Painter.enumeration(logicGateGroup);
@@ -30,17 +29,24 @@ public class CompuertaOR extends Compuerta {
 
     @Override
     public void operar() {
-        if(input1.value != null && input2.value !=null){
-            output.value = input1.value || input2.value;
+
+        for(int i=0; i<= outputs.size()-1; i++){
+            Compuerta compuerta = outputs.getElement(i);
+            inputs.add(compuerta.output.value);
+            //compuerta.output.value = output.value;
         }
 
-        /*
-        for(int i=0; i<= outputs.size(); i++){
-            Compuerta compuerta = outputs.getElement(i);
-            compuerta.output.value = output.value;
+        output.value = (Boolean)inputs.getElement(0);
+        for(int i=1; i<= inputs.size()-1; i++){
+            boolean res = (Boolean)inputs.getElement(i);
+            output.value = output.value || res;
+            System.out.println("OR" + output.value);
         }
-        
-         */
+
+
+
+
+
 
 
     }

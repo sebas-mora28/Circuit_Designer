@@ -25,7 +25,7 @@ public class CompuertaXOR extends Compuerta {
         Image image = new Image("Compuerta6.png");
         Rectangle logicGate = Painter.insertImage(image);
         logicGateGroup.getChildren().add(logicGate);
-        DragAndDrop.SetDragAndDrop(gridPane, logicGateGroup);
+        DragAndDrop.setStartDragAndDrop(gridPane, logicGateGroup);
         gridPane.getChildren().add(logicGateGroup);
         Painter.crearEntradasSalidas(logicGateGroup);
         Painter.enumeration(logicGateGroup);
@@ -34,18 +34,25 @@ public class CompuertaXOR extends Compuerta {
 
     @Override
     public void operar() {
-        if(input1.value != null && input2.value != null) {
-            if ((input1.value == false && input2.value == true) || (input1.value == true && input2.value == false)) {
+
+        for(int i=0; i<= outputs.size(); i++){
+            Compuerta compuerta = outputs.getElement(i);
+            compuerta.inputs.add(compuerta.output.value);
+            //compuerta.output.value = output.value;
+        }
+
+        output.value = (Boolean) inputs.getElement(0);
+        for(int i=1; i<= inputs.size()-1; i++){
+            System.out.println("entra operar inputs");
+            boolean res = (Boolean)inputs.getElement(i);
+            if(output.value != res){
                 output.value = true;
-            } else {
+            }else{
                 output.value = false;
             }
         }
 
-        for(int i=0; i<= outputs.size(); i++){
-            Compuerta compuerta = outputs.getElement(i);
-            compuerta.output.value = output.value;
-        }
+
 
 
 

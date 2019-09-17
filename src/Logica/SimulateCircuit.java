@@ -139,36 +139,46 @@ public class SimulateCircuit extends Application {
                 if (!compuerta.input1Connected) {
                     ComboBox entry = comboBoxList.getElement(index);
                     if ((Boolean) entry.getValue()) {
-                        compuerta.input1.value = true;
-                        setInputs(compuerta, 1);
+                        System.out.println("true 1");
+                        compuerta.inputs.add(true);
+                        //compuerta.input1.value = true;
+                        //setInputs(compuerta, 1);
                         index += 1;
                     }
                     if (!((Boolean) entry.getValue())) {
-                        compuerta.input1.value = false;
-                        setInputs(compuerta, 1);
+                        System.out.println("false 1");
+                        compuerta.inputs.add(false);
+                        //compuerta.input1.value = false;
+                        //setInputs(compuerta, 1);
                         index += 1;
                     }
                     if (entry.getValue() == null) {
-                        throw new NullPointerException();
+                        //throw new NullPointerException();
                     }
                 }
                 if (!compuerta.input2Connected) {
                     ComboBox entry = comboBoxList.getElement(index);
                     if ((Boolean) entry.getValue()) {
-                        compuerta.input2.value = true;
+                        System.out.println("true 2");
+                        compuerta.inputs.add(true);
+                        //compuerta.input2.value = true;
                         setInputs(compuerta, 2);
                         index += 1;
                     }
                     if (!((Boolean) entry.getValue())) {
-                        compuerta.input2.value = false;
+                        //compuerta.input2.value = false;
+                        System.out.println("false 2");
+                        compuerta.inputs.add(false);
                         setInputs(compuerta, 2);
                         index += 1;
                     }
                     if (entry.getValue() == null) {
-                        throw new NullPointerException();
+                        //throw new NullPointerException();
                     }
                 }
+
             }
+            System.out.println("Llega");
             operateLogicGates();
         }catch (NullPointerException e){
             e.printStackTrace();
@@ -194,21 +204,27 @@ public class SimulateCircuit extends Application {
 
     public void setInputs(Compuerta compuerta, int input){
         if(input==1){
-            for(int i=0; i<= compuerta.inputs1.size()-1; i++){
-                Compuerta newCompuerta = compuerta.inputs1.getElement(i);
+            for(int i = 0; i<= compuerta.input1ToInput1.size()-1; i++){
+                Compuerta newCompuerta = compuerta.input1ToInput1.getElement(i);
                 newCompuerta.input1.value = compuerta.input1.value;
+            }
+            for(int i=0; i<= compuerta.input1ToInput2.size()-1; i++){
+                Compuerta newCompuerta = compuerta.input1ToInput2.getElement(i);
+                newCompuerta.input2.value = compuerta.input1.value;
             }
         }
         if(input==2){
-            for(int i=0; i<= compuerta.inputs2.size()-1; i++){
-                Compuerta newCompuerta = compuerta.inputs2.getElement(i);
+            for(int i = 0; i<= compuerta.input2ToInput2.size()-1; i++){
+                Compuerta newCompuerta = compuerta.input2ToInput2.getElement(i);
                 newCompuerta.input2.value = compuerta.input2.value;
+            }
+            for(int i=0; i<= compuerta.input2ToInput2.size()-1; i++){
+                Compuerta newCompuerta = compuerta.input1ToInput2.getElement(i);
+                newCompuerta.input2.value = compuerta.input1.value;
             }
 
         }
     }
-
-
 
 
     EventHandler<MouseEvent> simulateCircuit = mouseEvent -> {

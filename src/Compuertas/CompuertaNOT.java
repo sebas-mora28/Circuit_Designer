@@ -21,7 +21,7 @@ public class CompuertaNOT extends Compuerta{
         Image image = new Image("Compuerta5.png");
         Rectangle logicGate = Painter.insertImage(image);
         logicGateGroup.getChildren().add(logicGate);
-        DragAndDrop.SetDragAndDrop(gridPane, logicGateGroup);
+        DragAndDrop.setStartDragAndDrop(gridPane, logicGateGroup);
         gridPane.getChildren().add(logicGateGroup);
         Painter.crearEntradasSalidas(logicGateGroup);
         Painter.enumeration(logicGateGroup);

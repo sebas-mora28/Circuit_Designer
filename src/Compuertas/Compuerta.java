@@ -11,8 +11,13 @@ public abstract class Compuerta {
     public LinkedList<Line> lines = new LinkedList<>();
 
     public LinkedList<Compuerta> outputs = new LinkedList<>();
-    public LinkedList<Compuerta> inputs1 = new LinkedList<>();
-    public LinkedList<Compuerta> inputs2 = new LinkedList<>();
+    public LinkedList inputs = new LinkedList<>();
+
+
+    public LinkedList<Compuerta> input1ToInput1 = new LinkedList<>();
+    public LinkedList<Compuerta> input1ToInput2 = new LinkedList<>();
+    public LinkedList<Compuerta> input2ToInput2 = new LinkedList<>();
+    public LinkedList<Compuerta> input2ToInput1 = new LinkedList<>();
 
     public Nodo<Boolean> output = new Nodo<>(true);
     public Nodo<Boolean> input1 = new Nodo<>(null);

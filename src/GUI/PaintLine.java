@@ -4,42 +4,36 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 
 public class PaintLine {
-    public Pane pane;
-    private boolean flag = true;
-    public static double posx, posy;
-    public static double endPosX, endPosY;
-    public static Line line;
+    private static  boolean flag = true;
+    public double posx, posy;
+    public double endPosX, endPosY;
+    private static Line line = new Line(), line2 = new Line(), line3 = new Line();
 
 
-    public void paintLine(){
-        line = new Line();
-        line.setStartX(posx);
-        line.setStartX(posy);
-        line.setStartY(endPosX);
-        line.setStartY(endPosY);
-        line.setStrokeWidth(5);
+    public static void startLine(Pane pane, double posx1, double posy1, double posx2, double posy2, double posx3, double posy3){
         line.setId("Linea");
+        line2.setId("Linea");
+        line3.setId("Linea");
+        if (flag){
+            pane.getChildren().addAll(line, line2, line3);
+            flag = false;
+
+        }
+        positionLines(line, posx1, posx2, posx2, posy3);
+        positionLines(line2, posx2, posy2, posx3, posx3);
+
     }
 
 
 
-    public static void setStartLine( double startPosx, double startPosy){
-            posx = startPosx;
-            posy = startPosy;
-    }
 
-    public static void setLineEnd(double endX, double endY) {
-        endPosX = endX;
-        endPosY = endY;
-    }
 
-    public static void updateEnd(double posx, double posy){
-        line.setEndX(posx);
-        line.setEndY(posy);
-    }
+    private static void positionLines(Line line, double posStartX, double posStartY, double posEndX, double posEndY){
+        line.setStartX(posStartX);
+        line.setStartY(posStartY);
+        line.setEndX(posEndX);
+        line.setEndY(posEndY);
 
-    public static void updateStart(double posx, double posy){
-        line.setStartX(posx);
-        line.setStartX(posy);
+
     }
 }

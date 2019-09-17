@@ -19,7 +19,7 @@ public class CompuertaNAND extends Compuerta {
         Image image = new Image("Compuerta2.png");
         Rectangle logicGate = Painter.insertImage(image);
         logicGateGroup.getChildren().add(logicGate);
-        DragAndDrop.SetDragAndDrop(gridPane, logicGateGroup);
+        DragAndDrop.setStartDragAndDrop(gridPane, logicGateGroup);
         gridPane.getChildren().add(logicGateGroup);
         Painter.crearEntradasSalidas(logicGateGroup);
         Painter.enumeration(logicGateGroup);
@@ -28,12 +28,18 @@ public class CompuertaNAND extends Compuerta {
 
     @Override
     public void operar(){
-        if(input1.value !=null && input2.value!=null ) {
-            output.value = !(input1.value && input2.value);
-        }
+
         for(int i=0; i<= outputs.size(); i++){
             Compuerta compuerta = outputs.getElement(i);
-            compuerta.output.value = output.value;
+            compuerta.inputs.add(compuerta.output.value);
+            //compuerta.output.value = output.value;
+        }
+
+        output.value = (Boolean)inputs.getElement(0);
+        for(int i=0; i<= inputs.size()-1; i++){
+            System.out.println("entra operar inputs");
+            boolean res = (Boolean)inputs.getElement(i);
+            output.value = !(output.value && res);
         }
 
     }

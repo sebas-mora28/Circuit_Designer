@@ -37,7 +37,7 @@ public class CompuertaAND extends Compuerta{
         Image image = new Image("Compuerta1.png");
         Rectangle logicGate = Painter.insertImage(image);
         logicGateGroup.getChildren().add(logicGate);
-        DragAndDrop.SetDragAndDrop(gridPane, logicGateGroup);
+        DragAndDrop.setStartDragAndDrop(gridPane, logicGateGroup);
         gridPane.getChildren().add(logicGateGroup);
         Painter.crearEntradasSalidas(logicGateGroup);
         Painter.enumeration(logicGateGroup);
@@ -47,13 +47,13 @@ public class CompuertaAND extends Compuerta{
 
     @Override
     public void operar() {
-        if(input1.value != null && input2.value != null){
-            System.out.println("Valores AND" + input1.value + " "  + input2.value);
-            output.value = input1.value && input2.value;
 
-            /*
             for(int i=0; i<= outputs.size()-1; i++){
+                System.out.println("Entra operar outputs");
                 Compuerta compuerta = outputs.getElement(i);
+                inputs.add(compuerta.output.value);
+
+                /*
                 if(!compuerta.input1Connected){
                     System.out.println("Entra");
                     compuerta.input1.value = output.value;
@@ -63,11 +63,18 @@ public class CompuertaAND extends Compuerta{
                     System.out.println("Entra2");
                     compuerta.input2.value = output.value;
                 }
+
+                 */
             }
 
-             */
+            output.value = (Boolean)inputs.getElement(0);
+            for(int i=1; i<= inputs.size()-1; i++){
+                System.out.println("entra operar inputs");
+                boolean res = (Boolean)inputs.getElement(i);
+                output.value = output.value && res;
+            }
 
-        }
+
 
         System.out.println("-----------------------------------");
     }
