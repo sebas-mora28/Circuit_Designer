@@ -5,7 +5,6 @@ import ListaEnlazada.LinkedList;
 import Logica.DragAndDrop;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
@@ -35,7 +34,7 @@ public class CompuertaXOR extends Compuerta {
     @Override
     public void operar() {
 
-        for(int i=0; i<= outputs.size()-1; i++){
+        for(int i = 0; i<= outputs.size()-1; i++){
             Compuerta compuerta = outputs.getElement(i);
             compuerta.inputs.add(compuerta.output.value);
             //compuerta.output.value = output.value;
@@ -43,7 +42,6 @@ public class CompuertaXOR extends Compuerta {
 
         for(int i=1; i<= inputs.size()-1; i++){
             System.out.println("entra operar inputs");
-            boolean res = (Boolean)inputs.getElement(i);
             if(output.value != inputs.getElement(0)){
                 output.value = true;
             }else{

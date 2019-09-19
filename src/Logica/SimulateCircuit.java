@@ -79,7 +79,6 @@ public class SimulateCircuit {
                 throw new NullPointerException();
             }
             for (int i = 0; i <= LogicGatesCreator.LogicGatesList.size() - 1; i++) {
-                System.out.println("El valor del size a la hora de entrar es de " + LogicGatesCreator.LogicGatesList.size());
                 Compuerta compuerta = LogicGatesCreator.LogicGatesList.getElement(i);
                 if (!compuerta.input1Connected || !compuerta.input2Connected) {
                     inputs.add(compuerta);
@@ -139,14 +138,12 @@ public class SimulateCircuit {
                     if ((Boolean) entry.getValue()) {
                         System.out.println("true 1");
                         compuerta.inputs.add(true);
-                        compuerta.input1.value = true;
-                        setInputs(compuerta, 1);
+                        //compuerta.input1.value = true;
                         index += 1;
                     }
                     if (!((Boolean) entry.getValue())) {
                         compuerta.inputs.add(false);
-                        compuerta.input1.value = false;
-                        setInputs(compuerta, 1);
+                        //compuerta.input1.value = false;
                         index += 1;
                     }
 
@@ -160,14 +157,12 @@ public class SimulateCircuit {
                     ComboBox entry = comboBoxList.getElement(index);
                     if ((Boolean) entry.getValue()) {
                         compuerta.inputs.add(true);
-                        compuerta.input2.value = true;
-                        setInputs(compuerta, 2);
+                        //compuerta.input2.value = true;
                         index += 1;
                     }
                     if (!((Boolean) entry.getValue())) {
-                        compuerta.input2.value = false;
+                        //compuerta.input2.value = false;
                         compuerta.inputs.add(false);
-                        setInputs(compuerta, 2);
                         index += 1;
                     }
                     if (entry.getValue() == null) {
@@ -194,39 +189,14 @@ public class SimulateCircuit {
         for (int i = 0; i <= LogicGatesCreator.LogicGatesList.size() - 1; i++) {
             Compuerta compuerta = LogicGatesCreator.LogicGatesList.getElement(i);
             compuerta.operar();
-            System.out.println("Size: " + compuerta.inputs.size());
-            System.out.println("Salida " + compuerta.output.value + "Size: " + compuerta.inputs.size());
-            Painter.updateEnumeration();
+            System.out.println("Salida " + compuerta.output.value +"  " + "Size: " + compuerta.inputs.size());
         }
         for(int i=0; i<= LogicGatesCreator.LogicGatesList.size()-1; i++){
             Compuerta compuerta = LogicGatesCreator.LogicGatesList.getElement(i);
             compuerta.inputs.removeAll();
         }
+        Painter.updateEnumeration();
         simulatingCircuit = false;
-    }
-
-    public void setInputs(Compuerta compuerta, int input){
-        if(input==1){
-            for(int i = 0; i<= compuerta.input1ToInput1.size()-1; i++){
-                Compuerta newCompuerta = compuerta.input1ToInput1.getElement(i);
-                newCompuerta.input1.value = compuerta.input1.value;
-            }
-            for(int i=0; i<= compuerta.input1ToInput2.size()-1; i++){
-                Compuerta newCompuerta = compuerta.input1ToInput2.getElement(i);
-                newCompuerta.input2.value = compuerta.input1.value;
-            }
-        }
-        if(input==2){
-            for(int i = 0; i<= compuerta.input2ToInput2.size()-1; i++){
-                Compuerta newCompuerta = compuerta.input2ToInput2.getElement(i);
-                newCompuerta.input2.value = compuerta.input2.value;
-            }
-            for(int i=0; i<= compuerta.input2ToInput2.size()-1; i++){
-                Compuerta newCompuerta = compuerta.input1ToInput2.getElement(i);
-                newCompuerta.input2.value = compuerta.input1.value;
-            }
-
-        }
     }
 
 

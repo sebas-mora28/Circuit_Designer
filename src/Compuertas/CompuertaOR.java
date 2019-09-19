@@ -1,7 +1,6 @@
 package Compuertas;
 
 import GUI.Painter;
-import ListaEnlazada.LinkedList;
 import Logica.DragAndDrop;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
@@ -30,18 +29,28 @@ public class CompuertaOR extends Compuerta {
     @Override
     public void operar() {
 
-        for(int i=0; i<= outputs.size()-1; i++){
+        System.out.println("Compuerta OR");
+        System.out.println("Conexiones a otras compuertas");
+        for(int i = 0; i<= outputs.size()-1; i++){
             Compuerta compuerta = outputs.getElement(i);
+            compuerta.operar();
+            System.out.println(compuerta.output.value);
             inputs.add(compuerta.output.value);
             //compuerta.output.value = output.value;
         }
-
+        System.out.println("--------------------------------------------------------");
         output.value = (Boolean)inputs.getElement(0);
         for(int i=1; i<= inputs.size()-1; i++){
             boolean res = (Boolean)inputs.getElement(i);
             output.value = output.value || res;
             System.out.println("OR" + output.value);
         }
+
+        System.out.println("Salidas de la compuerts OR: " + output.value);
+
+        System.out.println("----------------------------------------------------------");
+        System.out.println();
+        System.out.println("----------------------------------------------------------");
 
 
 

@@ -1,37 +1,26 @@
 package Compuertas;
 
+import GUI.PaintLine;
 import GUI.Painter;
 import ListaEnlazada.LinkedList;
 import ListaEnlazada.Nodo;
 import Logica.LogicGatesCreator;
+import Logica.SimulateCircuit;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Line;
-
-import java.nio.file.LinkOption;
 
 public class Compuerta {
     public Group logicGateGroup;
 
     public LinkedList<Compuerta> outputs = new LinkedList<>();
     public LinkedList inputs = new LinkedList<>();
+    public LinkedList<PaintLine> listLines = new LinkedList<>();
 
-
-    public LinkedList<Compuerta> input1ToInput1 = new LinkedList<>();
-    public LinkedList<Compuerta> input1ToInput2 = new LinkedList<>();
-    public LinkedList<Compuerta> input2ToInput2 = new LinkedList<>();
-    public LinkedList<Compuerta> input2ToInput1 = new LinkedList<>();
-
-    public Nodo<Boolean> output = new Nodo<>(true);
+    public Nodo<Boolean> output = new Nodo<>(null);
     public Nodo<Boolean> input1 = new Nodo<>(null);
     public Nodo<Boolean> input2 = new Nodo<>(null);
 
@@ -58,10 +47,11 @@ public class Compuerta {
 
         MenuItem delete = new MenuItem("Delete");
         delete.setOnAction(actionEvent -> {
-            deleteLinesConnection();
-            deleteLogicGateFromLinkedListAndConnetions();
+            //deleteLinesConnection();
+            ///deteleLogicGateFromGUI();
+            //deleteLogicGateFromLinkedListAndConnetions();
             Painter.updateEnumeration();
-            deteleLogicGateFromGUI();
+
 
         });
                 contextMenu.getItems().add(delete);
@@ -71,21 +61,30 @@ public class Compuerta {
 
 
 
+    /*
 
     public void deleteLogicGateFromLinkedListAndConnetions(){
+        for(int i=0; i<=LogicGatesCreator.LogicGatesList.size()-1; i++){
+            Compuerta compuerta = LogicGatesCreator.LogicGatesList.getElement(i);
+            if(logicGateGroup.getUserData().equals(compuerta)){continue; }
+            for(int j = 0; j<= compuerta.outputs.size()-1; i++){
+                if(logicGateGroup.getUserData().equals(compuerta.outputs.getElement(j))){
+                    compuerta.outputs.remove(j);
+                    System.out.println("Entra");
+                    compuerta.input1Connected = false;
+                    break; }}
+            for(int k=0; k<=compuerta.outputs2.size()-1; i++){
+                if(logicGateGroup.getUserData().equals(compuerta.outputs2.getElement(k))){
+                    compuerta.outputs.remove(k);
+                    System.out.println("ENTRA 2 ");
+                    compuerta.input2Connected = false;
+                    break; }}}
+
         for(int i = 0; i<= LogicGatesCreator.LogicGatesList.size()-1; i++){
             Compuerta compuerta = LogicGatesCreator.LogicGatesList.getElement(i);
             if(compuerta.logicGateGroup.getUserData().equals(compuerta)){
                 LogicGatesCreator.LogicGatesList.remove(i);
                 break;
-            }
-        }
-        for(int i=0; i<=LogicGatesCreator.LogicGatesList.size()-1; i++){
-            Compuerta compuerta = LogicGatesCreator.LogicGatesList.getElement(i);
-            for(int j=0; j<= compuerta.outputs.size()-1; i++){
-                if(logicGateGroup.getUserData().equals(compuerta.outputs.getElement(i))){
-                    compuerta.outputs.remove(i);
-                }
             }
         }
 
@@ -94,25 +93,10 @@ public class Compuerta {
     public void deleteLinesConnection(){
         Pane pane = ((Pane)logicGateGroup.getParent());
         Compuerta compuerta = (Compuerta)logicGateGroup.getUserData();
-        for(int i=0; i<= pane.getChildren().size(); i++){
-            Node node = pane.getChildren().get(i);
-            if(node.getId().equals("Linea")){
-                Line line = (Line)(node);
-                if(line.startXProperty().getValue().equals(compuerta.lineOutputPosX.getValue())){
-                    System.out.println(node.getId() + " " + "ENTRA");
-                    pane.getChildren().remove(i);
-                }
-                System.out.println(line.endXProperty().getValue() +"[" + compuerta.lineInput1PosX.getValue() + " " + compuerta.lineInput2PosX.getValue() +"]");
-                if(line.endXProperty().getValue().equals(compuerta.lineInput1PosX.getValue())){
-                    System.out.println(node.getId() + " " + "ENTRA");
-                    pane.getChildren().remove(i);
-                }
-                if(line.endXProperty().getValue().equals(compuerta.lineInput2PosX.getValue())){
-                    System.out.println(node.getId() + " " + "ENTRA");
-                    pane.getChildren().remove(i);
-                }
+        for(int i=0; i<= compuerta.listLines.size()-1; i++){
+            PaintLine paintLine = (PaintLine) compuerta.listLines.getElement(i);
+            paintLine.removeLines();
 
-            }
         }
 
     }
@@ -125,6 +109,8 @@ public class Compuerta {
             }
         }
     }
+
+     */
 
 
 

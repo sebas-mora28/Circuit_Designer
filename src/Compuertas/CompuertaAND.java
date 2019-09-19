@@ -1,26 +1,15 @@
 package Compuertas;
 
 
-import GUI.Main;
-import ListaEnlazada.Nodo;
 import Logica.DragAndDrop;
 import GUI.Painter;
-import ListaEnlazada.LinkedList;
 import Logica.LogicGatesCreator;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.ContextMenuEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
-
-import java.awt.*;
 
 
 public class CompuertaAND extends Compuerta{
@@ -61,34 +50,27 @@ public class CompuertaAND extends Compuerta{
     @Override
     public void operar() {
 
-            for(int i=0; i<= outputs.size()-1; i++){
-                System.out.println("Entra operar outputs");
+        System.out.println("Compuerta AND");
+        System.out.println("Conexiones a otras compuertas");
+            for(int i = 0; i<= outputs.size()-1; i++){
                 Compuerta compuerta = outputs.getElement(i);
+                compuerta.operar();
+                System.out.println(compuerta.output.value);
                 inputs.add(compuerta.output.value);
 
-                /*
-                if(!compuerta.input1Connected){
-                    System.out.println("Entra");
-                    compuerta.input1.value = output.value;
-
-                }
-                if(!compuerta.input2Connected){
-                    System.out.println("Entra2");
-                    compuerta.input2.value = output.value;
-                }
-
-                 */
             }
-
             output.value = (Boolean)inputs.getElement(0);
             for(int i=1; i<= inputs.size()-1; i++){
-                System.out.println("entra operar inputs");
                 boolean res = (Boolean)inputs.getElement(i);
                 output.value = output.value && res;
             }
 
+        System.out.println("Salida de la compuerta AND: " + output.value);
 
 
+
+        System.out.println("-----------------------------------");
+        System.out.println();
         System.out.println("-----------------------------------");
     }
 

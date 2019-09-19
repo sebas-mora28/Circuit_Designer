@@ -1,7 +1,6 @@
 package Compuertas;
 
 import GUI.Painter;
-import ListaEnlazada.LinkedList;
 import Logica.DragAndDrop;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
@@ -29,7 +28,7 @@ public class CompuertaNAND extends Compuerta {
     @Override
     public void operar(){
 
-        for(int i=0; i<= outputs.size()-1; i++){
+        for(int i = 0; i<= outputs.size()-1; i++){
             Compuerta compuerta = outputs.getElement(i);
             compuerta.inputs.add(compuerta.output.value);
             //compuerta.output.value = output.value;

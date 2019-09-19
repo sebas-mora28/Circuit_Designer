@@ -1,6 +1,7 @@
 package GUI;
 
 import Compuertas.Compuerta;
+import ListaEnlazada.LinkedList;
 import Logica.LogicGateConexion;
 import Logica.LogicGatesCreator;
 import Logica.SimulateCircuit;
@@ -36,11 +37,9 @@ public class Painter {
     private static Pane pane;
     private static Circle salida, entrada1, entrada2;
     private static Rectangle rectangleImage;
-    private static double startposx, startposy, endPosX, endPosY;
-    private static Random random = new Random();
     private static boolean flag = true;
-    private static Line line1, line2, line3;;
-    private static Line[] lines = new Line[3];
+    public static PaintLine paintLine;
+    public static LinkedList<PaintLine> linesList = new LinkedList<>();
 
     /**
      *
@@ -96,7 +95,6 @@ public class Painter {
         salida.setId("Salida");
         salida.setOpacity(0.0);
         salida.setUserData(logicGateGroup);
-        pane.setOnMouseMoved(MovingLine);
         pane.getChildren().addAll(salida);
         logicGateGroup.getChildren().add(salida);
     }
@@ -116,7 +114,6 @@ public class Painter {
         salida.setLayoutY(95);
         salida.setId("Salida");
         salida.setOpacity(0.0);
-        pane.setOnMouseMoved(MovingLine);
         pane.getChildren().addAll(salida);
         logicGateGroup.getChildren().add(salida);
 
@@ -175,11 +172,10 @@ public class Painter {
                 if (!LogicGateConexion.conectingOutput && !LogicGateConexion.selectingOutput) {
                     LogicGateConexion.conectingOutput = true;
                     LogicGateConexion.selectingOutput = true;
-                    createLines(compuerta);
-                    startposx = mouseEvent.getSceneX();
-                    startposy = mouseEvent.getSceneY();
+                    paintLine = new PaintLine(compuerta, pane, mouseEvent.getSceneX(), mouseEvent.getSceneY());
+                    compuerta.listLines.add(paintLine);
                 }else{
-                    removeLines();
+                    paintLine.removeLines();
                     LogicGateConexion.selectingOutput = false;
                     LogicGateConexion.conectingOutput= false;
                 }
@@ -188,54 +184,6 @@ public class Painter {
             }
 
     };
-
-    /**
-     * Método que remueve las líneas que se crearon en caso de que la acción hecha por el usuario sea inváloda
-     */
-
-    public static void removeLines(){
-        for(int y=0; y<=1; y++) {
-            for (int i = 0; i <= pane.getChildren().size()-1; i++) {
-                Node nodo = pane.getChildren().get(i);
-                if (nodo.equals(line1)) {
-                    System.out.println("Se elimina 1");
-                    pane.getChildren().remove(nodo);
-                }
-                if (nodo.equals(line2)) {
-                    System.out.println("Se elimina 2");
-                    pane.getChildren().remove(nodo);
-                }
-                if (nodo.equals(line3)) {
-                    System.out.println("Se elimina 3");
-                    pane.getChildren().remove(nodo);
-                }
-            }
-        }
-    }
-
-    /**
-     * Método que crea las líneas para conectar las compuertas
-     * @param compuerta Compuerta para obtener la posición en X y Y para conectar la línea de la compuerta
-     */
-
-    private static void createLines(Compuerta compuerta){
-        int r = random.nextInt(255);
-        int v = random.nextInt(255);
-        int g = random.nextInt(255);
-        lines = new Line[3];
-        for(int i=0; i<=2; i++) {
-            Line line = new Line();
-            line.setStroke(Color.rgb(r, v, g));
-            line.setId("Linea");
-            lines[i] = line;
-            pane.getChildren().add(line);
-        }
-        setLines(lines[0], lines[1], lines[2]);
-        line1.startXProperty().bind(compuerta.lineOutputPosX);
-        line1.startYProperty().bind(compuerta.lineOutputPosY);
-    }
-
-
 
 
     static  EventHandler<MouseEvent> MouseClickInput = new EventHandler<>() {
@@ -247,15 +195,12 @@ public class Painter {
                 if (LogicGateConexion.conectingOutput) {
                     LogicGateConexion.selectingNewGate = true;
                     LogicGateConexion.input1 = true;
-                    line3.endXProperty().bind(compuerta.lineInput1PosX);
-                    line3.endYProperty().bind(compuerta.lineInput1PosY);
+                    paintLine.setLine3EndPositionsInput1(compuerta);
                     return;
                 }
 
                 if (!LogicGateConexion.conectingOutput) {
                     if (flag) {
-                        startposx = mouseEvent.getSceneX();
-                        startposy = mouseEvent.getSceneY();
                         LogicGateConexion.conectingInput = true;
                         LogicGateConexion.selectingInput = true;
                         LogicGateConexion.input1 = true;
@@ -274,8 +219,7 @@ public class Painter {
                 if (LogicGateConexion.conectingOutput) {
                     LogicGateConexion.selectingNewGate = true;
                     LogicGateConexion.input2 = true;
-                    line3.endXProperty().bind(compuerta.lineInput2PosX);
-                    line3.endYProperty().bind(compuerta.lineInput2PosY);
+                    paintLine.setLine3EndPositionInput2(compuerta);
                     return;
                 }
                 if (!LogicGateConexion.conectingOutput) {
@@ -284,8 +228,6 @@ public class Painter {
                         LogicGateConexion.conectingInput = true;
                         LogicGateConexion.selectingInput = true;
                         LogicGateConexion.input2 = true;
-                        startposx = mouseEvent.getSceneX();
-                        startposy = mouseEvent.getSceneY();
                         flag = false;
                     }
                 }
@@ -298,7 +240,6 @@ public class Painter {
             }
         }
     };
-
 
     /**
      * Este método agrega los labels que corresponden a la numeración de las entradas y salidas de la compuerta
@@ -353,7 +294,7 @@ public class Painter {
                     Label labelOutput = (Label)node;
                     labelOutput.setText("");
                 }
-                if(node.getId().equals("Output") && SimulateCircuit.simulatingCircuit && !compuerta.outputConnected){
+                if(node.getId().equals("Output") && SimulateCircuit.simulatingCircuit){
                     Label labelOutput = (Label)node;
                     labelOutput.setText(compuerta.output.value.toString());
                 }
@@ -363,7 +304,7 @@ public class Painter {
                         labelInput1.setText("i<"  + index + ">");
                         index +=1;
                         if(SimulateCircuit.simulatingCircuit){
-                            labelInput1.setText(compuerta.input1.value.toString());
+                            //labelInput1.setText(compuerta.input1.value.toString());
                         }
                     }else{
                         labelInput1.setText("");
@@ -375,7 +316,7 @@ public class Painter {
                         labelInput2.setText("i<" + index +">");
                         index +=1;
                         if(SimulateCircuit.simulatingCircuit){
-                            labelInput2.setText(compuerta.input2.value.toString());
+                            //labelInput2.setText(compuerta.input2.value.toString());
                         }
                     }else{
                         labelInput2.setText("");
@@ -384,56 +325,6 @@ public class Painter {
                 }
             }
         }
-    }
-
-
-    static EventHandler<MouseEvent> MovingLine = new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent mouseEvent) {
-            if(LogicGateConexion.conectingOutput) {
-                endPosX = mouseEvent.getSceneX();
-                endPosY = mouseEvent.getSceneY();
-
-                double newPosx = (startposx + endPosX) / 2;
-
-                starLine(newPosx, startposy, newPosx, endPosY, endPosX, endPosY);
-            }
-
-        }
-    };
-
-
-    /**
-     * Método que actualiza la líneas para las conexión de las compuertas
-     * @param posx1
-     * @param posy1
-     * @param posx2
-     * @param posy2
-     * @param posx3
-     * @param posy3
-     */
-
-    public static void starLine(double posx1, double posy1, double posx2, double posy2, double posx3, double posy3) {
-        line1.setEndX(posx1);
-        line1.setEndY(posy1);
-        line2.setStartX(posx1);
-        line2.setStartY(posy1);
-        line2.setEndX(posx2);
-        line2.setEndY(posy2);
-        line3.setStartX(posx2);
-        line3.setStartY(posy2);
-        line3.setEndX(posx3);
-        line3.setEndY(posy3);
-    }
-
-
-
-
-    public static void setLines(Line line, Line line2, Line line3) {
-
-        Painter.line1 = line;
-        Painter.line2 = line2;
-        Painter.line3 = line3;
     }
 
 }

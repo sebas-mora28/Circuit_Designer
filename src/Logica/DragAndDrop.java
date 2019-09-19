@@ -1,6 +1,7 @@
 package Logica;
 
 import Compuertas.Compuerta;
+import GUI.PaintLine;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
@@ -50,6 +51,11 @@ public class DragAndDrop {
             logicGate.posX = newTranslationX;
             logicGate.posY = newTranslationY;
             setLogicGateProperties(logicGate, newTranslationX, newTranslationY);
+
+            for(int i=0; i<= logicGate.listLines.size()-1; i++){
+                //PaintLine paintLine = logicGate.listLines.getElement(i);
+                //paintLine.updatePosition(newTranslationY, newTranslationX, newTranslationY, newTranslationY);
+            }
 
 
 

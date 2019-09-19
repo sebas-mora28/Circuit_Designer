@@ -1,7 +1,6 @@
 package Compuertas;
 
 import GUI.Painter;
-import ListaEnlazada.LinkedList;
 import Logica.DragAndDrop;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
@@ -36,6 +35,7 @@ public class CompuertaXNOR extends Compuerta {
             compuerta.inputs.add(compuerta.output.value);
             //compuerta.output.value = output.value;
         }
+
 
         output.value = (Boolean)inputs.getElement(0);
         for (int i = 1; i <= inputs.size() - 1; i++) {

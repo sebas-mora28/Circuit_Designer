@@ -36,21 +36,6 @@ public class LogicGateConexion {
                 selectInputToConnect(mouseEvent);
             }
         }
-        /*
-        if(!conectingOutput){
-            if(selectingInput){
-                System.out.println("Pasa la primera compuerta");
-                SelectGate(mouseEvent);
-            }
-            if(selectingNewGate){
-                System.out.println("Pasa la segunda compuerta");
-                ConnectingInput(mouseEvent);
-            }
-
-        }
-
-         */
-
     }
 
 
@@ -87,15 +72,16 @@ public class LogicGateConexion {
                 if (mouseEvent.getX() + 1 == logicGateTo.posX && mouseEvent.getY() + 1 == logicGateTo.posY) {
                     if (input1) {
                         if(!logicGateTo.input1Connected) {
+                            System.out.println("Entrada 1: " + logicGateTo.input2.value);
                             logicGateTo.outputs.add(currentLogicGate);
                             //logicGateTo.input1 = currentLogicGate.output;
-                            System.out.println("Entrada 1: " + logicGateTo.input1.value);
                             input1 = false;
                             logicGateTo.input1Connected = true;
                             currentLogicGate.outputConnected = true;
+                            logicGateTo.listLines.add(Painter.paintLine);
                             break;
                         }else{
-                            Painter.removeLines();
+                            Painter.paintLine.removeLines();
                             System.out.println("Esta entrada ya se encuentra seleccionada");
                         }
                     }
@@ -107,9 +93,10 @@ public class LogicGateConexion {
                             logicGateTo.input2Connected = true;
                             currentLogicGate.outputConnected = true;
                             input2 = false;
+                            logicGateTo.listLines.add(Painter.paintLine);
                             break;
                         }else{
-                            Painter.removeLines();
+                            Painter.paintLine.removeLines();
                             System.out.println("Esta entrada ya se encuentra seleccionada");
                         }
                     }else{
@@ -128,57 +115,4 @@ public class LogicGateConexion {
         Painter.updateEnumeration();
     }
 
-    /**
-     * Este método busca la entrada que se quiere conectar en caso de que el origen sea otra salida
-     * @param mouseEvent
-     */
-
-    private static void ConnectingInput(MouseEvent mouseEvent){
-        for(int i=0; i<=LogicGatesCreator.LogicGatesList.size()-1; i++){
-            logicGateTo = LogicGatesCreator.LogicGatesList.getElement(i);
-            if(!(mouseEvent.getX()+1 == currentLogicGate.posX && mouseEvent.getY()+1 == currentLogicGate.posY)){
-                if(mouseEvent.getX() +1 == logicGateTo.posX && mouseEvent.getY()+1 == logicGateTo.posY){
-                    if(input1){
-                        if(input1Selected){
-                            System.out.println("Se conecta la entrada1 del currentGate a la entrada 1 de la nueva compuerta");
-                            //logicGateTo.input1ToInput1.add(currentLogicGate);
-                            currentLogicGate.input1ToInput1.add(logicGateTo);
-                            logicGateTo.input1Connected = true;
-                            input1 =false;
-                        }
-                        if(input2Selected){
-                            System.out.println("Input 1: Se conecta desde la entrada2 del currentGate");
-                            //logicGateTo.input2ToInput2.add(currentLogicGate);
-                            currentLogicGate.input1ToInput2.add(logicGateTo);
-                            logicGateTo.input2Connected = true;
-                            input1 = false;
-                        }
-                    }
-                    if(input2){
-                        if(input1Selected){
-                            System.out.println("Input 2: Se conecta desde la entrada1 del currentGate");
-                            currentLogicGate.input2ToInput1.add(logicGateTo);
-                            logicGateTo.input2Connected = true;
-                            input2 = false;
-                        }
-                        if(input2Selected){
-                            System.out.println("Input 2: Se conecta desde la entrada2 del currentGate");
-                            currentLogicGate.input2ToInput2.add(logicGateTo);
-                            logicGateTo.input2Connected = true;
-                            input2 = false;
-                        }
-                    }
-                }
-            }else{
-                System.out.println("Es la misma compuerta");
-            }
-        }
-        input1Selected = false;
-        input2Selected = false;
-        conectingInput = false;
-        selectingInput = false;
-        selectingNewGate = false;
-        selected = false;
-        Painter.updateEnumeration();
-    }
 }
