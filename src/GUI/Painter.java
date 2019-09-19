@@ -88,7 +88,7 @@ public class Painter {
      */
 
     private static void salida(Group logicGateGroup) {
-        salida = new Circle(10);
+        salida = new Circle(12);
         salida.setOnMouseEntered(mouseEvent -> salida.setCursor(Cursor.CROSSHAIR));
         salida.setOnMouseClicked(MouseClickOutput);
         salida.setLayoutX(100);
@@ -108,7 +108,7 @@ public class Painter {
 
 
     public static void crearEntradaSalidaNOT(Group logicGateGroup) {
-        salida = new Circle(10);
+        salida = new Circle(12);
         salida.setOnMouseEntered(mouseEvent -> salida.setCursor(Cursor.CROSSHAIR));
         salida.setOnMouseClicked(MouseClickOutput);
         salida.setLayoutX(105);
@@ -141,7 +141,7 @@ public class Painter {
      */
 
     private static void entradas(Group logicGateGroup) {
-        entrada1 = new Circle(10);
+        entrada1 = new Circle(12);
         entrada1.setOnMouseEntered(mouseEvent -> entrada1.setCursor(Cursor.CROSSHAIR));
         entrada1.setOnMouseClicked(MouseClickInput);
         entrada1.setLayoutX(25);
@@ -151,7 +151,7 @@ public class Painter {
         entrada1.setOpacity(0.0);
 
 
-        entrada2 = new Circle(10);
+        entrada2 = new Circle(12);
         entrada2.setOnMouseEntered(mouseEvent -> entrada2.setCursor(Cursor.CROSSHAIR));
         entrada2.setOnMouseClicked(MouseClickInput);
         entrada2.setLayoutX(25);
@@ -298,6 +298,12 @@ public class Painter {
         index =0;
     }
 
+    /**
+     * Método que actualiza los labels de la salida de la compuerta
+     * @param node Nodo que corresponde al label
+     * @param compuerta Compuerta de donde se obtiene el valor de la salida
+     */
+
     private static void updateOutputsLabel(Node node, Compuerta compuerta) {
         if (node.getId().equals("Output") && SimulateCircuit.simulatingCircuit && compuerta.outputConnected) {
             Label labelOutput = (Label) node;
@@ -308,6 +314,12 @@ public class Painter {
             labelOutput.setText(compuerta.output.value.toString());
         }
     }
+
+    /**
+     * Método que actualiza los labels de salida de cada compuerta
+     * @param node Nodo que corresponde al label salida
+     * @param compuerta Compuerta de donde se obtiene el valor de las entradas
+     */
 
     private static void updateInputsLabel(Node node, Compuerta compuerta){
         if(node.getId().equals("Input1")){

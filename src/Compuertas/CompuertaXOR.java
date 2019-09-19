@@ -36,7 +36,8 @@ public class CompuertaXOR extends Compuerta {
 
         for(int i = 0; i<= outputs.size()-1; i++){
             Compuerta compuerta = outputs.getElement(i);
-            compuerta.inputs.add(compuerta.output.value);
+            compuerta.operar();
+            inputs.add(compuerta.output.value);
             //compuerta.output.value = output.value;
         }
 

@@ -30,10 +30,12 @@ public class CompuertaNORD extends Compuerta {
     public void operar() {
         for(int i = 0; i<= outputs.size()-1; i++){
             Compuerta compuerta = outputs.getElement(i);
-            compuerta.inputs.add(compuerta.output.value);
+            compuerta.operar();
+            inputs.add(compuerta.output.value);
             //compuerta.output.value = output.value;
         }
 
+        System.out.println("SIZE INPUTS NORD " + inputs.size());
         output.value = (Boolean) inputs.getElement(0);
         for(int i=1; i<= inputs.size()-1; i++){
             System.out.println("entra operar inputs");

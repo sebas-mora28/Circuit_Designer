@@ -4,14 +4,11 @@ import GUI.PaintLine;
 import GUI.Painter;
 import ListaEnlazada.LinkedList;
 import ListaEnlazada.Nodo;
-import Logica.LogicGatesCreator;
-import Logica.SimulateCircuit;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.Group;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
-import javafx.scene.layout.Pane;
 
 public class Compuerta {
     public Group logicGateGroup;
@@ -30,7 +27,6 @@ public class Compuerta {
     public DoubleProperty lineInput1PosY = new SimpleDoubleProperty();
     public DoubleProperty lineInput2PosX = new SimpleDoubleProperty();
     public DoubleProperty lineInput2PosY = new SimpleDoubleProperty();
-
 
 
     public double posX, posY;

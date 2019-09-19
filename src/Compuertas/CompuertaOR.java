@@ -36,7 +36,6 @@ public class CompuertaOR extends Compuerta {
             inputs.add(compuerta.output.value);
             //compuerta.output.value = output.value;
         }
-        System.out.println("--------------------------------------------------------");
         output.value = (Boolean)inputs.getElement(0);
         for(int i=1; i<= inputs.size()-1; i++){
             boolean res = (Boolean)inputs.getElement(i);

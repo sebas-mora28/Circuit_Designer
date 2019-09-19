@@ -31,7 +31,9 @@ public class CompuertaNOT extends Compuerta{
 
     @Override
     public void operar() {
-        output.value = !((Compuerta) outputs.getElement(0)).output.value;
+        Compuerta compuerta = outputs.getElement(0);
+        compuerta.operar();
+        output.value = compuerta.output.value;
 
 
     }
