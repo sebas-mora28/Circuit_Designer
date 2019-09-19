@@ -9,6 +9,8 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.effect.Bloom;
+import javafx.scene.effect.BoxBlur;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -18,6 +20,9 @@ import javafx.stage.Stage;
 
 public class SimulateCircuit {
     private Pane root = new Pane();
+    private ScrollPane scrollPane = new ScrollPane();
+    private Button buttonRun;
+    private Scene scene;
     private Label labelLogicGate, labelEntrada;
     private LinkedList<Compuerta> inputs = new LinkedList<>();
     private LinkedList<ComboBox<Boolean>> comboBoxList = new LinkedList<>();
@@ -40,10 +45,13 @@ public class SimulateCircuit {
         labelTitle.setLayoutY(30);
         root.getChildren().addAll(labelTitle);
 
-        Button buttonRun = new Button();
+
+        buttonRun = new Button();
         buttonRun.setText("Run");
-        buttonRun.setLayoutX(600);
-        buttonRun.setLayoutY(650);
+        buttonRun.setFont(Font.font("Arial Black", FontWeight.BOLD, 20));
+        buttonRun.setOnMouseEntered(mouseEvent -> buttonRun.setBackground(new Background(new BackgroundFill(Color.web("B9E0EB"), CornerRadii.EMPTY, Insets.EMPTY))));
+        buttonRun.setOnMouseExited(mouseEvent -> buttonRun.setBackground(new Background(new BackgroundFill(Color.web("#d7d7d7"), CornerRadii.EMPTY, Insets.EMPTY))));
+        buttonRun.setLayoutX(550);
         buttonRun.setOnMouseClicked(simulateCircuit);
         root.getChildren().addAll(buttonRun);
 
@@ -65,7 +73,10 @@ public class SimulateCircuit {
         VerifyEmptyInputs();
 
 
-        stage.setScene(new Scene(root, 700, 700));
+        scrollPane.setContent(root);
+        scrollPane.setPrefSize(700,400);
+        scene = new Scene(scrollPane);
+        stage.setScene(scene);
         stage.setTitle("Ingresar las entradas ");
         stage.setResizable(false);
         stage.show();
@@ -88,7 +99,7 @@ public class SimulateCircuit {
 
     public void VerifyEmptyInputs(){
         int posx = 50;
-        int posy = 100;
+        int posy = 90;
         int index = 0;
         for(int i = 0; i <= inputs.size()-1; i++){
             System.out.println("inputs size " + i);
@@ -96,16 +107,26 @@ public class SimulateCircuit {
             if(!compuerta.input1Connected){
                 createComboBox(posx, posy);
                 createLabel(posx, posy-20, "Input" + index + ":");
-                posy += 60;
+                posy += 80;
                 index +=1;
             }
             if(!compuerta.input2Connected){
                 createLabel(posx, posy-20, "Input" + index + ":");
                 createComboBox(posx, posy);
-                posy += 60;
+                posy += 90;
                 index +=1;
             }
         }
+        updatePaneSize(posy);
+
+    }
+
+    public void updatePaneSize(int posy){
+        if(posy < 400){
+            posy +=150;
+        }
+        root.setPrefSize(700, posy);
+        buttonRun.setLayoutY(posy - 100);
     }
 
     public void createComboBox(int posx, int posy){
@@ -138,16 +159,14 @@ public class SimulateCircuit {
                     if ((Boolean) entry.getValue()) {
                         System.out.println("true 1");
                         compuerta.inputs.add(true);
-                        //compuerta.input1.value = true;
+                        compuerta.input1.value = true;
                         index += 1;
                     }
                     if (!((Boolean) entry.getValue())) {
                         compuerta.inputs.add(false);
-                        //compuerta.input1.value = false;
+                        compuerta.input1.value = false;
                         index += 1;
                     }
-
-
 
                     if (entry.getValue() == null) {
                         throw new NullPointerException();
@@ -157,11 +176,11 @@ public class SimulateCircuit {
                     ComboBox entry = comboBoxList.getElement(index);
                     if ((Boolean) entry.getValue()) {
                         compuerta.inputs.add(true);
-                        //compuerta.input2.value = true;
+                        compuerta.input2.value = true;
                         index += 1;
                     }
                     if (!((Boolean) entry.getValue())) {
-                        //compuerta.input2.value = false;
+                        compuerta.input2.value = false;
                         compuerta.inputs.add(false);
                         index += 1;
                     }

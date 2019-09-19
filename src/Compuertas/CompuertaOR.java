@@ -29,8 +29,6 @@ public class CompuertaOR extends Compuerta {
     @Override
     public void operar() {
 
-        System.out.println("Compuerta OR");
-        System.out.println("Conexiones a otras compuertas");
         for(int i = 0; i<= outputs.size()-1; i++){
             Compuerta compuerta = outputs.getElement(i);
             compuerta.operar();
@@ -45,18 +43,6 @@ public class CompuertaOR extends Compuerta {
             output.value = output.value || res;
             System.out.println("OR" + output.value);
         }
-
-        System.out.println("Salidas de la compuerts OR: " + output.value);
-
-        System.out.println("----------------------------------------------------------");
-        System.out.println();
-        System.out.println("----------------------------------------------------------");
-
-
-
-
-
-
 
     }
 }

@@ -40,6 +40,7 @@ public class Painter {
     private static boolean flag = true;
     public static PaintLine paintLine;
     public static LinkedList<PaintLine> linesList = new LinkedList<>();
+    private static int index =0;
 
     /**
      *
@@ -281,7 +282,6 @@ public class Painter {
      */
 
     public static void updateEnumeration(){
-        int index = 0;
         for(int i=0; i<= LogicGatesCreator.LogicGatesList.size()-1;i++){
             Compuerta compuerta = LogicGatesCreator.LogicGatesList.getElement(i);
             ObservableList<Node> nodos =compuerta.logicGateGroup.getChildren();
@@ -290,39 +290,49 @@ public class Painter {
                     Label label = (Label)node;
                     label.setText("i<"+ i + ">");
                 }
-                if(node.getId().equals("Output") && SimulateCircuit.simulatingCircuit && compuerta.outputConnected){
-                    Label labelOutput = (Label)node;
-                    labelOutput.setText("");
-                }
-                if(node.getId().equals("Output") && SimulateCircuit.simulatingCircuit){
-                    Label labelOutput = (Label)node;
-                    labelOutput.setText(compuerta.output.value.toString());
-                }
-                if(node.getId().equals("Input1")){
-                    Label labelInput1 = (Label)node;
-                    if(!compuerta.input1Connected){
-                        labelInput1.setText("i<"  + index + ">");
-                        index +=1;
-                        if(SimulateCircuit.simulatingCircuit){
-                            //labelInput1.setText(compuerta.input1.value.toString());
-                        }
-                    }else{
-                        labelInput1.setText("");
-                    }
-                }
-                if(node.getId().equals("Input2")){
-                    Label labelInput2 = (Label)node;
-                    if(!compuerta.input2Connected){
-                        labelInput2.setText("i<" + index +">");
-                        index +=1;
-                        if(SimulateCircuit.simulatingCircuit){
-                            //labelInput2.setText(compuerta.input2.value.toString());
-                        }
-                    }else{
-                        labelInput2.setText("");
+                updateOutputsLabel(node, compuerta);
+                updateInputsLabel(node, compuerta);
 
-                    }
+            }
+        }
+        index =0;
+    }
+
+    private static void updateOutputsLabel(Node node, Compuerta compuerta) {
+        if (node.getId().equals("Output") && SimulateCircuit.simulatingCircuit && compuerta.outputConnected) {
+            Label labelOutput = (Label) node;
+            labelOutput.setText("");
+        }
+        if (node.getId().equals("Output") && SimulateCircuit.simulatingCircuit && !compuerta.outputConnected) {
+            Label labelOutput = (Label) node;
+            labelOutput.setText(compuerta.output.value.toString());
+        }
+    }
+
+    private static void updateInputsLabel(Node node, Compuerta compuerta){
+        if(node.getId().equals("Input1")){
+            Label labelInput1 = (Label)node;
+            if(!compuerta.input1Connected){
+                labelInput1.setText("i<"  + index + ">");
+                index +=1;
+                if(SimulateCircuit.simulatingCircuit){
+                    labelInput1.setText(compuerta.input1.value.toString());
                 }
+            }else{
+                labelInput1.setText("");
+            }
+        }
+        if(node.getId().equals("Input2")){
+            Label labelInput2 = (Label)node;
+            if(!compuerta.input2Connected){
+                labelInput2.setText("i<" + index +">");
+                index +=1;
+                if(SimulateCircuit.simulatingCircuit){
+                    labelInput2.setText(compuerta.input2.value.toString());
+                }
+            }else{
+                labelInput2.setText("");
+
             }
         }
     }

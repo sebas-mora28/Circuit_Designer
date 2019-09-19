@@ -49,9 +49,6 @@ public class CompuertaAND extends Compuerta{
 
     @Override
     public void operar() {
-
-        System.out.println("Compuerta AND");
-        System.out.println("Conexiones a otras compuertas");
             for(int i = 0; i<= outputs.size()-1; i++){
                 Compuerta compuerta = outputs.getElement(i);
                 compuerta.operar();
@@ -65,13 +62,6 @@ public class CompuertaAND extends Compuerta{
                 output.value = output.value && res;
             }
 
-        System.out.println("Salida de la compuerta AND: " + output.value);
-
-
-
-        System.out.println("-----------------------------------");
-        System.out.println();
-        System.out.println("-----------------------------------");
     }
 
     EventHandler<ContextMenuEvent> rightlickMenu = contextMenuEvent -> menu();

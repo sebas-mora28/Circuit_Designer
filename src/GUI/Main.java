@@ -86,21 +86,27 @@ public class Main extends Application {
         //-------------------------------------------------------------------------------------------------
         Button run = new Button("Run");
         run.setEffect(new DropShadow());
-        run.setLayoutX(1010);
+        run.setLayoutX(990);
         run.setLayoutY(850);
         run.setOnMouseClicked(this.openWindow);
         run.setPrefSize(50, 25);
 
         Button clean = new Button("Clean");
-        clean.setLayoutX(1075);
+        clean.setLayoutX(1060);
         clean.setLayoutY(850);
         clean.setOnMouseClicked(this.clean);
+
+        Button refresh = new Button("Refresh");
+        refresh.setLayoutX(1130);
+        refresh.setLayoutY(850);
+        refresh.setOnMouseClicked(this.refresh);
+
 
 
 
         //Pantalla principal
         //-------------------------------------------------------------------------------------------------
-        Pane root = new Pane(scrollPane, logicGatesScroller, run, clean);
+        Pane root = new Pane(scrollPane, logicGatesScroller, run, clean, refresh);
         root.setBackground(new Background(new BackgroundFill(Color.web("2E5F68"), CornerRadii.EMPTY, Insets.EMPTY)));
         primaryStage.setScene(new Scene(root, 1200, 900));
         primaryStage.setTitle("Circuit Designer");
@@ -283,6 +289,11 @@ public class Main extends Application {
         pane.getChildren().clear();
         LogicGatesCreator.LogicGatesList.removeAll();
     }
+
+    EventHandler<MouseEvent> refresh = mouseEvent -> {
+        SimulateCircuit.simulatingCircuit = false;
+        Painter.updateEnumeration();
+    };
 
 
 
