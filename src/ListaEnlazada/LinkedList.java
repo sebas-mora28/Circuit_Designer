@@ -115,15 +115,24 @@ public class LinkedList<T> implements Iterator<T> {
     /**
      * Este método remueve el nodo de la posición especificada
      */
-    public void remove(int index){
-        int i=0;
-        Nodo current = head;
-        while(i < index-1) {
-            current = current.next;
-            i++;
+    public void remove(int index) {
+        if (length == 1) {
+            head = null;
+            length = 0;
+        } else if (index == 0) {
+            head = head.next;
+            length -=1;
+        } else {
+            int i = 0;
+            Nodo current = head;
+            while (i < index - 1) {
+                current = current.next;
+                i++;
+            }
+            current.next = current.next.next;
+            length -=1;
         }
-        current.next = current.next.next;
-     }
+    }
     /**
      * Este método muestra toda los elementos de la lista
      */
@@ -141,6 +150,10 @@ public class LinkedList<T> implements Iterator<T> {
             nodo = nodo.next;
         }
         return (T) nodo.value;
+    }
+    public void removeAll(){
+        head = null;
+        length = 0;
     }
 
     @Override

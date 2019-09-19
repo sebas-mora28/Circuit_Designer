@@ -4,29 +4,15 @@ package Logica;
 import Compuertas.*;
 import GUI.Painter;
 import ListaEnlazada.LinkedList;
-import ListaEnlazada.Nodo;
-import javafx.event.EventHandler;
-import javafx.scene.Cursor;
-import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-
 
 public class LogicGatesCreator {
     public static LinkedList<Compuerta> LogicGatesList = new LinkedList<>();
-    private Group logicGateGroup;
-    private static GridPane gridPane;
-    private static double posX, posY, newPosX, newPosY, translationX, translationY, newTranslationX, newTranslationY;
-
 
     /**
      * Constructor
      */
     public LogicGatesCreator() {}
-
 
 
     /**
@@ -38,7 +24,6 @@ public class LogicGatesCreator {
         if (logicGateType == LogicGateType.AND) {
             Compuerta logicGateAND = new CompuertaAND(gridPane);
             LogicGatesList.add(logicGateAND);
-            System.out.println(LogicGatesList.getLast());
             logicGateAND.logicGateGroup.setUserData(LogicGatesList.getLast());
         } else if (logicGateType == LogicGateType.NAND) {
             Compuerta logicGateNAND = new CompuertaNAND(gridPane);
@@ -60,6 +45,7 @@ public class LogicGatesCreator {
             Compuerta logicGateXOR = new CompuertaXOR(gridPane);
             LogicGatesList.add(logicGateXOR);
             logicGateXOR.logicGateGroup.setUserData(LogicGatesList.getLast());
+
         } else {
             Compuerta logicGateXNOR = new CompuertaXNOR(gridPane);
             LogicGatesList.add(logicGateXNOR);
@@ -72,70 +58,6 @@ public class LogicGatesCreator {
     }
 
 
-    EventHandler<MouseEvent> MousePressed = new EventHandler<>() {
-        @Override
-        public void handle(MouseEvent mouseEvent) {
-            posX = mouseEvent.getSceneX();
-            posY = mouseEvent.getSceneY();
-            translationX = ((Group)(mouseEvent.getSource())).getTranslateX();
-            translationY = ((Group)(mouseEvent.getSource())).getTranslateY();
-        }
-    };
-
-    EventHandler<MouseEvent> MousedDragged = new EventHandler<>() {
-        @Override
-        public void handle(MouseEvent mouseEvent) {
-            newPosX = mouseEvent.getSceneX() - posX;
-            newPosY = mouseEvent.getSceneY() - posY;
-            newTranslationX = translationX + newPosX;
-            newTranslationY = translationY + newPosY;
-            ((Group)(mouseEvent.getSource())).setTranslateX(newTranslationX);
-            ((Group)(mouseEvent.getSource())).setTranslateY(newTranslationY);
-
-        }};
-
-
-
-     EventHandler<MouseEvent> MousedRelease = new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent mouseEvent) {
-            if(VerifyCoordsInUse(gridPane, (Group)(mouseEvent.getSource()))){
-                ((Group)(mouseEvent.getSource())).setTranslateX(posX);
-                ((Group)(mouseEvent.getSource())).setTranslateY(posY);
-            }
-        }
-    };
-
-
-    /**
-     * Verifica si la nueva posición de la compuerta está siendo ocupada por otra para evitar que se sobrepongan
-     * @param gridPane Se utilizada para comparar todos las compuertas que se encuntran en la pantalla
-     * @param newlogicGateGroup Compuerta que se cambió a una nueva posición
-     * @return true en caso de que la posición este siendo ocupada, false en caso contrario
-     */
-    public boolean VerifyCoordsInUse(GridPane gridPane, Group newlogicGateGroup){
-        for(Node nodo : gridPane.getChildren()){
-            if(!newlogicGateGroup.equals(nodo) && newlogicGateGroup.getBoundsInParent().intersects(nodo.getBoundsInParent())){
-                return true;
-            }
-        }
-        return false;
-    }
-
-
-    public void setGridPane(GridPane gridPane) {
-        this.gridPane = gridPane;
-    }
-
-    public Group getLogicGateGroup() {
-        return logicGateGroup;
-    }
-
-    public void setLogicGateGroup(Group logicGateGroup) {
-        this.logicGateGroup = logicGateGroup;
-    }
-
-
     public enum LogicGateType{
         AND,
         NAND,
@@ -144,7 +66,8 @@ public class LogicGatesCreator {
         OR,
         XOR,
         XNOR;
-
     }
+
+
 
 }

@@ -11,17 +11,13 @@ public class Main {
 
         LinkedList<String> lista = new LinkedList<>();
 
-        lista.add("se");
+        lista.add("Compuerta1");
+        lista.add("Compuerta2");
+        lista.add("Compuerta3");
 
+        lista.remove(0);
 
-        System.out.println(lista.getLast());
-
-        Boolean res = null;
-        Boolean prueba = null;
-
-        res = prueba;
-        prueba = true;
-        System.out.println(res);
+        lista.showData();
 
 
 

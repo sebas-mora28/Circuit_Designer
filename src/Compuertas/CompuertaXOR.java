@@ -35,17 +35,16 @@ public class CompuertaXOR extends Compuerta {
     @Override
     public void operar() {
 
-        for(int i=0; i<= outputs.size(); i++){
+        for(int i=0; i<= outputs.size()-1; i++){
             Compuerta compuerta = outputs.getElement(i);
             compuerta.inputs.add(compuerta.output.value);
             //compuerta.output.value = output.value;
         }
 
-        output.value = (Boolean) inputs.getElement(0);
         for(int i=1; i<= inputs.size()-1; i++){
             System.out.println("entra operar inputs");
             boolean res = (Boolean)inputs.getElement(i);
-            if(output.value != res){
+            if(output.value != inputs.getElement(0)){
                 output.value = true;
             }else{
                 output.value = false;

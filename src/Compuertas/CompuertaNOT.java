@@ -2,6 +2,7 @@ package Compuertas;
 
 import GUI.Painter;
 import ListaEnlazada.LinkedList;
+import ListaEnlazada.Nodo;
 import Logica.DragAndDrop;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
@@ -9,7 +10,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
 public class CompuertaNOT extends Compuerta{
-    LinkedList<Boolean> inputs = new LinkedList<>();
+
 
     public CompuertaNOT(Pane gridPane) {
         createNOT(gridPane);
@@ -18,12 +19,13 @@ public class CompuertaNOT extends Compuerta{
 
     private void  createNOT(Pane gridPane){
         logicGateGroup = new Group();
+        input2Connected = true;
         Image image = new Image("Compuerta5.png");
         Rectangle logicGate = Painter.insertImage(image);
         logicGateGroup.getChildren().add(logicGate);
         DragAndDrop.setStartDragAndDrop(gridPane, logicGateGroup);
         gridPane.getChildren().add(logicGateGroup);
-        Painter.crearEntradasSalidas(logicGateGroup);
+        Painter.crearEntradaSalidaNOT(logicGateGroup);
         Painter.enumeration(logicGateGroup);
 
 
@@ -31,7 +33,7 @@ public class CompuertaNOT extends Compuerta{
 
     @Override
     public void operar() {
-        output.value = !input1.value;
+        output.value = !((Compuerta) outputs.getElement(0)).output.value;
 
 
     }

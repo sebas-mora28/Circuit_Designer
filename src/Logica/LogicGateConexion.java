@@ -4,7 +4,6 @@ import Compuertas.Compuerta;
 import GUI.Painter;
 import javafx.scene.input.MouseEvent;
 
-
 /**
  * Clase donde se maneja la logica de las conexciones entre compuertas
  */
@@ -21,8 +20,6 @@ public class LogicGateConexion {
     public static boolean input2Selected = false;
     public static boolean input1;
     public static boolean input2;
-
-
     public static Compuerta currentLogicGate;
     public static Compuerta logicGateTo;
 
@@ -30,16 +27,13 @@ public class LogicGateConexion {
      * Controla el estado de la conexión entre las compuertas para llamar los correspondientes métodos
      * @param mouseEvent
      */
-
-
-    public static void startConexion(MouseEvent mouseEvent){
-        System.out.println(conectingOutput);
+    public static void startConnexion(MouseEvent mouseEvent){
         if(conectingOutput) {
             if (selectingOutput) {
-                SelectGate(mouseEvent);
+                selectGateOutput(mouseEvent);
             }
             if (selectingNewGate) {
-                SelectInputToConnect(mouseEvent);
+                selectInputToConnect(mouseEvent);
             }
         }
         /*
@@ -52,9 +46,11 @@ public class LogicGateConexion {
                 System.out.println("Pasa la segunda compuerta");
                 ConnectingInput(mouseEvent);
             }
+
         }
 
          */
+
     }
 
 
@@ -62,8 +58,7 @@ public class LogicGateConexion {
      * Este método busca la compuerta del origen de la conexión
      * @param mouseEvent
      */
-
-    private static void SelectGate(MouseEvent mouseEvent) {
+    private static void selectGateOutput(MouseEvent mouseEvent) {
         for (int i = 0; i <= LogicGatesCreator.LogicGatesList.size() - 1; i++) {
             currentLogicGate = LogicGatesCreator.LogicGatesList.getElement(i);
             if (mouseEvent.getX() + 1 == currentLogicGate.posX && mouseEvent.getY() + 1 == currentLogicGate.posY) {
@@ -85,7 +80,7 @@ public class LogicGateConexion {
      * Este método busca la entrada que se quiere conectar en caso de que el origen sea una salida
      * @param mouseEvent
      */
-    private static void SelectInputToConnect(MouseEvent mouseEvent) {
+    private static void selectInputToConnect(MouseEvent mouseEvent) {
         for (int i = 0; i <= LogicGatesCreator.LogicGatesList.size() - 1; i++) {
             logicGateTo = LogicGatesCreator.LogicGatesList.getElement(i);
             if (!(mouseEvent.getX() + 1 == currentLogicGate.posX && mouseEvent.getY() + 1 == currentLogicGate.posY)) {
@@ -96,10 +91,11 @@ public class LogicGateConexion {
                             //logicGateTo.input1 = currentLogicGate.output;
                             System.out.println("Entrada 1: " + logicGateTo.input1.value);
                             input1 = false;
-                            //logicGateTo.input1Connected = true;
+                            logicGateTo.input1Connected = true;
                             currentLogicGate.outputConnected = true;
                             break;
                         }else{
+                            Painter.removeLines();
                             System.out.println("Esta entrada ya se encuentra seleccionada");
                         }
                     }
@@ -108,11 +104,12 @@ public class LogicGateConexion {
                             logicGateTo.outputs.add(currentLogicGate);
                             //logicGateTo.input2 = currentLogicGate.output;
                             System.out.println("Entrada 2: " + logicGateTo.input2.value);
-                            //logicGateTo.input2Connected = true;
+                            logicGateTo.input2Connected = true;
                             currentLogicGate.outputConnected = true;
                             input2 = false;
                             break;
                         }else{
+                            Painter.removeLines();
                             System.out.println("Esta entrada ya se encuentra seleccionada");
                         }
                     }else{
@@ -184,5 +181,4 @@ public class LogicGateConexion {
         selected = false;
         Painter.updateEnumeration();
     }
-
 }

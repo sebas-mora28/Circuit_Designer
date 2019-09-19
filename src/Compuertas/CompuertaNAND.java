@@ -29,7 +29,7 @@ public class CompuertaNAND extends Compuerta {
     @Override
     public void operar(){
 
-        for(int i=0; i<= outputs.size(); i++){
+        for(int i=0; i<= outputs.size()-1; i++){
             Compuerta compuerta = outputs.getElement(i);
             compuerta.inputs.add(compuerta.output.value);
             //compuerta.output.value = output.value;
@@ -39,8 +39,9 @@ public class CompuertaNAND extends Compuerta {
         for(int i=0; i<= inputs.size()-1; i++){
             System.out.println("entra operar inputs");
             boolean res = (Boolean)inputs.getElement(i);
-            output.value = !(output.value && res);
+            output.value = output.value && res;
         }
+        output.value = !output.value;
 
     }
 }

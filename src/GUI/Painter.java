@@ -1,8 +1,6 @@
 package GUI;
 
 import Compuertas.Compuerta;
-import ListaEnlazada.LinkedList;
-import Logica.DragAndDrop;
 import Logica.LogicGateConexion;
 import Logica.LogicGatesCreator;
 import Logica.SimulateCircuit;
@@ -14,7 +12,6 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -28,7 +25,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
-import java.awt.*;
 import java.util.Random;
 
 
@@ -40,12 +36,16 @@ public class Painter {
     private static Pane pane;
     private static Circle salida, entrada1, entrada2;
     private static Rectangle rectangleImage;
-    private static boolean conectando;
-    private static Circle current;
     private static double startposx, startposy, endPosX, endPosY;
     private static Random random = new Random();
     private static boolean flag = true;
-    private static Line line, line2, line3;;
+    private static Line line1, line2, line3;;
+    private static Line[] lines = new Line[3];
+
+    /**
+     *
+     * @param pane
+     */
 
     public Painter(Pane pane) {
         Painter.pane = pane;
@@ -75,8 +75,6 @@ public class Painter {
      *
      * @param logicGateGroup grupo que corresponde a la compuerta lógica
      */
-
-
     public static void crearEntradasSalidas(Group logicGateGroup) {
         salida(logicGateGroup);
         entradas(logicGateGroup);
@@ -84,10 +82,8 @@ public class Painter {
 
     }
 
-
     /**
      * Método que crea los círculos que se incluiran en el grupo de la compuerta que corresponderan a las salida de la compuerta
-     *
      * @param logicGateGroup grupo que corresponde a la compuerta lógica
      */
 
@@ -99,12 +95,45 @@ public class Painter {
         salida.setLayoutY(92);
         salida.setId("Salida");
         salida.setOpacity(0.0);
-        salida.setUserData(logicGateGroup.getUserData());
-        pane.setOnMouseMoved(line2Drag);
+        salida.setUserData(logicGateGroup);
+        pane.setOnMouseMoved(MovingLine);
+        pane.getChildren().addAll(salida);
+        logicGateGroup.getChildren().add(salida);
+    }
+
+
+    /**
+     * Este método crea la entrada y salida para la compuerta NOT
+     * @param logicGateGroup grupo donde se agregan la entrada y salida
+     */
+
+
+    public static void crearEntradaSalidaNOT(Group logicGateGroup) {
+        salida = new Circle(10);
+        salida.setOnMouseEntered(mouseEvent -> salida.setCursor(Cursor.CROSSHAIR));
+        salida.setOnMouseClicked(MouseClickOutput);
+        salida.setLayoutX(105);
+        salida.setLayoutY(95);
+        salida.setId("Salida");
+        salida.setOpacity(0.0);
+        pane.setOnMouseMoved(MovingLine);
         pane.getChildren().addAll(salida);
         logicGateGroup.getChildren().add(salida);
 
+        entrada1 = new Circle(10);
+        entrada1.setOnMouseEntered(mouseEvent -> entrada1.setCursor(Cursor.CROSSHAIR));
+        entrada1.setOnMouseClicked(MouseClickInput);
+        entrada1.setLayoutX(15);
+        entrada1.setLayoutY(100);
+        entrada1.setId("Entrada1");
+        entrada1.setUserData(logicGateGroup);
+        logicGateGroup.getChildren().add(entrada1);
+        entrada1.setOpacity(0.0);
+
+
     }
+
+
 
 
     /**
@@ -141,54 +170,96 @@ public class Painter {
         @Override
         public void handle(MouseEvent mouseEvent) {
             Circle circle = (Circle) mouseEvent.getSource();
-            if (circle.getId().equals("Salida")){
-                LogicGateConexion.conectingOutput = true;
-                LogicGateConexion.selectingOutput = true;
-                createLines();
-                startposx =  mouseEvent.getSceneX();
-                startposy = mouseEvent.getSceneY();
+            Compuerta compuerta = (Compuerta)((Group)circle.getUserData()).getUserData();
+            if (circle.getId().equals("Salida")) {
+                if (!LogicGateConexion.conectingOutput && !LogicGateConexion.selectingOutput) {
+                    LogicGateConexion.conectingOutput = true;
+                    LogicGateConexion.selectingOutput = true;
+                    createLines(compuerta);
+                    startposx = mouseEvent.getSceneX();
+                    startposy = mouseEvent.getSceneY();
+                }else{
+                    removeLines();
+                    LogicGateConexion.selectingOutput = false;
+                    LogicGateConexion.conectingOutput= false;
                 }
+            }
+
             }
 
     };
 
-    public static void createLines(){
+    /**
+     * Método que remueve las líneas que se crearon en caso de que la acción hecha por el usuario sea inváloda
+     */
+
+    public static void removeLines(){
+        for(int y=0; y<=1; y++) {
+            for (int i = 0; i <= pane.getChildren().size()-1; i++) {
+                Node nodo = pane.getChildren().get(i);
+                if (nodo.equals(line1)) {
+                    System.out.println("Se elimina 1");
+                    pane.getChildren().remove(nodo);
+                }
+                if (nodo.equals(line2)) {
+                    System.out.println("Se elimina 2");
+                    pane.getChildren().remove(nodo);
+                }
+                if (nodo.equals(line3)) {
+                    System.out.println("Se elimina 3");
+                    pane.getChildren().remove(nodo);
+                }
+            }
+        }
+    }
+
+    /**
+     * Método que crea las líneas para conectar las compuertas
+     * @param compuerta Compuerta para obtener la posición en X y Y para conectar la línea de la compuerta
+     */
+
+    private static void createLines(Compuerta compuerta){
         int r = random.nextInt(255);
         int v = random.nextInt(255);
         int g = random.nextInt(255);
-        Line[] lines = new Line[3];
-
-        for(int i=0; i<=2; i++){
+        lines = new Line[3];
+        for(int i=0; i<=2; i++) {
             Line line = new Line();
-            line.setFill(Color.rgb(r,v,g));
+            line.setStroke(Color.rgb(r, v, g));
             line.setId("Linea");
             lines[i] = line;
             pane.getChildren().add(line);
         }
-        setLine(lines[0], lines[1], lines[2]);
+        setLines(lines[0], lines[1], lines[2]);
+        line1.startXProperty().bind(compuerta.lineOutputPosX);
+        line1.startYProperty().bind(compuerta.lineOutputPosY);
     }
 
-    static  EventHandler<MouseEvent> MouseClickInput = new EventHandler<MouseEvent>() {
+
+
+
+    static  EventHandler<MouseEvent> MouseClickInput = new EventHandler<>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
             Circle circle = (Circle) mouseEvent.getSource();
+            Compuerta compuerta = (Compuerta)((Group)circle.getUserData()).getUserData();
             if (circle.getId().equals("Entrada1")) {
                 if (LogicGateConexion.conectingOutput) {
                     LogicGateConexion.selectingNewGate = true;
                     LogicGateConexion.input1 = true;
+                    line3.endXProperty().bind(compuerta.lineInput1PosX);
+                    line3.endYProperty().bind(compuerta.lineInput1PosY);
                     return;
                 }
 
-
                 if (!LogicGateConexion.conectingOutput) {
-                    if(flag) {
+                    if (flag) {
+                        startposx = mouseEvent.getSceneX();
+                        startposy = mouseEvent.getSceneY();
                         LogicGateConexion.conectingInput = true;
                         LogicGateConexion.selectingInput = true;
                         LogicGateConexion.input1 = true;
-                        Line line = new Line(startposx, startposy, mouseEvent.getSceneX(), mouseEvent.getSceneY());
-                        line.setStroke(Color.rgb(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
-                        line.setStrokeWidth(5);
-                        line.setId("Linea");
+                        flag = false;
                     }
                 }
 
@@ -197,20 +268,24 @@ public class Painter {
                     LogicGateConexion.selectingNewGate = true;
                     LogicGateConexion.input1Selected = true;
                     flag = true;
-                    }
+                }
             }
             if (circle.getId().equals("Entrada2")) {
                 if (LogicGateConexion.conectingOutput) {
                     LogicGateConexion.selectingNewGate = true;
                     LogicGateConexion.input2 = true;
+                    line3.endXProperty().bind(compuerta.lineInput2PosX);
+                    line3.endYProperty().bind(compuerta.lineInput2PosY);
                     return;
                 }
                 if (!LogicGateConexion.conectingOutput) {
 
-                    if(flag) {
+                    if (flag) {
                         LogicGateConexion.conectingInput = true;
                         LogicGateConexion.selectingInput = true;
                         LogicGateConexion.input2 = true;
+                        startposx = mouseEvent.getSceneX();
+                        startposy = mouseEvent.getSceneY();
                         flag = false;
                     }
                 }
@@ -223,6 +298,13 @@ public class Painter {
             }
         }
     };
+
+
+    /**
+     * Este método agrega los labels que corresponden a la numeración de las entradas y salidas de la compuerta
+     * @param group
+     */
+
 
     public static void enumeration(Group group) {
         Label label = new Label();
@@ -252,6 +334,11 @@ public class Painter {
 
     }
 
+    /**
+     * Método que actualiza los labels de las entradas y salidas de la compuertas en caso de que se realice algún cambio
+     * en el circuito.
+     */
+
     public static void updateEnumeration(){
         int index = 0;
         for(int i=0; i<= LogicGatesCreator.LogicGatesList.size()-1;i++){
@@ -261,6 +348,10 @@ public class Painter {
                 if(node.getId().equals("label")){
                     Label label = (Label)node;
                     label.setText("i<"+ i + ">");
+                }
+                if(node.getId().equals("Output") && SimulateCircuit.simulatingCircuit && compuerta.outputConnected){
+                    Label labelOutput = (Label)node;
+                    labelOutput.setText("");
                 }
                 if(node.getId().equals("Output") && SimulateCircuit.simulatingCircuit && !compuerta.outputConnected){
                     Label labelOutput = (Label)node;
@@ -272,11 +363,10 @@ public class Painter {
                         labelInput1.setText("i<"  + index + ">");
                         index +=1;
                         if(SimulateCircuit.simulatingCircuit){
-                            //labelInput1.setText(compuerta.input1.value.toString());
+                            labelInput1.setText(compuerta.input1.value.toString());
                         }
                     }else{
                         labelInput1.setText("");
-
                     }
                 }
                 if(node.getId().equals("Input2")){
@@ -285,7 +375,7 @@ public class Painter {
                         labelInput2.setText("i<" + index +">");
                         index +=1;
                         if(SimulateCircuit.simulatingCircuit){
-                            //labelInput2.setText(compuerta.input2.value.toString());
+                            labelInput2.setText(compuerta.input2.value.toString());
                         }
                     }else{
                         labelInput2.setText("");
@@ -297,7 +387,7 @@ public class Painter {
     }
 
 
-    static EventHandler<MouseEvent> line2Drag = new EventHandler<MouseEvent>() {
+    static EventHandler<MouseEvent> MovingLine = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
             if(LogicGateConexion.conectingOutput) {
@@ -306,18 +396,26 @@ public class Painter {
 
                 double newPosx = (startposx + endPosX) / 2;
 
-                startLine(newPosx, startposy, newPosx, endPosY, endPosX, endPosY);
+                starLine(newPosx, startposy, newPosx, endPosY, endPosX, endPosY);
             }
 
         }
     };
 
 
-    public static void startLine(double posx1, double posy1, double posx2, double posy2, double posx3, double posy3){
-        line.setStartX(startposx);
-        line.setStartY(startposy);
-        line.setEndX(posx1);
-        line.setEndY(posy1);
+    /**
+     * Método que actualiza la líneas para las conexión de las compuertas
+     * @param posx1
+     * @param posy1
+     * @param posx2
+     * @param posy2
+     * @param posx3
+     * @param posy3
+     */
+
+    public static void starLine(double posx1, double posy1, double posx2, double posy2, double posx3, double posy3) {
+        line1.setEndX(posx1);
+        line1.setEndY(posy1);
         line2.setStartX(posx1);
         line2.setStartY(posy1);
         line2.setEndX(posx2);
@@ -326,13 +424,16 @@ public class Painter {
         line3.setStartY(posy2);
         line3.setEndX(posx3);
         line3.setEndY(posy3);
-
     }
 
 
-    public static void setLine(Line line, Line line2, Line line3) {
-        Painter.line = line;
+
+
+    public static void setLines(Line line, Line line2, Line line3) {
+
+        Painter.line1 = line;
         Painter.line2 = line2;
         Painter.line3 = line3;
     }
+
 }
