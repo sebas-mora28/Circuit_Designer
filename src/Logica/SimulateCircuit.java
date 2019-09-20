@@ -219,7 +219,6 @@ public class SimulateCircuit {
     }
 
 
-
     EventHandler<MouseEvent> simulateCircuit = mouseEvent -> {
         setInputsValues();
         inputs.removeAll();

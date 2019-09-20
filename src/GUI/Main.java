@@ -1,6 +1,7 @@
 package GUI;
 
 
+import Logica.GenerateTruthTable;
 import Logica.LogicGateConexion;
 import Logica.LogicGatesCreator;
 import Logica.SimulateCircuit;
@@ -291,6 +292,7 @@ public class Main extends Application {
     }
 
     EventHandler<MouseEvent> refresh = mouseEvent -> {
+        GenerateTruthTable generateTruthTable = new GenerateTruthTable(LogicGatesCreator.LogicGatesList);
         SimulateCircuit.simulatingCircuit = false;
         Painter.updateEnumeration();
     };

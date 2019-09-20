@@ -50,7 +50,6 @@ public class LogicGatesCreator {
             Compuerta logicGateXNOR = new CompuertaXNOR(gridPane);
             LogicGatesList.add(logicGateXNOR);
             logicGateXNOR.logicGateGroup.setUserData(LogicGatesList.getLast());
-
         }
         Painter.updateEnumeration();
 
