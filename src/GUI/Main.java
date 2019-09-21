@@ -93,11 +93,13 @@ public class Main extends Application {
         run.setPrefSize(50, 25);
 
         Button clean = new Button("Clean");
+        clean.setEffect(new DropShadow());
         clean.setLayoutX(1060);
         clean.setLayoutY(850);
         clean.setOnMouseClicked(this.clean);
 
         Button refresh = new Button("Refresh");
+        refresh.setEffect(new DropShadow());
         refresh.setLayoutX(1130);
         refresh.setLayoutY(850);
         refresh.setOnMouseClicked(this.refresh);

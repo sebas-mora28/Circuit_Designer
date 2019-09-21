@@ -3,14 +3,13 @@ package Logica;
 
 import Compuertas.Compuerta;
 import GUI.Painter;
-import ListaEnlazada.LinkedList;
+import LinkedList.LinkedList;
 import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.effect.Bloom;
-import javafx.scene.effect.BoxBlur;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -24,8 +23,8 @@ public class SimulateCircuit {
     private Button buttonRun;
     private Scene scene;
     private Label labelLogicGate, labelEntrada;
-    private LinkedList<Compuerta> inputs = new LinkedList<>();
-    private LinkedList<ComboBox<Boolean>> comboBoxList = new LinkedList<>();
+    private LinkedList<Compuerta> inputs = new LinkedList<Compuerta>();
+    private LinkedList<ComboBox<Boolean>> comboBoxList = new LinkedList<ComboBox<Boolean>>();
     public static boolean simulatingCircuit = false;
     private Stage stage = new Stage();
 
@@ -37,7 +36,7 @@ public class SimulateCircuit {
 
     private void start() throws Exception {
 
-        root.setBackground(new Background(new BackgroundFill(Color.rgb(255, 255, 255), CornerRadii.EMPTY, Insets.EMPTY)));
+        root.setBackground(new Background(new BackgroundFill(Color.web("139AB4"), CornerRadii.EMPTY, Insets.EMPTY)));
         Label labelTitle = new Label();
         labelTitle.setText("Ingrese las entradas");
         labelTitle.setFont(Font.font("Arial", FontWeight.BOLD, 25));
@@ -133,6 +132,9 @@ public class SimulateCircuit {
         ComboBox<Boolean> comboBox = new ComboBox<>();
         comboBox.setItems(FXCollections.observableArrayList(true, false));
         comboBox.setPromptText("Seleccione un valor para la entrada");
+        comboBox.setCursor(Cursor.CROSSHAIR);
+        comboBox.setOnMouseEntered(mouseEvent ->  comboBox.setBackground(new Background(new BackgroundFill(Color.web("43D8CF"), CornerRadii.EMPTY, Insets.EMPTY))));
+        comboBox.setOnMouseExited(mouseEvent -> comboBox.setBackground(new Background(new BackgroundFill(Color.web("BCC5C5"),CornerRadii.EMPTY, Insets.EMPTY))));
         comboBox.setLayoutX(posx);
         comboBox.setLayoutY(posy);
         root.getChildren().addAll(comboBox);
@@ -143,6 +145,7 @@ public class SimulateCircuit {
         Label label = new Label();
         label.setText(name);
         label.setLayoutX(posx);
+        label.setFont(Font.font("Arial Black", FontWeight.BOLD, 15));
         label.setLayoutY(posy);
         root.getChildren().add(label);
 

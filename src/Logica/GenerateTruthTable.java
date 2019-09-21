@@ -2,14 +2,14 @@ package Logica;
 
 
 import Compuertas.Compuerta;
-import ListaEnlazada.LinkedList;
+import LinkedList.LinkedList;
 
 /**
  * Clase que genera la tabla de verdad del circuito diseñado
  */
 public class GenerateTruthTable {
-    private LinkedList<Compuerta> compuertaLinkedList = new LinkedList<>();
-    private LinkedList<Compuerta> inputsLinkedList = new LinkedList<>();
+    private LinkedList<Compuerta> compuertaLinkedList = new LinkedList<Compuerta>();
+    private LinkedList<Compuerta> inputsLinkedList = new LinkedList<Compuerta>();
     private int numberOfInputs =0;
 
 
@@ -42,6 +42,12 @@ public class GenerateTruthTable {
             if (!compuerta.input1Connected || !compuerta.input2Connected) {
                 inputsLinkedList.add(compuerta);
             }
+        }
+    }
+
+
+    public void generate(){
+        for(int i=1; i<= (2^numberOfInputs); i++) {
         }
     }
 }

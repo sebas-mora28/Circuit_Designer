@@ -1,7 +1,7 @@
 package Compuertas;
 
 import GUI.Painter;
-import ListaEnlazada.LinkedList;
+import LinkedList.LinkedList;
 import Logica.DragAndDrop;
 import javafx.scene.Group;
 import javafx.scene.image.Image;

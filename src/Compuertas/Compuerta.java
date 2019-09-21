@@ -2,24 +2,25 @@ package Compuertas;
 
 import GUI.PaintLine;
 import GUI.Painter;
-import ListaEnlazada.LinkedList;
-import ListaEnlazada.Nodo;
+import LinkedList.LinkedList;
+import LinkedList.Nodo;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.Group;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.paint.Paint;
 
 public class Compuerta {
     public Group logicGateGroup;
 
-    public LinkedList<Compuerta> outputs = new LinkedList<>();
+    public LinkedList<Compuerta> outputs = new LinkedList<Compuerta>();
     public LinkedList inputs = new LinkedList<>();
-    public LinkedList<PaintLine> listLines = new LinkedList<>();
+    public LinkedList<PaintLine> listLines = new LinkedList<PaintLine>();
 
-    public Nodo<Boolean> output = new Nodo<>(null);
-    public Nodo<Boolean> input1 = new Nodo<>(null);
-    public Nodo<Boolean> input2 = new Nodo<>(null);
+    public Nodo<Boolean> output = new Nodo<Boolean>(null);
+    public Nodo<Boolean> input1 = new Nodo<Boolean>(null);
+    public Nodo<Boolean> input2 = new Nodo<Boolean>(null);
 
     public DoubleProperty lineOutputPosX = new SimpleDoubleProperty();
     public DoubleProperty lineOutputPosY = new SimpleDoubleProperty();

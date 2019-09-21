@@ -4,6 +4,7 @@ import Compuertas.Compuerta;
 import Logica.LogicGateConexion;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;

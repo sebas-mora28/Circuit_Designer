@@ -1,4 +1,4 @@
-package ListaEnlazada;
+package LinkedList;
 
 /**
  * Esta clase crea los Nodo para la lista enlazada

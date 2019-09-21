@@ -3,11 +3,11 @@ package Logica;
 
 import Compuertas.*;
 import GUI.Painter;
-import ListaEnlazada.LinkedList;
+import LinkedList.LinkedList;
 import javafx.scene.layout.Pane;
 
 public class LogicGatesCreator {
-    public static LinkedList<Compuerta> LogicGatesList = new LinkedList<>();
+    public static LinkedList<Compuerta> LogicGatesList = new LinkedList<Compuerta>();
 
     /**
      * Constructor
