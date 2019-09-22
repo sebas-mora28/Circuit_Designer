@@ -102,7 +102,7 @@ public class Main extends Application {
         refresh.setEffect(new DropShadow());
         refresh.setLayoutX(1130);
         refresh.setLayoutY(850);
-        refresh.setOnMouseClicked(this.refresh);
+        refresh.setOnMouseClicked(this.table);
 
 
 
@@ -294,11 +294,21 @@ public class Main extends Application {
     }
 
     EventHandler<MouseEvent> refresh = mouseEvent -> {
-        GenerateTruthTable generateTruthTable = new GenerateTruthTable(LogicGatesCreator.LogicGatesList);
         SimulateCircuit.simulatingCircuit = false;
         Painter.updateEnumeration();
     };
 
+
+    EventHandler<MouseEvent> table = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+            try {
+                GenerateTruthTable generateTruthTable = new GenerateTruthTable(LogicGatesCreator.LogicGatesList);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
 
 
 }

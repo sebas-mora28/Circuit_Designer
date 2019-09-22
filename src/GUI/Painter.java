@@ -36,7 +36,7 @@ public class Painter {
     private static Rectangle rectangleImage;
     private static boolean flag = true;
     public static PaintLine paintLine;
-    public static LinkedList<PaintLine> linesList = new LinkedList<>();
+    public static LinkedList<PaintLine> linesList = new LinkedList<PaintLine>();
     private static int index =0;
 
     /**

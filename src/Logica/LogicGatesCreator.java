@@ -39,10 +39,10 @@ public class LogicGatesCreator {
             logicGateNORD.logicGateGroup.setUserData(LogicGatesList.getLast());
         } else if (logicGateType == LogicGateType.NOT) {
             Compuerta logicGateNOT = new CompuertaNOT(gridPane);
+
             LogicGatesList.add(logicGateNOT);
             logicGateNOT.logicGateGroup.setUserData(LogicGatesList.getLast());
-        } else if (logicGateType == LogicGateType.XOR) {
-            Compuerta logicGateXOR = new CompuertaXOR(gridPane);
+        } else if (logicGateType == LogicGateType.XOR) {            Compuerta logicGateXOR = new CompuertaXOR(gridPane);
             LogicGatesList.add(logicGateXOR);
             logicGateXOR.logicGateGroup.setUserData(LogicGatesList.getLast());
 
