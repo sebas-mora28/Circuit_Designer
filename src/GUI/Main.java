@@ -1,6 +1,7 @@
 package GUI;
 
 
+import Compuertas.Compuerta;
 import Logica.GenerateTruthTable;
 import Logica.LogicGateConexion;
 import Logica.LogicGatesCreator;
@@ -80,36 +81,42 @@ public class Main extends Application {
         logicGatesScroller.setLayoutX(978);
         logicGatesScroller.setLayoutY(0);
         logicGatesScroller.setContent(logicGatePane);
-        logicGatesScroller.setPrefSize(220, 830);
+        logicGatesScroller.setPrefSize(220, 800);
 
 
         //Botones
         //-------------------------------------------------------------------------------------------------
         Button run = new Button("Run");
         run.setEffect(new DropShadow());
-        run.setLayoutX(990);
-        run.setLayoutY(850);
+        run.setLayoutX(995);
+        run.setLayoutY(810);
         run.setOnMouseClicked(this.openWindow);
         run.setPrefSize(50, 25);
 
         Button clean = new Button("Clean");
         clean.setEffect(new DropShadow());
-        clean.setLayoutX(1060);
-        clean.setLayoutY(850);
+        clean.setLayoutX(1080);
+        clean.setLayoutY(810);
         clean.setOnMouseClicked(this.clean);
 
         Button refresh = new Button("Refresh");
         refresh.setEffect(new DropShadow());
-        refresh.setLayoutX(1130);
+        refresh.setLayoutX(995);
         refresh.setLayoutY(850);
-        refresh.setOnMouseClicked(this.table);
+        refresh.setOnMouseClicked(this.refresh);
+
+        Button truthTable = new Button("Thuth Table");
+        truthTable.setEffect(new DropShadow());
+        truthTable.setLayoutX(1080);
+        truthTable.setLayoutY(850);
+        truthTable.setOnMouseClicked(this.thuthTable);
 
 
 
 
         //Pantalla principal
         //-------------------------------------------------------------------------------------------------
-        Pane root = new Pane(scrollPane, logicGatesScroller, run, clean, refresh);
+        Pane root = new Pane(scrollPane, logicGatesScroller, run, clean, refresh, truthTable);
         root.setBackground(new Background(new BackgroundFill(Color.web("2E5F68"), CornerRadii.EMPTY, Insets.EMPTY)));
         primaryStage.setScene(new Scene(root, 1200, 900));
         primaryStage.setTitle("Circuit Designer");
@@ -299,18 +306,27 @@ public class Main extends Application {
     };
 
 
-    EventHandler<MouseEvent> table = new EventHandler<MouseEvent>() {
+    EventHandler<MouseEvent> thuthTable = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
+
             try {
+                if(LogicGatesCreator.LogicGatesList.size() ==0){ throw new NullPointerException(); }
                 GenerateTruthTable generateTruthTable = new GenerateTruthTable(LogicGatesCreator.LogicGatesList);
+            } catch (NullPointerException e){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Content", ButtonType.OK);
+                alert.setHeaderText("No exiten compuertas en el diseño");
+                alert.setContentText("Debe crear al menos una compuerta para mostrar la tabla de verdad");
+                alert.showAndWait();
+
             } catch (Exception e) {
-                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Content", ButtonType.OK);
+                alert.setHeaderText("Compuertas sueltas");
+                alert.setContentText("Dentro del diseño existe alguna compuerta que no tiene su salida conectada, por favor verifique");
+                alert.showAndWait();
             }
         }
     };
-
-
 }
 
 

@@ -33,7 +33,7 @@ public class CompuertaNOT extends Compuerta{
     public void operar() {
         Compuerta compuerta = outputs.getElement(0);
         compuerta.operar();
-        output.value = compuerta.output.value;
+        output.value = !compuerta.output.value;
 
 
     }
