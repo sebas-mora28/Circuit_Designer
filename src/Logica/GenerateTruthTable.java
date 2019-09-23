@@ -41,7 +41,7 @@ public class GenerateTruthTable {
 
     public GenerateTruthTable(final LinkedList<Compuerta> compuertaLinkedList) throws Exception {
         start();
-        table(compuertaLinkedList);
+        newCircuitList(compuertaLinkedList);
 
     }
 
@@ -74,19 +74,19 @@ public class GenerateTruthTable {
      * Método que recibe la lista enlazada del circuito y la ingresa en otra para manejo interno de la  clase
      * @param compuertaLinkedList Lista enlazada del circuito
      */
-    private void table(final LinkedList<Compuerta> compuertaLinkedList) {
+    private void newCircuitList(final LinkedList<Compuerta> compuertaLinkedList) {
         for (int i = 0; i <= compuertaLinkedList.size() - 1; i++) {
             Compuerta compuerta = compuertaLinkedList.getElement(i);
             this.compuertaLinkedList.add(compuerta);
         }
-        inputs();
+        verifyInputs();
     }
 
 
     /**
      * Método que verifica cuantas entradas disponibles tiene el circuito y guarda la salida en una variable
      */
-    private void inputs() {
+    private void verifyInputs() {
         for (int i = 0; i <= this.compuertaLinkedList.size() - 1; i++) {
             Compuerta compuerta = this.compuertaLinkedList.getElement(i);
             if (!compuerta.input1Connected) {
@@ -99,10 +99,11 @@ public class GenerateTruthTable {
                 inputsLinkedList.add(compuerta);
             }
             if (!compuerta.outputConnected) {
+                // Se guarda la compuerta de salida para obtener el valor de esta. 
                 this.outputLogicGate = compuerta;
             }
         }
-        combinacion();
+        combinations();
     }
 
 
@@ -110,11 +111,12 @@ public class GenerateTruthTable {
      * Método que calcula todas las combinaciones posibles del circuito para elaborar la tabla de verdad
      */
 
-    private void combinacion() {
-        combinations = (int) Math.pow(2, numberOfInputs);
+    private void combinations() {
+        combinations = (int) Math.pow(2, numberOfInputs); //Se obtiene el total de combinaciones del circuito 
         for (int i = 0; i < combinations; i++) {
             ArrayList<Boolean> InputsValues = new ArrayList<>();
             if (i == 0) {
+                // En caso de que todas las entradas sean 0, se rellena el array con false
                 for (int k = 0; k <= numberOfInputs - 1; k++) {
                     InputsValues.add(false);
                     values += "0,";
@@ -134,12 +136,13 @@ public class GenerateTruthTable {
                 }
             }
             if (InputsValues.size() < numberOfInputs) {
+                // En caso de que el tamano del array sea menor que el número de entradas se rellena con falsa
                 while (InputsValues.size() < numberOfInputs) {
                     InputsValues.add(false);
                     values += "0,";
                 }
             }
-            asignar(InputsValues);
+            assignInputs(InputsValues);
         }
         generateTable();
     }
@@ -149,7 +152,7 @@ public class GenerateTruthTable {
      * @param InputsValues
      */
 
-    private void asignar(final ArrayList<Boolean> InputsValues) {
+    private void assignInputs(final ArrayList<Boolean> InputsValues) {
         int index = 0;
         for (int i = 0; i <= this.inputsLinkedList.size() - 1; i++) {
             Compuerta compuerta = this.inputsLinkedList.getElement(i);
@@ -177,11 +180,9 @@ public class GenerateTruthTable {
      */
 
     private void operate() {
-        //System.out.println("Tamano de la lista compuerta" + compuertaLinkedList.size());
         for (int i = 0; i <= compuertaLinkedList.size() - 1; i++) {
             Compuerta compuerta = compuertaLinkedList.getElement(i);
             compuerta.operar();
-            //System.out.println("El valor de la salida de la compuerta " + i + " es " + compuerta.output.value);
         }
         for (int i = 0; i <= compuertaLinkedList.size() - 1; i++) {
             Compuerta compuerta = compuertaLinkedList.getElement(i);

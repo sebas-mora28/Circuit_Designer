@@ -17,6 +17,7 @@ public class CompuertaNOT extends Compuerta{
 
     private void  createNOT(Pane gridPane){
         logicGateGroup = new Group();
+        logicGateGroup.setId("CompuertaGroup");
         input2Connected = true;
         Image image = new Image("Compuerta5.png");
         Rectangle logicGate = Painter.insertImage(image);

@@ -42,10 +42,11 @@ public class Main extends Application {
     private Pane pane;
     private Pane logicGatePane;
     private LogicGatesCreator logicGatesCreator = new LogicGatesCreator();
-    private LinkedList<Compuerta> circuit;
-    private LinkedList<Node> GUIcircuit;
+    private LinkedList<LinkedList<Compuerta>> savedCircuits = new LinkedList<LinkedList<Compuerta>>();
+    private LinkedList<LinkedList<Node>> GUISavedcircuit = new LinkedList<LinkedList<Node>>();
     private SimulateCircuit simulateCircuit;
     private GenerateTruthTable generateTruthTable;
+    private static int numberOfSavedCircuits = 0;
     private static int newPosyButton = 925;
 
 
@@ -206,10 +207,17 @@ public class Main extends Application {
     };
 
 
+    /**
+     * Evento que llama al método cleanWindow para borrar el circuito
+     */
     EventHandler<MouseEvent> clean = mouseEvent -> {
         cleanWindow();
     };
 
+
+    /**
+     * Método que se encarga de borrar el circuito tanto gráfica como lógicamente
+     */
     private void cleanWindow() {
         System.out.println("Clean");
         pane.getChildren().clear();
@@ -217,11 +225,17 @@ public class Main extends Application {
     }
 
 
-
+    /**
+     * Evento que actualiza la numeración despues de simular el circuito para que las entradas vuelvan a tener numeración
+     */
     EventHandler<MouseEvent> refresh = mouseEvent -> {
         SimulateCircuit.simulatingCircuit = false;
         Painter.updateEnumeration();
     };
+
+    /**
+     * Evento que se encarga de crear llamar a la clase GenerateTruthTable para generar la tabla de verdad
+     */
 
     EventHandler<MouseEvent> thuthTable = new EventHandler<MouseEvent>() {
         @Override
@@ -245,6 +259,10 @@ public class Main extends Application {
     };
 
 
+    /**
+     * Evento asociado al boton Save. Guarda el circuito y crea un botón en el panel de compuertas lógicas
+     */
+
     EventHandler<MouseEvent> guardarCircuito  = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
@@ -253,7 +271,7 @@ public class Main extends Application {
     };
 
     public void saveCircuit() {
-        circuit = new LinkedList<Compuerta>();
+        LinkedList<Compuerta> circuit = new LinkedList<Compuerta>();
         try {
 
             if(LogicGatesCreator.LogicGatesList.size() <=1){
@@ -263,21 +281,29 @@ public class Main extends Application {
                 Compuerta compuerta = LogicGatesCreator.LogicGatesList.getElement(i);
                 circuit.add(compuerta);
             }
+            savedCircuits.add(circuit);
 
-            GUIcircuit = new LinkedList<Node>();
+
+            LinkedList<Node> GUIcircuit = new LinkedList<Node>();
             for (Node node : pane.getChildren()) {
                 System.out.println("GUARDADO GRAFICAMENTE");
                 GUIcircuit.add(node);
             }
+            GUISavedcircuit.add(GUIcircuit);
 
-            Button circuitSaved = new Button("   Circuito \n Guardado");
+
+            Button circuitSaved = new Button("   Circuito \n Guardado" + (numberOfSavedCircuits + 1));
             circuitSaved.setLayoutX(50);
             circuitSaved.setLayoutY(newPosyButton);
             circuitSaved.setPrefSize(110, 100);
             circuitSaved.setOnMouseClicked(activarCircuito);
+            circuitSaved.setUserData(numberOfSavedCircuits);
             logicGatePane.getChildren().add(circuitSaved);
-            newPosyButton += 200;
+            newPosyButton += 125;
             logicGatePane.setPrefHeight(logicGatePane.getHeight() + 50);
+            logicGatePane.setPrefHeight(logicGatePane.getHeight() + 150);
+
+            numberOfSavedCircuits++;
 
 
         }catch (NullPointerException e){
@@ -290,16 +316,24 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * Método que muestra el circuito guardado y lo muestra en pantalla
+     */
 
     EventHandler<MouseEvent> activarCircuito = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
-            for(int i=0; i<=circuit.size()-1; i++){
+            int index = (int) ((Button) mouseEvent.getSource()).getUserData();
+            LinkedList<Compuerta> circuit = savedCircuits.getElement(index);
+            LinkedList<Node> GUIcircuit = GUISavedcircuit.getElement(index);
+
+            for (int i = 0; i <= circuit.size() - 1; i++) {
                 Compuerta compuerta = circuit.getElement(i);
+                compuerta.inputs.removeAll();
                 LogicGatesCreator.LogicGatesList.add(compuerta);
             }
 
-            for(int i=0; i<= GUIcircuit.size()-1; i++){
+            for (int i = 0; i <= GUIcircuit.size() - 1; i++) {
                 Node node = GUIcircuit.getElement(i);
                 pane.getChildren().add(node);
             }

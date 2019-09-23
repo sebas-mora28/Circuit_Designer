@@ -57,7 +57,6 @@ public class Compuerta {
 
 
 
-
     /*
 
     public void deleteLogicGateFromLinkedListAndConnetions(){

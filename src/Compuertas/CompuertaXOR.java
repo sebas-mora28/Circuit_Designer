@@ -9,10 +9,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
 public class CompuertaXOR extends Compuerta {
-    double posX, posY;
-    LinkedList<Boolean> inputs = new LinkedList<>();
-
-
 
     public CompuertaXOR(Pane gridPane) {
         createXOR(gridPane);
@@ -41,9 +37,10 @@ public class CompuertaXOR extends Compuerta {
             //compuerta.output.value = output.value;
         }
 
+        System.out.println("El valor de outputValue es " + output.value);
+        output.value = (Boolean)inputs.getElement(0);
         for(int i=1; i<= inputs.size()-1; i++){
-            System.out.println("entra operar inputs");
-            if(output.value != inputs.getElement(0)){
+            if(output.value != inputs.getElement(i)){
                 output.value = true;
             }else{
                 output.value = false;

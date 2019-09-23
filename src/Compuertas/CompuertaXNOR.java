@@ -47,7 +47,6 @@ public class CompuertaXNOR extends Compuerta {
             }else{
                 output.value = true;
             }
-            output.value = !output.value;
         }
 
 
