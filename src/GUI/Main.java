@@ -2,15 +2,21 @@ package GUI;
 
 
 import Compuertas.Compuerta;
+import Compuertas.CompuertaAND;
+import LinkedList.LinkedList;
 import Logica.GenerateTruthTable;
 import Logica.LogicGateConexion;
 import Logica.LogicGatesCreator;
 import Logica.SimulateCircuit;
 import javafx.application.Application;
+import javafx.collections.ObservableArray;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 
 import javafx.scene.Cursor;
+import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 
 import javafx.scene.control.*;
@@ -26,6 +32,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
+import java.util.List;
+
 
 /**
  * Main Se encarga de inicializar la interfaz gráfica de la aplicación, se utiliza la biblioteca JavaFx para la creación de los componentes básicos
@@ -34,8 +42,10 @@ public class Main extends Application {
     private Pane pane;
     private Pane logicGatePane;
     private LogicGatesCreator logicGatesCreator = new LogicGatesCreator();
+    private LinkedList<Compuerta> circuit;
+    private LinkedList<Node> GUIcircuit;
     private SimulateCircuit simulateCircuit;
-    private Button AND, NAND, NORD, NOT, OR, XNOR, XOR;
+    private static int newPosyButton = 925;
 
 
 
@@ -86,6 +96,10 @@ public class Main extends Application {
 
         //Botones
         //-------------------------------------------------------------------------------------------------
+
+        createButtons();
+
+
         Button run = new Button("Run");
         run.setEffect(new DropShadow());
         run.setLayoutX(995);
@@ -103,15 +117,13 @@ public class Main extends Application {
         refresh.setEffect(new DropShadow());
         refresh.setLayoutX(995);
         refresh.setLayoutY(850);
-        refresh.setOnMouseClicked(this.refresh);
+        refresh.setOnMouseClicked(this.guardarCircuito);
 
         Button truthTable = new Button("Thuth Table");
         truthTable.setEffect(new DropShadow());
         truthTable.setLayoutX(1080);
         truthTable.setLayoutY(850);
         truthTable.setOnMouseClicked(this.thuthTable);
-
-
 
 
         //Pantalla principal
@@ -125,144 +137,39 @@ public class Main extends Application {
         primaryStage.show();
 
 
-        // Botones
 
-
-        AND = new Button();
-        ImageView imagenAND = new ImageView(new Image("Compuerta1.png"));
-        imagenAND.setFitHeight(90);
-        imagenAND.setFitWidth(90);
-        AND.setGraphic(imagenAND);
-        AND.setLayoutX(50);
-        AND.setLayoutY(90);
-        AND.setEffect(new InnerShadow());
-        AND.setBackground(new Background(new BackgroundFill(Color.web("#d7d7d7"), CornerRadii.EMPTY, Insets.EMPTY)));//"ACC8C6"
-        AND.setCursor(Cursor.OPEN_HAND);
-        AND.setOnAction(MouseEvent -> logicGatesCreator.createLogicGates(pane, LogicGatesCreator.LogicGateType.AND));
-        AND.setOnMouseEntered(mouseEvent -> AND.setBackground(new Background(new BackgroundFill(Color.web("B9E0EB"), CornerRadii.EMPTY, Insets.EMPTY))));
-        AND.setOnMouseExited(mouseEvent -> AND.setBackground(new Background(new BackgroundFill(Color.web("#d7d7d7"), CornerRadii.EMPTY, Insets.EMPTY))));
-
-
-        NAND = new Button();
-        ImageView imagenNAND = new ImageView(new Image("Compuerta2.png"));
-        imagenNAND.setFitHeight(90);
-        imagenNAND.setFitWidth(90);
-        NAND.setGraphic(imagenNAND);
-        NAND.setLayoutX(50);
-        NAND.setLayoutY(220);
-        NAND.setEffect(new InnerShadow());
-        NAND.setBackground(new Background(new BackgroundFill(Color.web("#d7d7d7"), CornerRadii.EMPTY, Insets.EMPTY)));//"ACC8C6"
-        NAND.setCursor(Cursor.OPEN_HAND);
-        NAND.setOnAction(MouseEvent -> logicGatesCreator.createLogicGates(pane, LogicGatesCreator.LogicGateType.NAND));
-        NAND.setOnMouseEntered(mouseEvent -> NAND.setBackground(new Background(new BackgroundFill(Color.web("B9E0EB"), CornerRadii.EMPTY, Insets.EMPTY))));
-        NAND.setOnMouseExited(mouseEvent -> NAND.setBackground(new Background(new BackgroundFill(Color.web("#d7d7d7"), CornerRadii.EMPTY, Insets.EMPTY))));
-
-
-        OR = new Button();
-        ImageView imagenOR = new ImageView(new Image("Compuerta3.png"));
-        imagenOR.setFitHeight(90);
-        imagenOR.setFitWidth(90);
-        OR.setGraphic(imagenOR);
-        OR.setLayoutX(50);
-        OR.setLayoutY(350);
-        OR.setEffect(new InnerShadow());
-        OR.setBackground(new Background(new BackgroundFill(Color.web("#d7d7d7"), CornerRadii.EMPTY, Insets.EMPTY)));//"ACC8C6"
-        OR.setCursor(Cursor.OPEN_HAND);
-        OR.setOnAction(MouseEvent -> logicGatesCreator.createLogicGates(pane, LogicGatesCreator.LogicGateType.OR));
-        OR.setOnMouseEntered(mouseEvent -> OR.setBackground(new Background(new BackgroundFill(Color.web("B9E0EB"), CornerRadii.EMPTY, Insets.EMPTY))));
-        OR.setOnMouseExited(mouseEvent -> OR.setBackground(new Background(new BackgroundFill(Color.web("#d7d7d7"), CornerRadii.EMPTY, Insets.EMPTY))));
-
-
-        NORD = new Button();
-        ImageView imagenNORD = new ImageView(new Image("Compuerta4.png"));
-        imagenNORD.setFitHeight(90);
-        imagenNORD.setFitWidth(90);
-        NORD.setGraphic(imagenNORD);
-        NORD.setLayoutX(50);
-        NORD.setLayoutY(480);
-        NORD.setEffect(new InnerShadow());
-        NORD.setBackground(new Background(new BackgroundFill(Color.web("#d7d7d7"), CornerRadii.EMPTY, Insets.EMPTY)));//"ACC8C6"
-        NORD.setCursor(Cursor.OPEN_HAND);
-        NORD.setOnAction(MouseEvent -> logicGatesCreator.createLogicGates(pane, LogicGatesCreator.LogicGateType.NORD));
-        NORD.setOnMouseEntered(mouseEvent -> NORD.setBackground(new Background(new BackgroundFill(Color.web("B9E0EB"), CornerRadii.EMPTY, Insets.EMPTY))));
-        NORD.setOnMouseExited(mouseEvent -> NORD.setBackground(new Background(new BackgroundFill(Color.web("#d7d7d7"), CornerRadii.EMPTY, Insets.EMPTY))));
-
-
-        NOT = new Button();
-        ImageView imagenNOT = new ImageView(new Image("Compuerta5.png"));
-        imagenNOT.setFitHeight(70);
-        imagenNOT.setFitWidth(90);
-        NOT.setGraphic(imagenNOT);
-        NOT.setLayoutX(50);
-        NOT.setLayoutY(610);
-        NOT.setEffect(new InnerShadow());
-        NOT.setBackground(new Background(new BackgroundFill(Color.web("#d7d7d7"), CornerRadii.EMPTY, Insets.EMPTY)));//"ACC8C6"
-        NOT.setCursor(Cursor.OPEN_HAND);
-        NOT.setOnAction(MouseEvent -> logicGatesCreator.createLogicGates(pane, LogicGatesCreator.LogicGateType.NOT));
-        NOT.setOnMouseEntered(mouseEvent -> NOT.setBackground(new Background(new BackgroundFill(Color.web("B9E0EB"), CornerRadii.EMPTY, Insets.EMPTY))));
-        NOT.setOnMouseExited(mouseEvent -> NOT.setBackground(new Background(new BackgroundFill(Color.web("#d7d7d7"), CornerRadii.EMPTY, Insets.EMPTY))));
-
-
-        XOR = new Button();
-        ImageView imagenXOR = new ImageView(new Image("Compuerta6.png"));
-        imagenXOR.setFitHeight(90);
-        imagenXOR.setFitWidth(90);
-        XOR.setGraphic(imagenXOR);
-        XOR.setLayoutX(50);
-        XOR.setLayoutY(740);
-        XOR.setEffect(new InnerShadow());
-        XOR.setBackground(new Background(new BackgroundFill(Color.web("#d7d7d7"), CornerRadii.EMPTY, Insets.EMPTY)));//"ACC8C6"
-        XOR.setCursor(Cursor.OPEN_HAND);
-        XOR.setOnAction(MouseEvent -> logicGatesCreator.createLogicGates(pane, LogicGatesCreator.LogicGateType.XOR));
-        XOR.setOnMouseEntered(mouseEvent -> XOR.setBackground(new Background(new BackgroundFill(Color.web("B9E0EB"), CornerRadii.EMPTY, Insets.EMPTY))));
-        XOR.setOnMouseExited(mouseEvent -> XOR.setBackground(new Background(new BackgroundFill(Color.web("#d7d7d7"), CornerRadii.EMPTY, Insets.EMPTY))));
-
-
-        XNOR = new Button();
-        ImageView imagenXNOR = new ImageView(new Image("Compuerta7.png"));
-        imagenXNOR.setFitHeight(90);
-        imagenXNOR.setFitWidth(90);
-        XNOR.setGraphic(imagenXNOR);
-        XNOR.setLayoutX(50);
-        XNOR.setLayoutY(870);
-        XNOR.setEffect(new InnerShadow());
-        XNOR.setBackground(new Background(new BackgroundFill(Color.web("#d7d7d7"), CornerRadii.EMPTY, Insets.EMPTY)));//"ACC8C6"
-        XNOR.setCursor(Cursor.OPEN_HAND);
-        XNOR.setOnAction(MouseEvent -> logicGatesCreator.createLogicGates(pane, LogicGatesCreator.LogicGateType.XNOR));
-        XNOR.setOnMouseEntered(mouseEvent -> XNOR.setBackground(new Background(new BackgroundFill(Color.web("B9E0EB"), CornerRadii.EMPTY, Insets.EMPTY))));
-        XNOR.setOnMouseExited(mouseEvent -> XNOR.setBackground(new Background(new BackgroundFill(Color.web("#d7d7d7"), CornerRadii.EMPTY, Insets.EMPTY))));
-
-
-        logicGatePane.getChildren().addAll(AND, NAND, OR, NORD, NOT, XOR, XNOR);
     }
-
 
     //-----------------------------------------------------------------------------------------
 
 
+    /**
+     * Método que crea los botones de las compuertas básicas de la aplicación
+     */
 
     public void createButtons(){
-        LogicGatesCreator.LogicGateType[] logicGateTypes = new LogicGatesCreator.LogicGateType[7];
-        for(int i=0; i<=7; i++){
-            XNOR = new Button();
-            ImageView imagenXNOR = new ImageView(new Image("Compuerta7.png"));
-            imagenXNOR.setFitHeight(90);
-            imagenXNOR.setFitWidth(90);
-            XNOR.setGraphic(imagenXNOR);
-            XNOR.setLayoutX(50);
-            XNOR.setLayoutY(870);
-            XNOR.setEffect(new InnerShadow());
-            XNOR.setBackground(new Background(new BackgroundFill(Color.web("#d7d7d7"), CornerRadii.EMPTY, Insets.EMPTY)));//"ACC8C6"
-            XNOR.setCursor(Cursor.OPEN_HAND);
-            XNOR.setOnAction(MouseEvent -> logicGatesCreator.createLogicGates(pane, LogicGatesCreator.LogicGateType.XNOR));
-            XNOR.setOnMouseEntered(mouseEvent -> XNOR.setBackground(new Background(new BackgroundFill(Color.web("B9E0EB"), CornerRadii.EMPTY, Insets.EMPTY))));
-            XNOR.setOnMouseExited(mouseEvent -> XNOR.setBackground(new Background(new BackgroundFill(Color.web("#d7d7d7"), CornerRadii.EMPTY, Insets.EMPTY))));
-
-
-
-
+        LogicGatesCreator.LogicGateType[] logicGateTypes = LogicGatesCreator.LogicGateType.values();
+        int posy = 90;
+        for(int i=1; i<8; i++){
+            final int index = i -1;
+            Button newButton = new Button();
+            ImageView imagen = new ImageView(new Image("Compuerta" + i + ".png"));
+            imagen.setFitHeight(90);
+            imagen.setFitWidth(90);
+            newButton.setGraphic(imagen);
+            newButton.setLayoutX(50);
+            newButton.setLayoutY(posy);
+            newButton.setEffect(new InnerShadow());
+            newButton.setBackground(new Background(new BackgroundFill(Color.web("#d7d7d7"), CornerRadii.EMPTY, Insets.EMPTY)));//"ACC8C6"
+            newButton.setCursor(Cursor.OPEN_HAND);
+            newButton.setOnAction(MouseEvent -> logicGatesCreator.createLogicGates(pane, logicGateTypes[index]));
+            newButton.setOnMouseEntered(mouseEvent -> newButton.setBackground(new Background(new BackgroundFill(Color.web("B9E0EB"), CornerRadii.EMPTY, Insets.EMPTY))));
+            newButton.setOnMouseExited(mouseEvent -> newButton.setBackground(new Background(new BackgroundFill(Color.web("#d7d7d7"), CornerRadii.EMPTY, Insets.EMPTY))));
+            logicGatePane.getChildren().addAll(newButton);
+            posy += 120;
         }
     }
+
 
     /**
      * Este método controla los métodos que se deben de llamar para realizar las conexiones de las compuertas
@@ -305,26 +212,72 @@ public class Main extends Application {
         Painter.updateEnumeration();
     };
 
-
     EventHandler<MouseEvent> thuthTable = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
 
             try {
                 if(LogicGatesCreator.LogicGatesList.size() ==0){ throw new NullPointerException(); }
-                GenerateTruthTable generateTruthTable = new GenerateTruthTable(LogicGatesCreator.LogicGatesList);
+                 GenerateTruthTable generateTruthTable = new GenerateTruthTable(LogicGatesCreator.LogicGatesList);
             } catch (NullPointerException e){
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Content", ButtonType.OK);
-                alert.setHeaderText("No exiten compuertas en el diseño");
+                alert.setHeaderText("No existen compuertas en el diseño");
                 alert.setContentText("Debe crear al menos una compuerta para mostrar la tabla de verdad");
                 alert.showAndWait();
 
+
             } catch (Exception e) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Content", ButtonType.OK);
-                alert.setHeaderText("Compuertas sueltas");
-                alert.setContentText("Dentro del diseño existe alguna compuerta que no tiene su salida conectada, por favor verifique");
-                alert.showAndWait();
             }
+        }
+    };
+
+
+    EventHandler<MouseEvent> guardarCircuito  = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+            saveCircuit();
+        }
+    };
+
+    public void saveCircuit(){
+        circuit = new LinkedList<Compuerta>();
+        for(int i=0; i<= LogicGatesCreator.LogicGatesList.size()-1; i++){
+            Compuerta compuerta = LogicGatesCreator.LogicGatesList.getElement(i);
+            circuit.add(compuerta);
+        }
+
+        GUIcircuit = new LinkedList<Node>();
+        for(Node node : pane.getChildren()){
+            System.out.println("GUARDADO GRAFICAMENTE");
+            GUIcircuit.add(node);
+        }
+
+
+        Button circuitSaved = new Button("   Circuito \n Guardado");
+        circuitSaved.setLayoutX(50);
+        circuitSaved.setLayoutY(newPosyButton);
+        circuitSaved.setPrefSize(110,100);
+        circuitSaved.setOnMouseClicked(activarCircuito);
+        logicGatePane.getChildren().add(circuitSaved);
+        newPosyButton += 200;
+        logicGatePane.setPrefHeight(logicGatePane.getHeight() + 50);
+    }
+
+
+    EventHandler<MouseEvent> activarCircuito = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+            for(int i=0; i<=circuit.size()-1; i++){
+                Compuerta compuerta = circuit.getElement(i);
+                LogicGatesCreator.LogicGatesList.add(compuerta);
+            }
+
+            for(int i=0; i<= GUIcircuit.size()-1; i++){
+                Node node = GUIcircuit.getElement(i);
+                pane.getChildren().add(node);
+            }
+
+            Painter.updateEnumeration();
         }
     };
 }

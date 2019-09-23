@@ -3,27 +3,21 @@ package Logica;
 
 import Compuertas.Compuerta;
 import LinkedList.LinkedList;
-import javafx.application.Application;
 import javafx.beans.property.*;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javafx.util.Callback;
-
-import javax.print.DocFlavor;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Clase que genera la tabla de verdad del circuito diseñado
  */
+
 public class GenerateTruthTable {
     private LinkedList<Compuerta> compuertaLinkedList = new LinkedList<Compuerta>();
     private LinkedList<Compuerta> inputsLinkedList = new LinkedList<Compuerta>();
@@ -38,24 +32,30 @@ public class GenerateTruthTable {
     private String values = new String();
     private static int indexPrev = 0;
 
+    /**
+     * Construtor de la clase
+     * @param compuertaLinkedList Lista enlazada del circuito
+     * @throws Exception
+     * @author Sebastián Mora Godínez
+     */
 
     public GenerateTruthTable(final LinkedList<Compuerta> compuertaLinkedList) throws Exception {
         start();
         table(compuertaLinkedList);
 
-
-
-
     }
 
 
+    /**
+     * Método que ejecuta la parte gráfica de la pantalla
+     * @throws Exception
+     */
     private void start() throws Exception {
 
 
         root = new Pane();
 
         tableView = new TableView();
-        tableView.setMaxSize(500,500);
         tableView.setMinSize(300,300);
         scrollPane = new ScrollPane(tableView);
         scrollPane.setMinSize(300,300);
@@ -63,25 +63,29 @@ public class GenerateTruthTable {
 
         scene = new Scene(root);
         stage = new Stage();
-        stage.setResizable(false);
+        //stage.setResizable(false);
         stage.setTitle("Tabla de verdad");
         stage.setScene(scene);
         stage.show();
 
-
     }
 
-
+    /**
+     * Método que recibe la lista enlazada del circuito y la ingresa en otra para manejo interno de la  clase
+     * @param compuertaLinkedList Lista enlazada del circuito
+     */
     private void table(final LinkedList<Compuerta> compuertaLinkedList) {
         for (int i = 0; i <= compuertaLinkedList.size() - 1; i++) {
             Compuerta compuerta = compuertaLinkedList.getElement(i);
             this.compuertaLinkedList.add(compuerta);
         }
         inputs();
-
-
     }
 
+
+    /**
+     * Método que verifica cuantas entradas disponibles tiene el circuito y guarda la salida en una variable
+     */
     private void inputs() {
         for (int i = 0; i <= this.compuertaLinkedList.size() - 1; i++) {
             Compuerta compuerta = this.compuertaLinkedList.getElement(i);
@@ -99,8 +103,12 @@ public class GenerateTruthTable {
             }
         }
         combinacion();
-
     }
+
+
+    /**
+     * Método que calcula todas las combinaciones posibles del circuito para elaborar la tabla de verdad
+     */
 
     private void combinacion() {
         combinations = (int) Math.pow(2, numberOfInputs);
@@ -136,7 +144,12 @@ public class GenerateTruthTable {
         generateTable();
     }
 
-    public void asignar(final ArrayList<Boolean> InputsValues) {
+    /**
+     * Método que asigna a las entradas los valores  de las combinaciones a las entradas de la entradas disponibles
+     * @param InputsValues
+     */
+
+    private void asignar(final ArrayList<Boolean> InputsValues) {
         int index = 0;
         for (int i = 0; i <= this.inputsLinkedList.size() - 1; i++) {
             Compuerta compuerta = this.inputsLinkedList.getElement(i);
@@ -158,7 +171,12 @@ public class GenerateTruthTable {
         }
     }
 
-    public void operate() {
+    /**
+     * Método que opera cada una de las compuertas con cada una de las diferentes combinaciones para obtener el resultado
+     * de la salida de esa combinación
+     */
+
+    private void operate() {
         System.out.println("Tamano de la lista compuerta" + compuertaLinkedList.size());
         for (int i = 0; i <= compuertaLinkedList.size() - 1; i++) {
             Compuerta compuerta = compuertaLinkedList.getElement(i);
@@ -171,12 +189,16 @@ public class GenerateTruthTable {
         }
     }
 
-    public void generateTable() {
+    /**
+     * Método que genera el tableView con los datos correspondientes.
+     */
+
+    private void generateTable() {
         TableColumn inputsColumn = new TableColumn("Inputs");
         inputsColumn.setMinWidth(tableView.getMaxWidth()/2);
         TableColumn<ObservableList<String>, String> outputColumn = new TableColumn("Outputs");
         outputColumn.setMinWidth(tableView.getMaxWidth()/2);
-        outputColumn.setCellValueFactory(values -> new ReadOnlyObjectWrapper<>(values.getValue().get(numberOfInputs-1)));
+        outputColumn.setCellValueFactory(values -> new ReadOnlyObjectWrapper<>(values.getValue().get(numberOfInputs)));
 
 
 
@@ -197,11 +219,10 @@ public class GenerateTruthTable {
             tableView.getItems().add(FXCollections.observableArrayList(valuesToAdd));
             indexPrev += numberOfInputs;
         }
-
-
     }
 
-    public ArrayList<String> getValues(String[] newValues, int indice) {
+
+    private ArrayList<String> getValues(String[] newValues, int indice) {
         ArrayList<String> valuesToAdd = new ArrayList<>();
         int limite = indice + numberOfInputs;
         for(int i=indice; i<= limite; i++) {
