@@ -103,8 +103,8 @@ public class PaintLine {
         @Override
         public void handle(MouseEvent mouseEvent) {
             if(LogicGateConexion.conectingOutput) {
-                double endPosX = mouseEvent.getSceneX();
-                double endPosY = mouseEvent.getSceneY();
+                double endPosX = mouseEvent.getSceneX()- 10;
+                double endPosY = mouseEvent.getSceneY() -5;
 
                 double newPosx = (startposx + endPosX) / 2;
 

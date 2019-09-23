@@ -4,6 +4,8 @@ import Compuertas.Compuerta;
 import GUI.Painter;
 import javafx.scene.input.MouseEvent;
 
+import static GUI.Painter.paintLine;
+
 /**
  * Clase donde se maneja la logica de las conexciones entre compuertas
  */
@@ -67,7 +69,8 @@ public class LogicGateConexion {
      */
     private static void selectInputToConnect(MouseEvent mouseEvent) {
         for (int i = 0; i <= LogicGatesCreator.LogicGatesList.size() - 1; i++) {
-            logicGateTo = LogicGatesCreator.LogicGatesList.getElement(i);
+            //logicGateTo = LogicGatesCreator.LogicGatesList.getElement(i);
+            System.out.println(mouseEvent.getX() + 1 == logicGateTo.posX && mouseEvent.getY() + 1 == logicGateTo.posY);
             if (!(mouseEvent.getX() + 1 == currentLogicGate.posX && mouseEvent.getY() + 1 == currentLogicGate.posY)) {
                 if (mouseEvent.getX() + 1 == logicGateTo.posX && mouseEvent.getY() + 1 == logicGateTo.posY) {
                     if (input1) {
@@ -78,10 +81,10 @@ public class LogicGateConexion {
                             input1 = false;
                             logicGateTo.input1Connected = true;
                             currentLogicGate.outputConnected = true;
-                            logicGateTo.listLines.add(Painter.paintLine);
+                            logicGateTo.listLines.add(paintLine);
                             break;
                         }else{
-                            Painter.paintLine.removeLines();
+                            paintLine.removeLines();
                             System.out.println("Esta entrada ya se encuentra seleccionada");
                         }
                     }
@@ -93,10 +96,10 @@ public class LogicGateConexion {
                             logicGateTo.input2Connected = true;
                             currentLogicGate.outputConnected = true;
                             input2 = false;
-                            logicGateTo.listLines.add(Painter.paintLine);
+                            logicGateTo.listLines.add(paintLine);
                             break;
                         }else{
-                            Painter.paintLine.removeLines();
+                            paintLine.removeLines();
                             System.out.println("Esta entrada ya se encuentra seleccionada");
                         }
                     }else{
@@ -104,6 +107,7 @@ public class LogicGateConexion {
                     }
                 }
             } else {
+                paintLine.removeLines();
                 System.out.println("La compuerta es la misma");
                 break;
             }

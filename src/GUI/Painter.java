@@ -91,7 +91,7 @@ public class Painter {
         salida.setLayoutX(100);
         salida.setLayoutY(92);
         salida.setId("Salida");
-        //salida.setOpacity(0.0);
+        salida.setOpacity(0.0);
         salida.setUserData(logicGateGroup);
         pane.getChildren().addAll(salida);
         logicGateGroup.getChildren().add(salida);
@@ -138,20 +138,20 @@ public class Painter {
      */
 
     private static void entradas(Group logicGateGroup) {
-        entrada1 = new Circle(12);
+        entrada1 = new Circle(10);
         entrada1.setOnMouseEntered(mouseEvent -> entrada1.setCursor(Cursor.CROSSHAIR));
         entrada1.setOnMouseClicked(MouseClickInput);
-        entrada1.setLayoutX(25);
+        entrada1.setLayoutX(20);
         entrada1.setLayoutY(80);
         entrada1.setId("Entrada1");
         entrada1.setUserData(logicGateGroup);
         entrada1.setOpacity(0.0);
 
 
-        entrada2 = new Circle(12);
+        entrada2 = new Circle(10);
         entrada2.setOnMouseEntered(mouseEvent -> entrada2.setCursor(Cursor.CROSSHAIR));
         entrada2.setOnMouseClicked(MouseClickInput);
-        entrada2.setLayoutX(25);
+        entrada2.setLayoutX(20);
         entrada2.setLayoutY(110);
         entrada2.setId("Entrada2");
         entrada2.setUserData(logicGateGroup);
@@ -193,47 +193,20 @@ public class Painter {
                 if (LogicGateConexion.conectingOutput) {
                     LogicGateConexion.selectingNewGate = true;
                     LogicGateConexion.input1 = true;
+                    LogicGateConexion.logicGateTo = compuerta;
                     paintLine.setLine3EndPositionsInput1(compuerta);
                     return;
                 }
 
-                if (!LogicGateConexion.conectingOutput) {
-                    if (flag) {
-                        LogicGateConexion.conectingInput = true;
-                        LogicGateConexion.selectingInput = true;
-                        LogicGateConexion.input1 = true;
-                        flag = false;
-                    }
-                }
 
-                if (LogicGateConexion.selected) {
-                    LogicGateConexion.selectingInput = false;
-                    LogicGateConexion.selectingNewGate = true;
-                    LogicGateConexion.input1Selected = true;
-                    flag = true;
-                }
             }
             if (circle.getId().equals("Entrada2")) {
                 if (LogicGateConexion.conectingOutput) {
                     LogicGateConexion.selectingNewGate = true;
                     LogicGateConexion.input2 = true;
+                    LogicGateConexion.logicGateTo = compuerta;
                     paintLine.setLine3EndPositionInput2(compuerta);
                     return;
-                }
-                if (!LogicGateConexion.conectingOutput) {
-
-                    if (flag) {
-                        LogicGateConexion.conectingInput = true;
-                        LogicGateConexion.selectingInput = true;
-                        LogicGateConexion.input2 = true;
-                        flag = false;
-                    }
-                }
-                if (LogicGateConexion.selected) {
-                    LogicGateConexion.selectingInput = false;
-                    LogicGateConexion.selectingNewGate = true;
-                    LogicGateConexion.input2Selected = true;
-                    flag = true;
                 }
             }
         }

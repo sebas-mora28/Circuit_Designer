@@ -56,7 +56,7 @@ public class GenerateTruthTable {
         root = new Pane();
 
         tableView = new TableView();
-        tableView.setMinSize(300,300);
+        tableView.setMinSize(500,500);
         //scrollPane = new ScrollPane(tableView);
         //scrollPane.setMinSize(300,300);
 
@@ -65,6 +65,7 @@ public class GenerateTruthTable {
         stage.setResizable(false);
         stage.setTitle("Tabla de verdad");
         stage.setScene(scene);
+        stage.setOnCloseRequest(click -> stage.close());
         stage.show();
 
     }
@@ -176,11 +177,11 @@ public class GenerateTruthTable {
      */
 
     private void operate() {
-        System.out.println("Tamano de la lista compuerta" + compuertaLinkedList.size());
+        //System.out.println("Tamano de la lista compuerta" + compuertaLinkedList.size());
         for (int i = 0; i <= compuertaLinkedList.size() - 1; i++) {
             Compuerta compuerta = compuertaLinkedList.getElement(i);
             compuerta.operar();
-            System.out.println("El valor de la salida de la compuerta " + i + " es " + compuerta.output.value);
+            //System.out.println("El valor de la salida de la compuerta " + i + " es " + compuerta.output.value);
         }
         for (int i = 0; i <= compuertaLinkedList.size() - 1; i++) {
             Compuerta compuerta = compuertaLinkedList.getElement(i);
@@ -212,12 +213,19 @@ public class GenerateTruthTable {
         tableView.getColumns().addAll(inputsColumn, outputColumn);
 
         String[] newValues = values.split(",");
+        System.out.println("El NUMERO DE COMBINACIONES ES " + combinations);
         for(int i=0; i< combinations; i++){
             ArrayList<String> valuesToAdd = getValues(newValues, i + indexPrev);
             System.out.println(valuesToAdd);
             tableView.getItems().add(FXCollections.observableArrayList(valuesToAdd));
             indexPrev += numberOfInputs;
         }
+
+
+        outputLogicGate = null;
+        compuertaLinkedList.removeAll();
+        inputsLinkedList.removeAll();
+        indexPrev=0;
     }
 
 

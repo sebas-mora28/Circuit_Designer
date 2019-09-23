@@ -45,6 +45,7 @@ public class Main extends Application {
     private LinkedList<Compuerta> circuit;
     private LinkedList<Node> GUIcircuit;
     private SimulateCircuit simulateCircuit;
+    private GenerateTruthTable generateTruthTable;
     private static int newPosyButton = 925;
 
 
@@ -215,6 +216,8 @@ public class Main extends Application {
         LogicGatesCreator.LogicGatesList.removeAll();
     }
 
+
+
     EventHandler<MouseEvent> refresh = mouseEvent -> {
         SimulateCircuit.simulatingCircuit = false;
         Painter.updateEnumeration();
@@ -225,8 +228,9 @@ public class Main extends Application {
         public void handle(MouseEvent mouseEvent) {
 
             try {
+                System.out.println(LogicGatesCreator.LogicGatesList.size());
                 if(LogicGatesCreator.LogicGatesList.size() ==0){ throw new NullPointerException(); }
-                 GenerateTruthTable generateTruthTable = new GenerateTruthTable(LogicGatesCreator.LogicGatesList);
+                 generateTruthTable = new GenerateTruthTable(LogicGatesCreator.LogicGatesList);
             } catch (NullPointerException e){
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Content", ButtonType.OK);
                 alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
