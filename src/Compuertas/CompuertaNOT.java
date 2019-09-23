@@ -32,9 +32,15 @@ public class CompuertaNOT extends Compuerta{
 
     @Override
     public void operar() {
-        Compuerta compuerta = outputs.getElement(0);
-        compuerta.operar();
-        output.value = !compuerta.output.value;
+        for(int i=0; i<= outputs.size()-1; i++){
+            System.out.println(i);
+            Compuerta compuerta = outputs.getElement(i);
+            compuerta.operar();
+            inputs.add(compuerta.output.value);
+        }
+
+        output.value = (Boolean)inputs.getElement(0);
+        output.value = !output.value;
 
 
     }

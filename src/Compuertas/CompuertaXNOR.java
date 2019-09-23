@@ -31,6 +31,7 @@ public class CompuertaXNOR extends Compuerta {
     public void operar() {
 
         for (int i = 0; i <= outputs.size()-1; i++) {
+            System.out.println(i);
             Compuerta compuerta = outputs.getElement(i);
             compuerta.operar();
             inputs.add(compuerta.output.value);

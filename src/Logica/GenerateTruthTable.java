@@ -180,10 +180,8 @@ public class GenerateTruthTable {
      */
 
     private void operate() {
-        for (int i = 0; i <= compuertaLinkedList.size() - 1; i++) {
-            Compuerta compuerta = compuertaLinkedList.getElement(i);
-            compuerta.operar();
-        }
+        outputLogicGate.operar();
+
         for (int i = 0; i <= compuertaLinkedList.size() - 1; i++) {
             Compuerta compuerta = compuertaLinkedList.getElement(i);
             compuerta.inputs.removeAll();

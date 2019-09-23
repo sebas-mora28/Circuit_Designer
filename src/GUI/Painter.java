@@ -165,21 +165,25 @@ public class Painter {
         @Override
         public void handle(MouseEvent mouseEvent) {
             Circle circle = (Circle) mouseEvent.getSource();
-            Compuerta compuerta = (Compuerta)((Group)circle.getUserData()).getUserData();
-            if (circle.getId().equals("Salida")) {
-                if (!LogicGateConexion.conectingOutput && !LogicGateConexion.selectingOutput) {
-                    LogicGateConexion.conectingOutput = true;
-                    LogicGateConexion.selectingOutput = true;
-                    paintLine = new PaintLine(compuerta, pane, mouseEvent.getSceneX(), mouseEvent.getSceneY());
-                    compuerta.listLines.add(paintLine);
-                }else{
-                    paintLine.removeLines();
-                    LogicGateConexion.selectingOutput = false;
-                    LogicGateConexion.conectingOutput= false;
+            Compuerta compuerta = (Compuerta) ((Group) circle.getUserData()).getUserData();
+            if (!compuerta.outputConnected) {
+                if (circle.getId().equals("Salida")) {
+                    if (!LogicGateConexion.conectingOutput && !LogicGateConexion.selectingOutput) {
+                        LogicGateConexion.conectingOutput = true;
+                        LogicGateConexion.selectingOutput = true;
+                        paintLine = new PaintLine(compuerta, pane, mouseEvent.getSceneX(), mouseEvent.getSceneY());
+                        compuerta.listLines.add(paintLine);
+                    } else {
+                        paintLine.removeLines();
+                        LogicGateConexion.selectingOutput = false;
+                        LogicGateConexion.conectingOutput = false;
+                    }
                 }
-            }
 
+            }else{
+                System.out.println("La salida de la compuerta ya se encuentra conectada");
             }
+        }
 
     };
 
@@ -260,8 +264,8 @@ public class Painter {
                     Label label = (Label)node;
                     label.setText("i<"+ i + ">");
                 }
-                updateOutputsLabel(node, compuerta);
                 updateInputsLabel(node, compuerta);
+                updateOutputsLabel(node, compuerta);
 
             }
         }

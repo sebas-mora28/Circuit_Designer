@@ -29,6 +29,7 @@ public class CompuertaOR extends Compuerta {
     @Override
     public void operar() {
 
+        System.out.println("Entra a operar las compuertas de entrada del OR");
         for(int i = 0; i<= outputs.size()-1; i++){
             Compuerta compuerta = outputs.getElement(i);
             compuerta.operar();

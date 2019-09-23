@@ -23,7 +23,8 @@ public class SimulateCircuit {
     private Button buttonRun;
     private Scene scene;
     private Label labelLogicGate, labelEntrada;
-    private LinkedList<Compuerta> inputs = new LinkedList<Compuerta>();
+    private LinkedList<Compuerta> circuitInputs = new LinkedList<Compuerta>();
+    private LinkedList<Compuerta> circuitsOutputs = new LinkedList<Compuerta>();
     private LinkedList<ComboBox<Boolean>> comboBoxList = new LinkedList<ComboBox<Boolean>>();
     public static boolean simulatingCircuit = false;
     private Stage stage = new Stage();
@@ -91,7 +92,10 @@ public class SimulateCircuit {
             for (int i = 0; i <= LogicGatesCreator.LogicGatesList.size() - 1; i++) {
                 Compuerta compuerta = LogicGatesCreator.LogicGatesList.getElement(i);
                 if (!compuerta.input1Connected || !compuerta.input2Connected) {
-                    inputs.add(compuerta);
+                    circuitInputs.add(compuerta);
+                }
+                if(!compuerta.outputConnected){ ;
+                    circuitsOutputs.add(compuerta);
                 }
             }
     }
@@ -100,9 +104,9 @@ public class SimulateCircuit {
         int posx = 50;
         int posy = 90;
         int index = 0;
-        for(int i = 0; i <= inputs.size()-1; i++){
+        for(int i = 0; i <= circuitInputs.size()-1; i++){
             System.out.println("inputs size " + i);
-            Compuerta compuerta = inputs.getElement(i);
+            Compuerta compuerta = circuitInputs.getElement(i);
             if(!compuerta.input1Connected){
                 createComboBox(posx, posy);
                 createLabel(posx, posy-20, "Input" + index + ":");
@@ -155,8 +159,8 @@ public class SimulateCircuit {
     public void setInputsValues() {
         int index = 0;
         try {
-            for (int i = 0; i <= inputs.size() - 1; i++) {
-                Compuerta compuerta = inputs.getElement(i);
+            for (int i = 0; i <= circuitInputs.size() - 1; i++) {
+                Compuerta compuerta = circuitInputs.getElement(i);
                 if (!compuerta.input1Connected) {
                     ComboBox entry = comboBoxList.getElement(index);
                     if ((Boolean) entry.getValue()) {
@@ -208,11 +212,13 @@ public class SimulateCircuit {
 
     private void operateLogicGates(){
         simulatingCircuit = true;
-        for (int i = 0; i <= LogicGatesCreator.LogicGatesList.size() - 1; i++) {
-            Compuerta compuerta = LogicGatesCreator.LogicGatesList.getElement(i);
+
+        for(int i=0; i<= circuitsOutputs.size()-1; i++){
+            Compuerta compuerta = circuitsOutputs.getElement(i);
             compuerta.operar();
-            System.out.println("Salida " + compuerta.output.value +"  " + "Size: " + compuerta.inputs.size());
+            System.out.println("El valor de la salida del circuito es " + compuerta.output.value);
         }
+
         for(int i=0; i<= LogicGatesCreator.LogicGatesList.size()-1; i++){
             Compuerta compuerta = LogicGatesCreator.LogicGatesList.getElement(i);
             compuerta.inputs.removeAll();
@@ -224,7 +230,7 @@ public class SimulateCircuit {
 
     EventHandler<MouseEvent> simulateCircuit = mouseEvent -> {
         setInputsValues();
-        inputs.removeAll();
+        circuitInputs.removeAll();
         comboBoxList.removeAll();
         stage.close();
 

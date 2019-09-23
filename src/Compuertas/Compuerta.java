@@ -7,9 +7,7 @@ import LinkedList.Nodo;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.Group;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.paint.Paint;
+
 
 public class Compuerta {
     public Group logicGateGroup;
@@ -37,79 +35,12 @@ public class Compuerta {
     public void operar(){}
 
 
+    public Object clone(){
+        Object compuerta = null;
 
 
-    public void menu(){
-        ContextMenu contextMenu = new ContextMenu();
-
-        MenuItem delete = new MenuItem("Delete");
-        delete.setOnAction(actionEvent -> {
-            //deleteLinesConnection();
-            ///deteleLogicGateFromGUI();
-            //deleteLogicGateFromLinkedListAndConnetions();
-            Painter.updateEnumeration();
-
-
-        });
-                contextMenu.getItems().add(delete);
-                contextMenu.show(logicGateGroup, posX, posY);
+        return compuerta;
     }
-
-
-
-    /*
-
-    public void deleteLogicGateFromLinkedListAndConnetions(){
-        for(int i=0; i<=LogicGatesCreator.LogicGatesList.size()-1; i++){
-            Compuerta compuerta = LogicGatesCreator.LogicGatesList.getElement(i);
-            if(logicGateGroup.getUserData().equals(compuerta)){continue; }
-            for(int j = 0; j<= compuerta.outputs.size()-1; i++){
-                if(logicGateGroup.getUserData().equals(compuerta.outputs.getElement(j))){
-                    compuerta.outputs.remove(j);
-                    System.out.println("Entra");
-                    compuerta.input1Connected = false;
-                    break; }}
-            for(int k=0; k<=compuerta.outputs2.size()-1; i++){
-                if(logicGateGroup.getUserData().equals(compuerta.outputs2.getElement(k))){
-                    compuerta.outputs.remove(k);
-                    System.out.println("ENTRA 2 ");
-                    compuerta.input2Connected = false;
-                    break; }}}
-
-        for(int i = 0; i<= LogicGatesCreator.LogicGatesList.size()-1; i++){
-            Compuerta compuerta = LogicGatesCreator.LogicGatesList.getElement(i);
-            if(compuerta.logicGateGroup.getUserData().equals(compuerta)){
-                LogicGatesCreator.LogicGatesList.remove(i);
-                break;
-            }
-        }
-
-    }
-
-    public void deleteLinesConnection(){
-        Pane pane = ((Pane)logicGateGroup.getParent());
-        Compuerta compuerta = (Compuerta)logicGateGroup.getUserData();
-        for(int i=0; i<= compuerta.listLines.size()-1; i++){
-            PaintLine paintLine = (PaintLine) compuerta.listLines.getElement(i);
-            paintLine.removeLines();
-
-        }
-
-    }
-
-    public void deteleLogicGateFromGUI(){
-        for(int i=0; i <= ((Pane)logicGateGroup.getParent()).getChildren().size()-1; i++){
-            if(logicGateGroup.equals((((Pane) logicGateGroup.getParent()).getChildren().get(i)))){
-                ((Pane) logicGateGroup.getParent()).getChildren().remove(i);
-                break;
-            }
-        }
-    }
-
-     */
-
-
-
 
 
 }

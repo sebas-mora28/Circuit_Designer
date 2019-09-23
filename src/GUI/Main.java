@@ -307,6 +307,7 @@ public class Main extends Application {
 
 
         }catch (NullPointerException e){
+            e.printStackTrace();
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "Content", ButtonType.OK);
             alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
             alert.setHeaderText("Verifique");
@@ -330,6 +331,7 @@ public class Main extends Application {
             for (int i = 0; i <= circuit.size() - 1; i++) {
                 Compuerta compuerta = circuit.getElement(i);
                 compuerta.inputs.removeAll();
+
                 LogicGatesCreator.LogicGatesList.add(compuerta);
             }
 

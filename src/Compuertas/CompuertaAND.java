@@ -1,6 +1,7 @@
 package Compuertas;
 
 
+import LinkedList.LinkedList;
 import Logica.DragAndDrop;
 import GUI.Painter;
 import Logica.LogicGatesCreator;
@@ -12,7 +13,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
 
-public class CompuertaAND extends Compuerta{
+public class CompuertaAND extends Compuerta {
 
 
     /**
@@ -38,7 +39,7 @@ public class CompuertaAND extends Compuerta{
         gridPane.getChildren().add(logicGateGroup);
         Painter.crearEntradasSalidas(logicGateGroup);
         Painter.enumeration(logicGateGroup);
-        logicGate.setOnContextMenuRequested(rightlickMenu);
+
     }
 
 
@@ -52,21 +53,18 @@ public class CompuertaAND extends Compuerta{
             for(int i = 0; i<= outputs.size()-1; i++){
                 Compuerta compuerta = outputs.getElement(i);
                 compuerta.operar();
-                System.out.println(compuerta.output.value);
+                System.out.println("Entra a operar la compuertas de entrada del AND");
                 inputs.add(compuerta.output.value);
 
-            }
+            };
             output.value = (Boolean)inputs.getElement(0);
             for(int i=1; i<= inputs.size()-1; i++){
                 boolean res = (Boolean)inputs.getElement(i);
                 output.value = output.value && res;
+                System.out.println(output.value);
             }
 
     }
-
-    EventHandler<ContextMenuEvent> rightlickMenu = contextMenuEvent -> menu();
-
-
 
 
 }

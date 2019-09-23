@@ -44,6 +44,7 @@ public class PaintLine {
         line1.startXProperty().bind(compuerta.lineOutputPosX);
         line1.startYProperty().bind(compuerta.lineOutputPosY);
         line1.setStroke(Color.rgb(r,v,g));
+        line1.setStrokeWidth(3);
         line1.setId("Linea");
         pane.getChildren().add(line1);
         /*

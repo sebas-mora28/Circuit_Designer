@@ -69,10 +69,8 @@ public class LogicGateConexion {
      */
     private static void selectInputToConnect(MouseEvent mouseEvent) {
         for (int i = 0; i <= LogicGatesCreator.LogicGatesList.size() - 1; i++) {
-            //logicGateTo = LogicGatesCreator.LogicGatesList.getElement(i);
             System.out.println(mouseEvent.getX() + 1 == logicGateTo.posX && mouseEvent.getY() + 1 == logicGateTo.posY);
             if (!(mouseEvent.getX() + 1 == currentLogicGate.posX && mouseEvent.getY() + 1 == currentLogicGate.posY)) {
-                if (mouseEvent.getX() + 1 == logicGateTo.posX && mouseEvent.getY() + 1 == logicGateTo.posY) {
                     if (input1) {
                         if(!logicGateTo.input1Connected) {
                             System.out.println("Entrada 1: " + logicGateTo.input2.value);
@@ -105,7 +103,6 @@ public class LogicGateConexion {
                     }else{
                         System.out.println("No se seleccionó ninguna compuerta");
                     }
-                }
             } else {
                 paintLine.removeLines();
                 System.out.println("La compuerta es la misma");
