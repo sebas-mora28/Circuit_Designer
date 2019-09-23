@@ -57,13 +57,12 @@ public class GenerateTruthTable {
 
         tableView = new TableView();
         tableView.setMinSize(300,300);
-        scrollPane = new ScrollPane(tableView);
-        scrollPane.setMinSize(300,300);
-        root.getChildren().addAll(scrollPane);
+        //scrollPane = new ScrollPane(tableView);
+        //scrollPane.setMinSize(300,300);
 
-        scene = new Scene(root);
+        scene = new Scene(tableView);
         stage = new Stage();
-        //stage.setResizable(false);
+        stage.setResizable(false);
         stage.setTitle("Tabla de verdad");
         stage.setScene(scene);
         stage.show();

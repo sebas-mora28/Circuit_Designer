@@ -53,8 +53,8 @@ public class DragAndDrop {
             setLogicGateProperties(logicGate, newTranslationX, newTranslationY);
 
             for(int i=0; i<= logicGate.listLines.size()-1; i++){
-                //PaintLine paintLine = logicGate.listLines.getElement(i);
-                //paintLine.updatePosition(newTranslationY, newTranslationX, newTranslationY, newTranslationY);
+                PaintLine paintLine = logicGate.listLines.getElement(i);
+               // paintLine.updatePosition(newTranslationX/2, newTranslationY, newTranslationX/2, newTranslationY);
             }
 
 

@@ -91,7 +91,7 @@ public class Painter {
         salida.setLayoutX(100);
         salida.setLayoutY(92);
         salida.setId("Salida");
-        salida.setOpacity(0.0);
+        //salida.setOpacity(0.0);
         salida.setUserData(logicGateGroup);
         pane.getChildren().addAll(salida);
         logicGateGroup.getChildren().add(salida);
@@ -112,7 +112,7 @@ public class Painter {
         salida.setLayoutY(95);
         salida.setId("Salida");
         salida.setOpacity(0.0);
-        pane.getChildren().addAll(salida);
+        salida.setUserData(logicGateGroup);
         logicGateGroup.getChildren().add(salida);
 
         entrada1 = new Circle(10);
@@ -260,12 +260,12 @@ public class Painter {
 
         Label labeInput1 = new Label("<0>");
         labeInput1.setLayoutX(10);
-        labeInput1.setLayoutY(55);
+        labeInput1.setLayoutY(50);
         labeInput1.setId("Input1");
 
         Label labeInput2 = new Label("<0>");
         labeInput2.setLayoutX(10);
-        labeInput2.setLayoutY(120);
+        labeInput2.setLayoutY(125);
         labeInput2.setId("Input2");
 
 

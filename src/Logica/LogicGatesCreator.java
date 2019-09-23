@@ -60,9 +60,9 @@ public class LogicGatesCreator {
     public enum LogicGateType{
         AND,
         NAND,
+        OR,
         NORD,
         NOT,
-        OR,
         XOR,
         XNOR;
     }

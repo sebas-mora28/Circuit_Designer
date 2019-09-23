@@ -91,7 +91,7 @@ public class Main extends Application {
         logicGatesScroller.setLayoutX(978);
         logicGatesScroller.setLayoutY(0);
         logicGatesScroller.setContent(logicGatePane);
-        logicGatesScroller.setPrefSize(220, 800);
+        logicGatesScroller.setPrefSize(220, 760);
 
 
         //Botones
@@ -102,22 +102,23 @@ public class Main extends Application {
 
         Button run = new Button("Run");
         run.setEffect(new DropShadow());
-        run.setLayoutX(995);
-        run.setLayoutY(810);
+        run.setLayoutX(1050);
+        run.setLayoutY(770);
+        run.setPrefWidth(67);
         run.setOnMouseClicked(this.openWindow);
-        run.setPrefSize(50, 25);
 
         Button clean = new Button("Clean");
         clean.setEffect(new DropShadow());
         clean.setLayoutX(1080);
         clean.setLayoutY(810);
+        clean.setPrefWidth(90);
         clean.setOnMouseClicked(this.clean);
 
         Button refresh = new Button("Refresh");
         refresh.setEffect(new DropShadow());
         refresh.setLayoutX(995);
         refresh.setLayoutY(850);
-        refresh.setOnMouseClicked(this.guardarCircuito);
+        refresh.setOnMouseClicked(this.refresh);
 
         Button truthTable = new Button("Thuth Table");
         truthTable.setEffect(new DropShadow());
@@ -125,10 +126,17 @@ public class Main extends Application {
         truthTable.setLayoutY(850);
         truthTable.setOnMouseClicked(this.thuthTable);
 
+        Button saveCircuit = new Button("Save");
+        saveCircuit.setEffect(new DropShadow());
+        saveCircuit.setPrefWidth(67);
+        saveCircuit.setLayoutX(995);
+        saveCircuit.setLayoutY(810);
+        saveCircuit.setOnMouseClicked(this.guardarCircuito);
+
 
         //Pantalla principal
         //-------------------------------------------------------------------------------------------------
-        Pane root = new Pane(scrollPane, logicGatesScroller, run, clean, refresh, truthTable);
+        Pane root = new Pane(scrollPane, logicGatesScroller, run, clean, refresh, truthTable, saveCircuit);
         root.setBackground(new Background(new BackgroundFill(Color.web("2E5F68"), CornerRadii.EMPTY, Insets.EMPTY)));
         primaryStage.setScene(new Scene(root, 1200, 900));
         primaryStage.setTitle("Circuit Designer");
@@ -221,6 +229,7 @@ public class Main extends Application {
                  GenerateTruthTable generateTruthTable = new GenerateTruthTable(LogicGatesCreator.LogicGatesList);
             } catch (NullPointerException e){
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Content", ButtonType.OK);
+                alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
                 alert.setHeaderText("No existen compuertas en el diseño");
                 alert.setContentText("Debe crear al menos una compuerta para mostrar la tabla de verdad");
                 alert.showAndWait();
@@ -239,28 +248,42 @@ public class Main extends Application {
         }
     };
 
-    public void saveCircuit(){
+    public void saveCircuit() {
         circuit = new LinkedList<Compuerta>();
-        for(int i=0; i<= LogicGatesCreator.LogicGatesList.size()-1; i++){
-            Compuerta compuerta = LogicGatesCreator.LogicGatesList.getElement(i);
-            circuit.add(compuerta);
+        try {
+
+            if(LogicGatesCreator.LogicGatesList.size() <=1){
+                throw new NullPointerException();
+            }
+            for (int i = 0; i <= LogicGatesCreator.LogicGatesList.size() - 1; i++) {
+                Compuerta compuerta = LogicGatesCreator.LogicGatesList.getElement(i);
+                circuit.add(compuerta);
+            }
+
+            GUIcircuit = new LinkedList<Node>();
+            for (Node node : pane.getChildren()) {
+                System.out.println("GUARDADO GRAFICAMENTE");
+                GUIcircuit.add(node);
+            }
+
+            Button circuitSaved = new Button("   Circuito \n Guardado");
+            circuitSaved.setLayoutX(50);
+            circuitSaved.setLayoutY(newPosyButton);
+            circuitSaved.setPrefSize(110, 100);
+            circuitSaved.setOnMouseClicked(activarCircuito);
+            logicGatePane.getChildren().add(circuitSaved);
+            newPosyButton += 200;
+            logicGatePane.setPrefHeight(logicGatePane.getHeight() + 50);
+
+
+        }catch (NullPointerException e){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Content", ButtonType.OK);
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+            alert.setHeaderText("Verifique");
+            alert.setContentText("Deben de existir al menos dos compuertas conectadas para guardar el circuito");
+            alert.showAndWait();
+
         }
-
-        GUIcircuit = new LinkedList<Node>();
-        for(Node node : pane.getChildren()){
-            System.out.println("GUARDADO GRAFICAMENTE");
-            GUIcircuit.add(node);
-        }
-
-
-        Button circuitSaved = new Button("   Circuito \n Guardado");
-        circuitSaved.setLayoutX(50);
-        circuitSaved.setLayoutY(newPosyButton);
-        circuitSaved.setPrefSize(110,100);
-        circuitSaved.setOnMouseClicked(activarCircuito);
-        logicGatePane.getChildren().add(circuitSaved);
-        newPosyButton += 200;
-        logicGatePane.setPrefHeight(logicGatePane.getHeight() + 50);
     }
 
 

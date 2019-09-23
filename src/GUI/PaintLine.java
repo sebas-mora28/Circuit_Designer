@@ -4,7 +4,6 @@ import Compuertas.Compuerta;
 import Logica.LogicGateConexion;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import javafx.scene.effect.BlendMode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -40,6 +39,14 @@ public class PaintLine {
         int r = random.nextInt(255);
         int v = random.nextInt(255);
         int g = random.nextInt(255);
+
+        line1 = new Line();
+        line1.startXProperty().bind(compuerta.lineOutputPosX);
+        line1.startYProperty().bind(compuerta.lineOutputPosY);
+        line1.setStroke(Color.rgb(r,v,g));
+        line1.setId("Linea");
+        pane.getChildren().add(line1);
+        /*
         Line[] lines = new Line[3];
         for(int i=0; i<=2; i++) {
             Line line = new Line();
@@ -48,9 +55,9 @@ public class PaintLine {
             line.setId("Linea");
             pane.getChildren().add(line);
         }
-        setLines(lines[0], lines[1], lines[2]);
-        line1.startXProperty().bind(compuerta.lineOutputPosX);
-        line1.startYProperty().bind(compuerta.lineOutputPosY);
+
+         */
+        //setLines(lines[0], lines[1], lines[2]);
 
     }
 
@@ -83,13 +90,13 @@ public class PaintLine {
 
 
     public void setLine3EndPositionsInput1(Compuerta compuerta){
-        line3.endXProperty().bind(compuerta.lineInput1PosX);
-        line3.endYProperty().bind(compuerta.lineInput1PosY);
+        line1.endXProperty().bind(compuerta.lineInput1PosX);
+        line1.endYProperty().bind(compuerta.lineInput1PosY);
     }
 
     public void setLine3EndPositionInput2(Compuerta compuerta){
-        line3.endXProperty().bind(compuerta.lineInput2PosX);
-        line3.endYProperty().bind(compuerta.lineInput2PosY);
+        line1.endXProperty().bind(compuerta.lineInput2PosX);
+        line1.endYProperty().bind(compuerta.lineInput2PosY);
     }
 
     EventHandler<MouseEvent> MovingLine = new EventHandler<MouseEvent>() {
@@ -101,7 +108,8 @@ public class PaintLine {
 
                 double newPosx = (startposx + endPosX) / 2;
 
-                starLine(newPosx, startposy, newPosx, endPosY, endPosX, endPosY);
+                starLine(endPosX, endPosY, newPosx, endPosY, endPosX, endPosY);
+                //starLine(newPosx, startposy, newPosx, endPosY, endPosX, endPosY);
             }
 
         }
@@ -121,6 +129,7 @@ public class PaintLine {
     private void starLine(double posx1, double posy1, double posx2, double posy2, double posx3, double posy3) {
         line1.setEndX(posx1);
         line1.setEndY(posy1);
+        /*
         line2.setStartX(posx1);
         line2.setStartY(posy1);
         line2.setEndX(posx2);
@@ -129,6 +138,8 @@ public class PaintLine {
         line3.setStartY(posy2);
         line3.setEndX(posx3);
         line3.setEndY(posy3);
+
+         */
     }
 
 
