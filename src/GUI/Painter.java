@@ -166,22 +166,17 @@ public class Painter {
         public void handle(MouseEvent mouseEvent) {
             Circle circle = (Circle) mouseEvent.getSource();
             Compuerta compuerta = (Compuerta) ((Group) circle.getUserData()).getUserData();
-            if (!compuerta.outputConnected) {
-                if (circle.getId().equals("Salida")) {
-                    if (!LogicGateConexion.conectingOutput && !LogicGateConexion.selectingOutput) {
-                        LogicGateConexion.conectingOutput = true;
-                        LogicGateConexion.selectingOutput = true;
-                        paintLine = new PaintLine(compuerta, pane, mouseEvent.getSceneX(), mouseEvent.getSceneY());
-                        compuerta.listLines.add(paintLine);
-                    } else {
-                        paintLine.removeLines();
-                        LogicGateConexion.selectingOutput = false;
-                        LogicGateConexion.conectingOutput = false;
-                    }
+            if (circle.getId().equals("Salida")) {
+                if (!LogicGateConexion.conectingOutput && !LogicGateConexion.selectingOutput) {
+                    LogicGateConexion.conectingOutput = true;
+                    LogicGateConexion.selectingOutput = true;
+                    paintLine = new PaintLine(compuerta, pane, mouseEvent.getSceneX(), mouseEvent.getSceneY());
+                    compuerta.listLines.add(paintLine);
+                } else {
+                    paintLine.removeLines();
+                    LogicGateConexion.selectingOutput = false;
+                    LogicGateConexion.conectingOutput = false;
                 }
-
-            }else{
-                System.out.println("La salida de la compuerta ya se encuentra conectada");
             }
         }
 
@@ -279,6 +274,57 @@ public class Painter {
      */
 
     private static void updateOutputsLabel(Node node, Compuerta compuerta) {
+
+        if(node.getId().equals("Output") && !SimulateCircuit.simulatingCircuit && !compuerta.outputConnected){
+            Label labelOutput = (Label) node;
+            labelOutput.setText("");
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         if (node.getId().equals("Output") && SimulateCircuit.simulatingCircuit && compuerta.outputConnected) {
             Label labelOutput = (Label) node;
             labelOutput.setText("");

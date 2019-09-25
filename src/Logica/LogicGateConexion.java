@@ -69,7 +69,6 @@ public class LogicGateConexion {
      */
     private static void selectInputToConnect(MouseEvent mouseEvent) {
         for (int i = 0; i <= LogicGatesCreator.LogicGatesList.size() - 1; i++) {
-            System.out.println(mouseEvent.getX() + 1 == logicGateTo.posX && mouseEvent.getY() + 1 == logicGateTo.posY);
             if (!(mouseEvent.getX() + 1 == currentLogicGate.posX && mouseEvent.getY() + 1 == currentLogicGate.posY)) {
                     if (input1) {
                         if(!logicGateTo.input1Connected) {

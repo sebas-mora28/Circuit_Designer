@@ -100,7 +100,7 @@ public class SimulateCircuit {
             }
     }
 
-    public void VerifyEmptyInputs(){
+    private void VerifyEmptyInputs(){
         int posx = 50;
         int posy = 90;
         int index = 0;
@@ -124,7 +124,7 @@ public class SimulateCircuit {
 
     }
 
-    public void updatePaneSize(int posy){
+    private void updatePaneSize(int posy){
         if(posy < 400){
             posy +=150;
         }
@@ -132,7 +132,7 @@ public class SimulateCircuit {
         buttonRun.setLayoutY(posy - 100);
     }
 
-    public void createComboBox(int posx, int posy){
+    private void createComboBox(int posx, int posy){
         ComboBox<Boolean> comboBox = new ComboBox<>();
         comboBox.setItems(FXCollections.observableArrayList(true, false));
         comboBox.setPromptText("Seleccione un valor para la entrada");
@@ -145,7 +145,7 @@ public class SimulateCircuit {
         comboBoxList.add(comboBox);
     }
 
-    public void createLabel(int posx, int posy, String name){
+    private void createLabel(int posx, int posy, String name){
         Label label = new Label();
         label.setText(name);
         label.setLayoutX(posx);
@@ -156,7 +156,7 @@ public class SimulateCircuit {
 
     }
 
-    public void setInputsValues() {
+    private void setInputsValues() {
         int index = 0;
         try {
             for (int i = 0; i <= circuitInputs.size() - 1; i++) {
@@ -195,7 +195,6 @@ public class SimulateCircuit {
                         throw new NullPointerException();
                     }
                 }
-
             }
             operateLogicGates();
         }catch (NullPointerException e){

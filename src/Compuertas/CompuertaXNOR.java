@@ -7,14 +7,26 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
+
+/**
+ * Clase de la compuerta XNOR
+ */
 public class CompuertaXNOR extends Compuerta {
 
 
+    /**
+     * Constructor
+     * @param gridPane
+     */
     public CompuertaXNOR(Pane gridPane) {
         createXNOR(gridPane);
 
     }
 
+    /**
+     * Método que crea los componentes gráficos de la compuerta y les asigna los diferentes EventHandler
+     * @param gridPane
+     */
     private void  createXNOR(Pane gridPane){
         logicGateGroup = new Group();
         Image image = new Image("Compuerta7.png");
@@ -27,6 +39,10 @@ public class CompuertaXNOR extends Compuerta {
 
     }
 
+    /**
+     * Método heredado de la clase padre compuerta el cual se encarga se evaluar entradas de la compuerta y asignarle
+     * valor a la salida según el comport
+     */
     @Override
     public void operar() {
 

@@ -44,11 +44,8 @@ public class Main extends Application {
     private LogicGatesCreator logicGatesCreator = new LogicGatesCreator();
     private LinkedList<LinkedList<Compuerta>> savedCircuits = new LinkedList<LinkedList<Compuerta>>();
     private LinkedList<LinkedList<Node>> GUISavedcircuit = new LinkedList<LinkedList<Node>>();
-    private SimulateCircuit simulateCircuit;
-    private GenerateTruthTable generateTruthTable;
     private static int numberOfSavedCircuits = 0;
     private static int newPosyButton = 925;
-
 
 
     public static void main(String[] args) {
@@ -145,9 +142,6 @@ public class Main extends Application {
         primaryStage.setResizable(false);
         primaryStage.setOnCloseRequest(windowEvent -> System.exit(0));
         primaryStage.show();
-
-
-
     }
 
     //-----------------------------------------------------------------------------------------
@@ -192,7 +186,7 @@ public class Main extends Application {
      */
     private EventHandler<MouseEvent> openWindow = mouseEvent -> {
         try{
-            simulateCircuit = new SimulateCircuit();
+            SimulateCircuit simulateCircuit = new SimulateCircuit();
 
         }catch (NullPointerException e){
             e.printStackTrace();
@@ -244,14 +238,14 @@ public class Main extends Application {
             try {
                 System.out.println(LogicGatesCreator.LogicGatesList.size());
                 if(LogicGatesCreator.LogicGatesList.size() ==0){ throw new NullPointerException(); }
-                 generateTruthTable = new GenerateTruthTable(LogicGatesCreator.LogicGatesList);
+                GenerateTruthTable generateTruthTable = new GenerateTruthTable(LogicGatesCreator.LogicGatesList);
             } catch (NullPointerException e){
+                e.printStackTrace();
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Content", ButtonType.OK);
                 alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
                 alert.setHeaderText("No existen compuertas en el diseño");
                 alert.setContentText("Debe crear al menos una compuerta para mostrar la tabla de verdad");
                 alert.showAndWait();
-
 
             } catch (Exception e) {
             }
@@ -324,24 +318,23 @@ public class Main extends Application {
     EventHandler<MouseEvent> activarCircuito = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
-            int index = (int) ((Button) mouseEvent.getSource()).getUserData();
-            LinkedList<Compuerta> circuit = savedCircuits.getElement(index);
-            LinkedList<Node> GUIcircuit = GUISavedcircuit.getElement(index);
+                int index = (int) ((Button) mouseEvent.getSource()).getUserData();
+                LinkedList<Compuerta> circuit = savedCircuits.getElement(index);
+                LinkedList<Node> GUIcircuit = GUISavedcircuit.getElement(index);
 
-            for (int i = 0; i <= circuit.size() - 1; i++) {
-                Compuerta compuerta = circuit.getElement(i);
-                compuerta.inputs.removeAll();
+                for (int i = 0; i <= circuit.size() - 1; i++) {
+                    Compuerta compuerta = circuit.getElement(i);
+                    compuerta.inputs.removeAll();
 
-                LogicGatesCreator.LogicGatesList.add(compuerta);
+                    LogicGatesCreator.LogicGatesList.add(compuerta);
+                }
+
+                for (int i = 0; i <= GUIcircuit.size() - 1; i++) {
+                    Node node = GUIcircuit.getElement(i);
+                    pane.getChildren().add(node);
+                }
+                Painter.updateEnumeration();
             }
-
-            for (int i = 0; i <= GUIcircuit.size() - 1; i++) {
-                Node node = GUIcircuit.getElement(i);
-                pane.getChildren().add(node);
-            }
-
-            Painter.updateEnumeration();
-        }
     };
 }
 

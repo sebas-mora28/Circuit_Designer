@@ -7,7 +7,6 @@ import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.Pane;
@@ -21,14 +20,15 @@ import java.util.ArrayList;
 public class GenerateTruthTable {
     private LinkedList<Compuerta> compuertaLinkedList = new LinkedList<Compuerta>();
     private LinkedList<Compuerta> inputsLinkedList = new LinkedList<Compuerta>();
+    private LinkedList<Compuerta> outputsLinkedList = new LinkedList<Compuerta>();
     private Compuerta outputLogicGate;
     private int combinations;
     private int numberOfInputs = 0;
+    private int numberOfOutputs = 0;
     private Stage stage;
     private Pane root;
     private Scene scene;
     private TableView<ObservableList<String>> tableView;
-    private ScrollPane scrollPane;
     private String values = new String();
     private static int indexPrev = 0;
 
@@ -56,9 +56,7 @@ public class GenerateTruthTable {
         root = new Pane();
 
         tableView = new TableView();
-        tableView.setMinSize(500,500);
-        //scrollPane = new ScrollPane(tableView);
-        //scrollPane.setMinSize(300,300);
+        tableView.setMinSize(400,600);
 
         scene = new Scene(tableView);
         stage = new Stage();
@@ -99,8 +97,10 @@ public class GenerateTruthTable {
                 inputsLinkedList.add(compuerta);
             }
             if (!compuerta.outputConnected) {
-                // Se guarda la compuerta de salida para obtener el valor de esta. 
-                this.outputLogicGate = compuerta;
+                numberOfOutputs +=1;
+                outputsLinkedList.add(compuerta);
+                // Se guarda la compuerta de salida para obtener el valor de esta.
+                //this.outputLogicGate = compuerta;
             }
         }
         combinations();
@@ -112,7 +112,7 @@ public class GenerateTruthTable {
      */
 
     private void combinations() {
-        combinations = (int) Math.pow(2, numberOfInputs); //Se obtiene el total de combinaciones del circuito 
+        combinations = (int) Math.pow(2, numberOfInputs); //Se obtiene el total de combinaciones del circuito
         for (int i = 0; i < combinations; i++) {
             ArrayList<Boolean> InputsValues = new ArrayList<>();
             if (i == 0) {
@@ -167,11 +167,6 @@ public class GenerateTruthTable {
             }
         }
         operate();
-        if(outputLogicGate.output.value){
-            values += "1,";
-        }else{
-            values += "0,";
-        }
     }
 
     /**
@@ -180,7 +175,18 @@ public class GenerateTruthTable {
      */
 
     private void operate() {
-        outputLogicGate.operar();
+        //outputLogicGate.operar();
+
+        for(int i=0; i< numberOfOutputs; i++){
+            Compuerta compuerta = outputsLinkedList.getElement(i);
+            compuerta.operar();
+            System.out.println("El valor de la salida es " + compuerta.output.value);
+            if(compuerta.output.value){
+                values += "out 1,";
+            }else{
+                values += "out 0,";
+            }
+        }
 
         for (int i = 0; i <= compuertaLinkedList.size() - 1; i++) {
             Compuerta compuerta = compuertaLinkedList.getElement(i);
@@ -194,30 +200,42 @@ public class GenerateTruthTable {
 
     private void generateTable() {
         TableColumn inputsColumn = new TableColumn("Inputs");
-        inputsColumn.setMinWidth(tableView.getMaxWidth()/2);
-        TableColumn<ObservableList<String>, String> outputColumn = new TableColumn("Outputs");
-        outputColumn.setMinWidth(tableView.getMaxWidth()/2);
-        outputColumn.setCellValueFactory(values -> new ReadOnlyObjectWrapper<>(values.getValue().get(numberOfInputs)));
+        inputsColumn.setMinWidth(tableView.getMaxWidth() + 150);
+
+        TableColumn outputColumn = new TableColumn("Outputs");
 
 
+            //TableColumn<ObservableList<String>, String> outputColumns = new TableColumn("Output" + i );
+           // outputColumns.setMinWidth(tableView.getMaxWidth());
+            //outputColumns.setCellValueFactory(values -> new ReadOnlyObjectWrapper<>(values.getValue().get(numberOfInputs)));
 
-        for (int i = 0; i < numberOfInputs; i++) {
+
+        for (int i = 0; i < numberOfInputs + numberOfOutputs; i++) {
             final int index = i;
-            String name = "int" + i;
-            TableColumn<ObservableList<String>, String> newColumn = new TableColumn<>(name);
-            newColumn.setCellValueFactory(values -> new ReadOnlyObjectWrapper<>(values.getValue().get(index)));
-
-            inputsColumn.getColumns().add(newColumn);
+            System.out.println(i);
+            if(i< numberOfInputs) {
+                String name = "int" + i;
+                TableColumn<ObservableList<String>, String> newColumn = new TableColumn<>(name);
+                newColumn.setCellValueFactory(values -> new ReadOnlyObjectWrapper<>(values.getValue().get(index)));
+                inputsColumn.getColumns().add(newColumn);
+            }else{
+                String name = "output" + (i - numberOfInputs);
+                TableColumn<ObservableList<String>, String> newColumn = new TableColumn<>(name);
+                newColumn.setCellValueFactory(values -> new ReadOnlyObjectWrapper<>(values.getValue().get(index)));
+                outputColumn.getColumns().add(newColumn);
+            }
         }
+
+
+
         tableView.getColumns().addAll(inputsColumn, outputColumn);
 
         String[] newValues = values.split(",");
         System.out.println("El NUMERO DE COMBINACIONES ES " + combinations);
         for(int i=0; i< combinations; i++){
             ArrayList<String> valuesToAdd = getValues(newValues, i + indexPrev);
-            System.out.println(valuesToAdd);
             tableView.getItems().add(FXCollections.observableArrayList(valuesToAdd));
-            indexPrev += numberOfInputs;
+            indexPrev += numberOfInputs + numberOfOutputs -1;
         }
 
 
@@ -230,11 +248,14 @@ public class GenerateTruthTable {
 
     private ArrayList<String> getValues(String[] newValues, int indice) {
         ArrayList<String> valuesToAdd = new ArrayList<>();
-        int limite = indice + numberOfInputs;
+        int limite = indice + numberOfInputs + numberOfOutputs -1;
         for(int i=indice; i<= limite; i++) {
+            System.out.print(newValues[i] +  " ");
             valuesToAdd.add(newValues[i]);
         }
+        System.out.println();
         return valuesToAdd;
+
     }
 }
 

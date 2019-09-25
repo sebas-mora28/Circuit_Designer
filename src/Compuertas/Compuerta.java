@@ -1,13 +1,17 @@
 package Compuertas;
 
 import GUI.PaintLine;
-import GUI.Painter;
+
 import LinkedList.LinkedList;
 import LinkedList.Nodo;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.Group;
 
+
+/**
+ * Clase que hereda sus atributos a las clases de las demás compuertas lógicas.
+ */
 
 public class Compuerta {
     public Group logicGateGroup;
@@ -35,12 +39,39 @@ public class Compuerta {
     public void operar(){}
 
 
-    public Object clone(){
-        Object compuerta = null;
 
 
-        return compuerta;
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

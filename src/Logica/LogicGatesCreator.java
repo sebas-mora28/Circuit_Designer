@@ -20,6 +20,10 @@ public class LogicGatesCreator {
      * @param gridPane
      * @param logicGateType
      */
+
+
+
+
     public void createLogicGates(Pane gridPane, LogicGateType logicGateType) {
         if (logicGateType == LogicGateType.AND) {
             Compuerta logicGateAND = new CompuertaAND(gridPane);

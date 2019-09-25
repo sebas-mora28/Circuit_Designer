@@ -8,12 +8,25 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
+
+/**
+ * Clase de la compuerta lógica XOR
+ */
 public class CompuertaXOR extends Compuerta {
 
+    /**
+     * Constructor
+     * @param gridPane
+     */
     public CompuertaXOR(Pane gridPane) {
         createXOR(gridPane);
 
     }
+
+    /**
+     * Método que crea los componentes gráficos de la compuerta y les asigna los diferentes EventHandler
+     * @param gridPane
+     */
 
     private void  createXOR(Pane gridPane){
         logicGateGroup = new Group();
@@ -34,7 +47,6 @@ public class CompuertaXOR extends Compuerta {
             Compuerta compuerta = outputs.getElement(i);
             compuerta.operar();
             inputs.add(compuerta.output.value);
-            //compuerta.output.value = output.value;
         }
 
         System.out.println("El valor de outputValue es " + output.value);

@@ -7,13 +7,27 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
+
+/**
+ * Clase que de la compuerta lógica OR
+ */
 public class CompuertaOR extends Compuerta {
 
 
+    /**
+     * Constructor
+     * @param gridPane
+     */
     public CompuertaOR(Pane gridPane) {
         createOR(gridPane);
 
     }
+
+    /**
+     * Método que crea los componentes gráficos de la compuerta y les asigna los diferentes EventHandler
+     * @param gridPane
+     */
+
     private void  createOR(Pane gridPane){
         logicGateGroup = new Group();
         Image image = new Image("Compuerta3.png");
@@ -25,6 +39,12 @@ public class CompuertaOR extends Compuerta {
         Painter.enumeration(logicGateGroup);
 
     }
+
+
+    /**
+     * Método heredado de la clase padre compuerta el cual se encarga se evaluar entradas de la compuerta y asignarle
+     * valor a la salida según el comport
+     */
 
     @Override
     public void operar() {

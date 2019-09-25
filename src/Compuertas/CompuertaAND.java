@@ -13,6 +13,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
 
+/**
+ * Clase de la compuerta lógica AND
+ * @author Sebastian Mora
+ */
 public class CompuertaAND extends Compuerta {
 
 
@@ -44,7 +48,7 @@ public class CompuertaAND extends Compuerta {
 
 
     /**
-     * Método heredado de la clase padre Compuerta el cual se encarga se evaluar entradas de la compuerta y asignarle
+     * Método heredado de la clase padre compuerta el cual se encarga se evaluar entradas de la compuerta y asignarle
      * valor a la salida según el comport
      */
 
@@ -53,7 +57,6 @@ public class CompuertaAND extends Compuerta {
             for(int i = 0; i<= outputs.size()-1; i++){
                 Compuerta compuerta = outputs.getElement(i);
                 compuerta.operar();
-                System.out.println("Entra a operar la compuertas de entrada del AND");
                 inputs.add(compuerta.output.value);
 
             };
