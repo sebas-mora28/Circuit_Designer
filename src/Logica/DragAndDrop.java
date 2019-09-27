@@ -2,8 +2,11 @@ package Logica;
 
 import Compuertas.Compuerta;
 import GUI.PaintLine;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
 
@@ -52,12 +55,8 @@ public class DragAndDrop {
             logicGate.posY = newTranslationY;
             setLogicGateProperties(logicGate, newTranslationX, newTranslationY);
 
-            for(int i=0; i<= logicGate.listLines.size()-1; i++){
-                PaintLine paintLine = logicGate.listLines.getElement(i);
-               // paintLine.updatePosition(newTranslationX/2, newTranslationY, newTranslationX/2, newTranslationY);
-            }
 
-
+            updateLines(logicGate);
 
         });
 
@@ -70,8 +69,8 @@ public class DragAndDrop {
                 logicGateGroup.setTranslateY(posY);
                 logicGate.posX = posX;
                 logicGate.posY = posY;
-                logicGate.lineOutputPosX.setValue(posX + 90);
-                logicGate.lineOutputPosY.setValue(posY + 93);
+                setLogicGateProperties(logicGate, posX, posY);
+                updateLines(logicGate);
 
             }
         });
@@ -100,7 +99,7 @@ public class DragAndDrop {
      * @param newPosY
      */
 
-    public static void setLogicGateProperties(Compuerta compuerta, double newPosX, double newPosY){
+    private static void setLogicGateProperties(Compuerta compuerta, double newPosX, double newPosY){
         compuerta.lineOutputPosX.setValue(newPosX + 90);
         compuerta.lineOutputPosY.setValue(newPosY + 95);
 
@@ -111,5 +110,20 @@ public class DragAndDrop {
         compuerta.lineInput2PosY.setValue(newPosY +110);
 
     }
+
+
+    /**
+     * Método que actualiza las posiciones de las líneas que se encuentran conectadas a la compuerta en el momento de
+     * realizar el drag and drop
+     * @param logicGate compuerta que contiene la lista de líneas a actualizar.
+     */
+    private static void updateLines(Compuerta logicGate){
+        for(int i=0; i<= logicGate.listLines.size()-1; i++) {
+            PaintLine paintLine = logicGate.listLines.getElement(i);
+            paintLine.updateLine();
+        }
+
+    }
+
 }
 

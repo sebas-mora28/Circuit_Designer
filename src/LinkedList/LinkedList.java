@@ -1,6 +1,7 @@
 package LinkedList;
 
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 /**
@@ -8,7 +9,7 @@ import java.util.Iterator;
  * @author Sebastian
  */
 
-public class LinkedList<T> implements Iterator<T> {
+public class LinkedList<T> implements Iterator<T>{
     private Nodo<T> head;
     private int length;
 

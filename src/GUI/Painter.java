@@ -36,7 +36,6 @@ public class Painter {
     private static Rectangle rectangleImage;
     private static boolean flag = true;
     public static PaintLine paintLine;
-    public static LinkedList<PaintLine> linesList = new LinkedList<PaintLine>();
     private static int index =0;
 
     /**
@@ -138,7 +137,7 @@ public class Painter {
      */
 
     private static void entradas(Group logicGateGroup) {
-        entrada1 = new Circle(10);
+        entrada1 = new Circle(12);
         entrada1.setOnMouseEntered(mouseEvent -> entrada1.setCursor(Cursor.CROSSHAIR));
         entrada1.setOnMouseClicked(MouseClickInput);
         entrada1.setLayoutX(20);
@@ -148,7 +147,7 @@ public class Painter {
         entrada1.setOpacity(0.0);
 
 
-        entrada2 = new Circle(10);
+        entrada2 = new Circle(12);
         entrada2.setOnMouseEntered(mouseEvent -> entrada2.setCursor(Cursor.CROSSHAIR));
         entrada2.setOnMouseClicked(MouseClickInput);
         entrada2.setLayoutX(20);
@@ -160,6 +159,13 @@ public class Painter {
         logicGateGroup.getChildren().addAll(entrada1, entrada2);
     }
 
+
+    /**
+     * Evento que se activa en el momento en que el círculo de salida de la compuerta se presiona. En este momento se verifica
+     * el estado de la conexión para activa los diferentes flags que permiten la conexión y crear las líneas de conexión. En este evento
+     * se valida si el usuario quiere conectar la salida de la compuerta con otra salida, en este caso devuelve el estado de la conexión
+     * a default y elimina las líneas
+     */
 
     static EventHandler<MouseEvent> MouseClickOutput = new EventHandler<MouseEvent>() {
         @Override
@@ -182,6 +188,11 @@ public class Painter {
 
     };
 
+    /**
+     * Evento que se activa cuando se presiona algunos de los círculos de entrada de la compuerta. En este momento se verifica el
+     * estado de la conexión, en caso de que el usuario haya presionado el círculo de salida previamente, este evento activa
+     * los flags necesarios para dar por completada la conexión.
+     */
 
     static  EventHandler<MouseEvent> MouseClickInput = new EventHandler<>() {
         @Override
@@ -213,9 +224,8 @@ public class Painter {
 
     /**
      * Este método agrega los labels que corresponden a la numeración de las entradas y salidas de la compuerta
-     * @param group
+     * @param group grupo donde se van agregar los labels de cada compuerta
      */
-
 
     public static void enumeration(Group group) {
         Label label = new Label();
@@ -231,12 +241,12 @@ public class Painter {
         labelOutput.setId("Output");
 
         Label labeInput1 = new Label("<0>");
-        labeInput1.setLayoutX(10);
+        labeInput1.setLayoutX(5);
         labeInput1.setLayoutY(50);
         labeInput1.setId("Input1");
 
         Label labeInput2 = new Label("<0>");
-        labeInput2.setLayoutX(10);
+        labeInput2.setLayoutX(5);
         labeInput2.setLayoutY(125);
         labeInput2.setId("Input2");
 
@@ -257,7 +267,7 @@ public class Painter {
             for(Node node : nodos){
                 if(node.getId().equals("label")){
                     Label label = (Label)node;
-                    label.setText("i<"+ i + ">");
+                    label.setText("O<"+ i + ">");
                 }
                 updateInputsLabel(node, compuerta);
                 updateOutputsLabel(node, compuerta);
@@ -280,50 +290,6 @@ public class Painter {
             labelOutput.setText("");
 
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         if (node.getId().equals("Output") && SimulateCircuit.simulatingCircuit && compuerta.outputConnected) {
             Label labelOutput = (Label) node;

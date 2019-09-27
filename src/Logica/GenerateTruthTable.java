@@ -21,6 +21,7 @@ public class GenerateTruthTable {
     private LinkedList<Compuerta> compuertaLinkedList = new LinkedList<Compuerta>();
     private LinkedList<Compuerta> inputsLinkedList = new LinkedList<Compuerta>();
     private LinkedList<Compuerta> outputsLinkedList = new LinkedList<Compuerta>();
+    private LinkedList<Integer> outputsEnumeration = new LinkedList<Integer>();
     private Compuerta outputLogicGate;
     private int combinations;
     private int numberOfInputs = 0;
@@ -82,7 +83,8 @@ public class GenerateTruthTable {
 
 
     /**
-     * Método que verifica cuantas entradas disponibles tiene el circuito y guarda la salida en una variable
+     * Método que verifica cuantas entradas disponibles tiene el circuito y guarda las salidas en una lista enlazada
+     * especial para solamente las salidas del circuito.
      */
     private void verifyInputs() {
         for (int i = 0; i <= this.compuertaLinkedList.size() - 1; i++) {
@@ -97,10 +99,9 @@ public class GenerateTruthTable {
                 inputsLinkedList.add(compuerta);
             }
             if (!compuerta.outputConnected) {
+                outputsEnumeration.add(i);
                 numberOfOutputs +=1;
                 outputsLinkedList.add(compuerta);
-                // Se guarda la compuerta de salida para obtener el valor de esta.
-                //this.outputLogicGate = compuerta;
             }
         }
         combinations();
@@ -108,18 +109,19 @@ public class GenerateTruthTable {
 
 
     /**
-     * Método que calcula todas las combinaciones posibles del circuito para elaborar la tabla de verdad
+     * Método que calcula todas las combinaciones posibles del circuito para elaborar la tabla de verdad, las combinaciones
+     * se obtendrán al convertir desde el 0 hasta el número de entradas - 1, a binario.
      */
 
     private void combinations() {
         combinations = (int) Math.pow(2, numberOfInputs); //Se obtiene el total de combinaciones del circuito
-        for (int i = 0; i < combinations; i++) {
+        for (int i = combinations-1; i >=0; i--) {
             ArrayList<Boolean> InputsValues = new ArrayList<>();
             if (i == 0) {
                 // En caso de que todas las entradas sean 0, se rellena el array con false
                 for (int k = 0; k <= numberOfInputs - 1; k++) {
                     InputsValues.add(false);
-                    values += "0,";
+                    values += "  0,";
 
                 }
             } else {
@@ -127,10 +129,10 @@ public class GenerateTruthTable {
                 while (temp != 0) {
                     if (temp % 2 == 1) {
                         InputsValues.add(true);
-                        values += "1,";
+                        values += "  1,";
                     } else if (temp % 2 == 0) {
                         InputsValues.add(false);
-                        values += "0,";
+                        values += "  0,";
                     }
                     temp = temp / 2;
                 }
@@ -139,7 +141,7 @@ public class GenerateTruthTable {
                 // En caso de que el tamano del array sea menor que el número de entradas se rellena con falsa
                 while (InputsValues.size() < numberOfInputs) {
                     InputsValues.add(false);
-                    values += "0,";
+                    values += "  0,";
                 }
             }
             assignInputs(InputsValues);
@@ -149,7 +151,7 @@ public class GenerateTruthTable {
 
     /**
      * Método que asigna a las entradas los valores  de las combinaciones a las entradas de la entradas disponibles
-     * @param InputsValues
+     * @param InputsValues ArrayList que cuenta con los valores de la respectiva combinación
      */
 
     private void assignInputs(final ArrayList<Boolean> InputsValues) {
@@ -170,21 +172,21 @@ public class GenerateTruthTable {
     }
 
     /**
-     * Método que opera cada una de las compuertas con cada una de las diferentes combinaciones para obtener el resultado
-     * de la salida de esa combinación
+     * Método que opera cada una de las compuertas que se encuentran en la lista de compuertas de salida del circuito para
+     * cada una de las combinaciones. Además remueve todas las entradas de la combinación para empezar nuevamente con la
+     * siguiente.
      */
 
     private void operate() {
-        //outputLogicGate.operar();
 
         for(int i=0; i< numberOfOutputs; i++){
             Compuerta compuerta = outputsLinkedList.getElement(i);
             compuerta.operar();
             System.out.println("El valor de la salida es " + compuerta.output.value);
             if(compuerta.output.value){
-                values += "out 1,";
+                values += "     1,";
             }else{
-                values += "out 0,";
+                values += "     0,";
             }
         }
 
@@ -195,7 +197,8 @@ public class GenerateTruthTable {
     }
 
     /**
-     * Método que genera el tableView con los datos correspondientes.
+     * Método que genera el tableView con los datos correspondientes. En este método se crear cada una de las columnas
+     * y se les asigna los datos correspondientes
      */
 
     private void generateTable() {
@@ -205,11 +208,7 @@ public class GenerateTruthTable {
         TableColumn outputColumn = new TableColumn("Outputs");
 
 
-            //TableColumn<ObservableList<String>, String> outputColumns = new TableColumn("Output" + i );
-           // outputColumns.setMinWidth(tableView.getMaxWidth());
-            //outputColumns.setCellValueFactory(values -> new ReadOnlyObjectWrapper<>(values.getValue().get(numberOfInputs)));
-
-
+        int outputNumber = 0;
         for (int i = 0; i < numberOfInputs + numberOfOutputs; i++) {
             final int index = i;
             System.out.println(i);
@@ -219,13 +218,13 @@ public class GenerateTruthTable {
                 newColumn.setCellValueFactory(values -> new ReadOnlyObjectWrapper<>(values.getValue().get(index)));
                 inputsColumn.getColumns().add(newColumn);
             }else{
-                String name = "output" + (i - numberOfInputs);
+                String name = "output" + (outputsEnumeration.getElement(outputNumber));
                 TableColumn<ObservableList<String>, String> newColumn = new TableColumn<>(name);
                 newColumn.setCellValueFactory(values -> new ReadOnlyObjectWrapper<>(values.getValue().get(index)));
                 outputColumn.getColumns().add(newColumn);
+                outputNumber++;
             }
         }
-
 
 
         tableView.getColumns().addAll(inputsColumn, outputColumn);
@@ -245,6 +244,12 @@ public class GenerateTruthTable {
         indexPrev=0;
     }
 
+    /**
+     * Este método retorna los valore que correspondiente a cada fila
+     * @param newValues Datos de la tabla de verdad
+     * @param indice Indice que permite identificar cuales datos debe devolver el método
+     * @return Valores que se agregarán a la respectiva fila
+     */
 
     private ArrayList<String> getValues(String[] newValues, int indice) {
         ArrayList<String> valuesToAdd = new ArrayList<>();

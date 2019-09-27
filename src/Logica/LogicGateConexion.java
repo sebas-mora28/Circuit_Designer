@@ -16,10 +16,7 @@ public class LogicGateConexion {
     public static boolean selectingOutput = false;
     public static boolean selected = false;
     public static boolean selectingNewGate = false;
-    public static boolean conectingInput = false;
     public static boolean selectingInput = false;
-    public static boolean input1Selected = false;
-    public static boolean input2Selected = false;
     public static boolean input1;
     public static boolean input2;
     public static Compuerta currentLogicGate;

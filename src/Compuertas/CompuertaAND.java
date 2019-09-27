@@ -12,12 +12,14 @@ import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
+import java.io.Serializable;
+
 
 /**
  * Clase de la compuerta lógica AND
  * @author Sebastian Mora
  */
-public class CompuertaAND extends Compuerta {
+public class CompuertaAND extends Compuerta{
 
 
     /**
@@ -32,7 +34,7 @@ public class CompuertaAND extends Compuerta {
      * @param gridPane
      */
 
-    private void  createAND(Pane gridPane){
+    public void createAND(Pane gridPane){
         logicGateGroup = new Group();
         logicGateGroup.setId("CompuertaGrupo");
         LogicGatesCreator.LogicGatesList.showData();

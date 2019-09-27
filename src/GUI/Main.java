@@ -4,13 +4,12 @@ package GUI;
 import Compuertas.Compuerta;
 import Compuertas.CompuertaAND;
 import LinkedList.LinkedList;
-import Logica.GenerateTruthTable;
-import Logica.LogicGateConexion;
-import Logica.LogicGatesCreator;
-import Logica.SimulateCircuit;
+import Logica.*;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 
@@ -23,6 +22,7 @@ import javafx.scene.control.*;
 import javafx.scene.effect.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -32,6 +32,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
+import javax.management.monitor.MonitorSettingException;
 import java.util.List;
 
 
@@ -100,6 +101,7 @@ public class Main extends Application {
 
 
         Button run = new Button("Run");
+        run.setFont(Font.font("Arial Black", FontWeight.BOLD, 12));
         run.setEffect(new DropShadow());
         run.setLayoutX(1050);
         run.setLayoutY(770);
@@ -107,6 +109,7 @@ public class Main extends Application {
         run.setOnMouseClicked(this.openWindow);
 
         Button clean = new Button("Clean");
+        clean.setFont(Font.font("Arial Black", FontWeight.BOLD, 12));
         clean.setEffect(new DropShadow());
         clean.setLayoutX(1080);
         clean.setLayoutY(810);
@@ -114,18 +117,21 @@ public class Main extends Application {
         clean.setOnMouseClicked(this.clean);
 
         Button refresh = new Button("Refresh");
+        refresh.setFont(Font.font("Arial Black", FontWeight.BOLD, 12));
         refresh.setEffect(new DropShadow());
         refresh.setLayoutX(995);
         refresh.setLayoutY(850);
         refresh.setOnMouseClicked(this.refresh);
 
         Button truthTable = new Button("Thuth Table");
+        truthTable.setFont(Font.font("Arial Black", FontWeight.BOLD, 12));
         truthTable.setEffect(new DropShadow());
         truthTable.setLayoutX(1080);
         truthTable.setLayoutY(850);
         truthTable.setOnMouseClicked(this.thuthTable);
 
         Button saveCircuit = new Button("Save");
+        saveCircuit.setFont(Font.font("Arial Black", FontWeight.BOLD, 12));
         saveCircuit.setEffect(new DropShadow());
         saveCircuit.setPrefWidth(67);
         saveCircuit.setLayoutX(995);
@@ -151,11 +157,11 @@ public class Main extends Application {
      * Método que crea los botones de las compuertas básicas de la aplicación
      */
 
-    public void createButtons(){
+    public void createButtons() {
         LogicGatesCreator.LogicGateType[] logicGateTypes = LogicGatesCreator.LogicGateType.values();
         int posy = 90;
-        for(int i=1; i<8; i++){
-            final int index = i -1;
+        for (int i = 1; i < 8; i++) {
+            final int index = i - 1;
             Button newButton = new Button();
             ImageView imagen = new ImageView(new Image("Compuerta" + i + ".png"));
             imagen.setFitHeight(90);
@@ -185,17 +191,17 @@ public class Main extends Application {
      * Por medio de este EventHandler se crea la ventana para pedir las entradas de las compuertas
      */
     private EventHandler<MouseEvent> openWindow = mouseEvent -> {
-        try{
+        try {
             SimulateCircuit simulateCircuit = new SimulateCircuit();
 
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             e.printStackTrace();
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "Content", ButtonType.OK);
             alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
             alert.setHeaderText("No existen compuertas lógicas");
             alert.setContentText("Debe de crear al menos una compuerta lógica para simular el circuito");
             alert.showAndWait();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     };
@@ -219,13 +225,20 @@ public class Main extends Application {
     }
 
 
+
+
+
     /**
      * Evento que actualiza la numeración despues de simular el circuito para que las entradas vuelvan a tener numeración
      */
     EventHandler<MouseEvent> refresh = mouseEvent -> {
         SimulateCircuit.simulatingCircuit = false;
         Painter.updateEnumeration();
+
     };
+
+
+
 
     /**
      * Evento que se encarga de crear llamar a la clase GenerateTruthTable para generar la tabla de verdad
@@ -237,9 +250,13 @@ public class Main extends Application {
 
             try {
                 System.out.println(LogicGatesCreator.LogicGatesList.size());
-                if(LogicGatesCreator.LogicGatesList.size() ==0){ throw new NullPointerException(); }
+                if (LogicGatesCreator.LogicGatesList.size() == 0) {
+                    throw new NullPointerException();
+                }
                 GenerateTruthTable generateTruthTable = new GenerateTruthTable(LogicGatesCreator.LogicGatesList);
-            } catch (NullPointerException e){
+
+
+            } catch (NullPointerException e) {
                 e.printStackTrace();
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Content", ButtonType.OK);
                 alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
@@ -254,23 +271,23 @@ public class Main extends Application {
 
 
     /**
-     * Evento asociado al boton Save. Guarda el circuito y crea un botón en el panel de compuertas lógicas
+     * Evento asociado al boton Save. Guarda el circuito y crea un botón en el panel de compuertas lógicas.
      */
 
-    EventHandler<MouseEvent> guardarCircuito  = new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent mouseEvent) {
-            saveCircuit();
-        }
-    };
+    EventHandler<MouseEvent> guardarCircuito = mouseEvent -> saveCircuit();
+
+
+    /**
+     * Evento que guarda las compuertas tantos lógica como gráficamente para usarlo posteriormente durante la ejecución
+     * circuito
+     */
 
     public void saveCircuit() {
         LinkedList<Compuerta> circuit = new LinkedList<Compuerta>();
         try {
+            if (LogicGatesCreator.LogicGatesList.size() <= 1) {
+                throw new NullPointerException(); }
 
-            if(LogicGatesCreator.LogicGatesList.size() <=1){
-                throw new NullPointerException();
-            }
             for (int i = 0; i <= LogicGatesCreator.LogicGatesList.size() - 1; i++) {
                 Compuerta compuerta = LogicGatesCreator.LogicGatesList.getElement(i);
                 circuit.add(compuerta);
@@ -283,8 +300,8 @@ public class Main extends Application {
                 System.out.println("GUARDADO GRAFICAMENTE");
                 GUIcircuit.add(node);
             }
-            GUISavedcircuit.add(GUIcircuit);
 
+            GUISavedcircuit.add(GUIcircuit);
 
             Button circuitSaved = new Button("   Circuito \n Guardado" + (numberOfSavedCircuits + 1));
             circuitSaved.setLayoutX(50);
@@ -292,6 +309,8 @@ public class Main extends Application {
             circuitSaved.setPrefSize(110, 100);
             circuitSaved.setOnMouseClicked(activarCircuito);
             circuitSaved.setUserData(numberOfSavedCircuits);
+
+
             logicGatePane.getChildren().add(circuitSaved);
             newPosyButton += 125;
             logicGatePane.setPrefHeight(logicGatePane.getHeight() + 50);
@@ -299,8 +318,7 @@ public class Main extends Application {
 
             numberOfSavedCircuits++;
 
-
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             e.printStackTrace();
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "Content", ButtonType.OK);
             alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
@@ -311,31 +329,34 @@ public class Main extends Application {
         }
     }
 
+
+
+
     /**
-     * Método que muestra el circuito guardado y lo muestra en pantalla
+     * Evento que muestra el circuito guardado y lo muestra en pantalla
      */
 
-    EventHandler<MouseEvent> activarCircuito = new EventHandler<MouseEvent>() {
+    EventHandler<MouseEvent> activarCircuito = new EventHandler<>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
-                int index = (int) ((Button) mouseEvent.getSource()).getUserData();
-                LinkedList<Compuerta> circuit = savedCircuits.getElement(index);
-                LinkedList<Node> GUIcircuit = GUISavedcircuit.getElement(index);
+            int index = (int)((Button) mouseEvent.getSource()).getUserData();
+            LinkedList<Compuerta> circuit = savedCircuits.getElement(index);
+            LinkedList<Node> GUIcircuit = GUISavedcircuit.getElement(index);
 
-                for (int i = 0; i <= circuit.size() - 1; i++) {
-                    Compuerta compuerta = circuit.getElement(i);
-                    compuerta.inputs.removeAll();
-
-                    LogicGatesCreator.LogicGatesList.add(compuerta);
-                }
-
-                for (int i = 0; i <= GUIcircuit.size() - 1; i++) {
-                    Node node = GUIcircuit.getElement(i);
-                    pane.getChildren().add(node);
-                }
-                Painter.updateEnumeration();
+            for (int i = 0; i <= circuit.size() - 1; i++) {
+                Compuerta compuerta = circuit.getElement(i);
+                compuerta.inputs.removeAll();
+                LogicGatesCreator.LogicGatesList.add(compuerta);
             }
+
+            for (int i = 0; i <= GUIcircuit.size() - 1; i++) {
+                Node node = GUIcircuit.getElement(i);
+                pane.getChildren().add(node);
+            }
+            Painter.updateEnumeration();
+        }
     };
+
 }
 
 

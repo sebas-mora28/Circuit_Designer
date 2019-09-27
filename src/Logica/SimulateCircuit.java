@@ -17,6 +17,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
+
+/**
+ * Clase que se encarga de obtener los valores de las entradas que el usuario desee y obtener la salida con las
+ * respectivas entradas
+ */
 public class SimulateCircuit {
     private Pane root = new Pane();
     private ScrollPane scrollPane = new ScrollPane();
@@ -30,11 +35,19 @@ public class SimulateCircuit {
     private Stage stage = new Stage();
 
 
+    /**
+     * Constructor
+     * @throws Exception
+     */
     public SimulateCircuit() throws Exception{
         start();
     }
 
 
+    /**
+     * Método que ejecuta la interfaz gráfica
+     * @throws Exception
+     */
     private void start() throws Exception {
 
         root.setBackground(new Background(new BackgroundFill(Color.web("139AB4"), CornerRadii.EMPTY, Insets.EMPTY)));
@@ -85,6 +98,11 @@ public class SimulateCircuit {
     }
 
 
+    /**
+     * Método que da comienzo a la simulación del circuito. En este método se agregan a una lista enlazada todas aquellas compuertas
+     * que contienen entradas disponibles. Además se agregan las salidas del circuito a otra lista enlazada
+     */
+
     public void StartSimulating(){
             if (LogicGatesCreator.LogicGatesList.size() == 0) {
                 throw new NullPointerException();
@@ -99,6 +117,12 @@ public class SimulateCircuit {
                 }
             }
     }
+
+
+    /**
+     * Método que verifica cuales entradas de cada compuerta se encuentra disponible para agregar un comboBox a la ventana
+     * para asignarle el valor. Cada ComboBox se agrega a una nueva lista enlazada para posteriormente obtener los valores.
+     */
 
     private void VerifyEmptyInputs(){
         int posx = 50;
@@ -124,6 +148,10 @@ public class SimulateCircuit {
 
     }
 
+    /**
+     * Método que actualiza el tamaño del pane conforme se van creando botones
+     * @param posy nuevo tamaño del pane
+     */
     private void updatePaneSize(int posy){
         if(posy < 400){
             posy +=150;
@@ -131,6 +159,13 @@ public class SimulateCircuit {
         root.setPrefSize(700, posy);
         buttonRun.setLayoutY(posy - 100);
     }
+
+
+    /**
+     * Método que crea cada uno de los comboBox
+     * @param posx posición en x para el comboBox respectivo
+     * @param posy posición en y para el comboBox respectivo
+     */
 
     private void createComboBox(int posx, int posy){
         ComboBox<Boolean> comboBox = new ComboBox<>();
@@ -145,6 +180,12 @@ public class SimulateCircuit {
         comboBoxList.add(comboBox);
     }
 
+    /**
+     * Método que crear los labels para identificar a cual entrada correspone cada comboBox
+     * @param posx posición en x
+     * @param posy posición en y
+     * @param name nombre de la entrada
+     */
     private void createLabel(int posx, int posy, String name){
         Label label = new Label();
         label.setText(name);
@@ -156,6 +197,11 @@ public class SimulateCircuit {
 
     }
 
+
+    /**
+     * Método que asigna el valor elegido por el usuario por medio del comboBox a cada una de las entrada disponibles del
+     * circuito
+     */
     private void setInputsValues() {
         int index = 0;
         try {
@@ -209,6 +255,9 @@ public class SimulateCircuit {
     }
 
 
+    /**
+     * Método que operar las compuertas de salida del circuito para obtener el valor de la salida
+     */
     private void operateLogicGates(){
         simulatingCircuit = true;
 

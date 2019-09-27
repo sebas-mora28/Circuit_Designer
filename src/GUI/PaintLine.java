@@ -4,7 +4,6 @@ import Compuertas.Compuerta;
 import Logica.LogicGateConexion;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import javafx.scene.effect.BlendMode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -12,9 +11,11 @@ import javafx.scene.shape.Line;
 
 import java.util.Random;
 
+
+
 public class PaintLine {
     private double startposx, startposy;
-    private Line line1 = new Line();
+    private Line line1 = new Line(), line2 = new Line(), line3 = new Line();
     private Pane pane;
     private Random random = new Random();
 
@@ -40,13 +41,21 @@ public class PaintLine {
         int v = random.nextInt(255);
         int g = random.nextInt(255);
 
-        line1 = new Line();
+        Line[] lines = new Line[3];
+
+        for(int i=0; i<=2; i++){
+            Line line = new Line();
+            lines[i] = line;
+            line.setStroke(Color.rgb(r,v,g));
+            line.setStrokeWidth(3);
+            line.setId("Linea");
+            pane.getChildren().add(line);
+        }
+
+        setLine1(lines[0], lines[1], lines[2]);
         line1.startXProperty().bind(compuerta.lineOutputPosX);
         line1.startYProperty().bind(compuerta.lineOutputPosY);
-        line1.setStroke(Color.rgb(r,v,g));
-        line1.setStrokeWidth(3);
-        line1.setId("Linea");
-        pane.getChildren().add(line1);
+
     }
 
 
@@ -64,6 +73,14 @@ public class PaintLine {
                     System.out.println("Se elimina 1");
                     pane.getChildren().remove(nodo);
                 }
+                if(nodo.equals(line2)){
+                    System.out.println("Se elimina 2");
+                    pane.getChildren().remove(nodo);
+                }
+                if(nodo.equals(line3)){
+                    System.out.println("Se elimina 3");
+                    pane.getChildren().remove(nodo);
+                }
             }
         }
     }
@@ -79,25 +96,42 @@ public class PaintLine {
 
                 double newPosx = (startposx + endPosX) / 2;
 
-                starLine(endPosX, endPosY);
-                //starLine(newPosx, startposy, newPosx, endPosY, endPosX, endPosY);
+
+                updateLine(newPosx, startposy, newPosx, endPosY, endPosX, endPosY);
             }
 
         }
     };
 
 
-    /**
-     * Método que actualiza la líneas para las conexión de las compuertas
-     * @param posx1
-     * @param posy1
-     */
-
-    private void starLine(double posx1, double posy1) {
+    public void updateLine(double posx1, double posy1, double posx2, double posy2, double posx3, double posy3) {
         line1.setEndX(posx1);
         line1.setEndY(posy1);
+        line2.setStartX(posx1);
+        line2.setStartY(posy1);
+        line2.setEndX(posx2);
+        line2.setEndY(posy2);
+        line3.setStartX(posx2);
+        line3.setStartY(posy2);
+        line3.setEndX(posx3);
+        line3.setEndY(posy3);
 
     }
+
+    public void updateLine() {
+        line1.setEndX((line1.getStartX() +line3.getEndX() )/2);
+        line1.setEndY(line1.getStartY());
+        line2.setStartX((line1.getStartX() +line3.getEndX() )/2);
+        line2.setStartY(line1.getStartY());
+        line2.setEndX((line1.getStartX() +line3.getEndX() )/2);
+        line2.setEndY(line3.getStartY());
+        line3.setStartX((line1.getStartX() +line3.getEndX() )/2);
+        line3.setStartY(line3.getEndY());
+
+
+    }
+
+
 
 
     /**
@@ -105,8 +139,8 @@ public class PaintLine {
      * @param compuerta
      */
     public void setLine3EndPositionsInput1(Compuerta compuerta){
-        line1.endXProperty().bind(compuerta.lineInput1PosX);
-        line1.endYProperty().bind(compuerta.lineInput1PosY);
+        line3.endXProperty().bind(compuerta.lineInput1PosX);
+        line3.endYProperty().bind(compuerta.lineInput1PosY);
     }
 
     /**
@@ -115,9 +149,18 @@ public class PaintLine {
      */
 
     public void setLine3EndPositionInput2(Compuerta compuerta){
-        line1.endXProperty().bind(compuerta.lineInput2PosX);
-        line1.endYProperty().bind(compuerta.lineInput2PosY);
+        line3.endXProperty().bind(compuerta.lineInput2PosX);
+        line3.endYProperty().bind(compuerta.lineInput2PosY);
     }
+
+
+    public void setLine1(Line line1, Line line2, Line line3) {
+        this.line1 = line1;
+        this.line2 = line2;
+        this.line3 = line3;
+    }
+
+
 }
 
 
