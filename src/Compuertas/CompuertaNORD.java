@@ -30,7 +30,7 @@ public class CompuertaNORD extends Compuerta {
 
     private void  createNORD(Pane gridPane){
         logicGateGroup = new Group();
-        Image image = new Image("Compuerta4.png");
+        Image image = new Image("Resources/Compuerta4.png");
         Rectangle logicGate = Painter.insertImage(image);
         logicGateGroup.getChildren().add(logicGate);
         DragAndDrop.setStartDragAndDrop(gridPane, logicGateGroup);

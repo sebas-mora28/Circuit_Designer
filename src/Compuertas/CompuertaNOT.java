@@ -33,7 +33,7 @@ public class CompuertaNOT extends Compuerta{
         logicGateGroup = new Group();
         logicGateGroup.setId("CompuertaGroup");
         input2Connected = true;
-        Image image = new Image("Compuerta5.png");
+        Image image = new Image("Resources/Compuerta5.png");
         Rectangle logicGate = Painter.insertImage(image);
         logicGateGroup.getChildren().add(logicGate);
         DragAndDrop.setStartDragAndDrop(gridPane, logicGateGroup);

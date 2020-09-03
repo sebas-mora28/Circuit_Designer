@@ -1,7 +1,6 @@
 package Compuertas;
 
 import GUI.Painter;
-import LinkedList.LinkedList;
 import Logica.DragAndDrop;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
@@ -30,7 +29,7 @@ public class CompuertaXOR extends Compuerta {
 
     private void  createXOR(Pane gridPane){
         logicGateGroup = new Group();
-        Image image = new Image("Compuerta6.png");
+        Image image = new Image("Resources/Compuerta6.png");
         Rectangle logicGate = Painter.insertImage(image);
         logicGateGroup.getChildren().add(logicGate);
         DragAndDrop.setStartDragAndDrop(gridPane, logicGateGroup);

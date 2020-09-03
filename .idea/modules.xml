@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Proyecto-1-Datos-1.iml" filepath="$PROJECT_DIR$/Proyecto-1-Datos-1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Circuit_Designer.iml" filepath="$PROJECT_DIR$/.idea/Circuit_Designer.iml" />
     </modules>
   </component>
 </project>

@@ -30,7 +30,7 @@ public class CompuertaOR extends Compuerta {
 
     private void  createOR(Pane gridPane){
         logicGateGroup = new Group();
-        Image image = new Image("Compuerta3.png");
+        Image image = new Image("Resources/Compuerta3.png");
         Rectangle logicGate = Painter.insertImage(image);
         logicGateGroup.getChildren().add(logicGate);
         DragAndDrop.setStartDragAndDrop(gridPane, logicGateGroup);

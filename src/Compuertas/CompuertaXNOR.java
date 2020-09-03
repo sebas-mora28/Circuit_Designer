@@ -29,7 +29,7 @@ public class CompuertaXNOR extends Compuerta {
      */
     private void  createXNOR(Pane gridPane){
         logicGateGroup = new Group();
-        Image image = new Image("Compuerta7.png");
+        Image image = new Image("Resources/Compuerta7.png");
         Rectangle logicGate = Painter.insertImage(image);
         logicGateGroup.getChildren().add(logicGate);
         DragAndDrop.setStartDragAndDrop(gridPane, logicGateGroup);

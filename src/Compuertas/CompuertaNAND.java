@@ -30,7 +30,7 @@ public class CompuertaNAND extends Compuerta {
 
     private void  createNAND(Pane gridPane){
         logicGateGroup = new Group();
-        Image image = new Image("Compuerta2.png");
+        Image image = new Image("Resources/Compuerta2.png");
         Rectangle logicGate = Painter.insertImage(image);
         logicGateGroup.getChildren().add(logicGate);
         DragAndDrop.setStartDragAndDrop(gridPane, logicGateGroup);
