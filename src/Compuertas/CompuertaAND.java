@@ -9,6 +9,9 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 
 /**
  * Clase de la compuerta lógica AND
@@ -22,18 +25,22 @@ public class CompuertaAND extends Compuerta{
      * @param gridPane Pane donde se agregan los componentes gráficos de las compuerta
      */
     public CompuertaAND(Pane gridPane){
-        createAND(gridPane);
+        try {
+            createAND(gridPane);
+        }catch (Exception err){
+            err.getMessage();
+        }
     }
     /**
      * Método que crea los componentes gráficos de la compuerta y les asigna los diferentes EventHandler
      * @param gridPane
      */
 
-    public void createAND(Pane gridPane){
+    public void createAND(Pane gridPane) throws FileNotFoundException {
         logicGateGroup = new Group();
         logicGateGroup.setId("CompuertaGrupo");
         LogicGatesCreator.LogicGatesList.showData();
-        Image image = new Image("Resources/Compuerta1.png");
+        Image image = new Image("Compuerta1.png");
         Rectangle logicGate = Painter.insertImage(image);
         logicGateGroup.getChildren().add(logicGate);
         DragAndDrop.setStartDragAndDrop(gridPane, logicGateGroup);
